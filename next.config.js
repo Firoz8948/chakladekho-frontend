@@ -1,5 +1,20 @@
 /** @type {import('next').NextConfig} */
-const bunnyCdnHost = process.env.NEXT_PUBLIC_BUNNY_CDN_HOST || "";
+function cleanEnv(value, fallback = "") {
+  const cleaned = String(value ?? "")
+    .replace(/^\uFEFF/, "")
+    .trim();
+  return cleaned || fallback;
+}
+
+const bunnyCdnHost = cleanEnv(process.env.NEXT_PUBLIC_BUNNY_CDN_HOST);
+const apiUrl = cleanEnv(
+  process.env.NEXT_PUBLIC_API_URL,
+  "http://localhost:8000",
+).replace(/\/$/, "");
+const apiBase = cleanEnv(
+  process.env.NEXT_PUBLIC_API_BASE,
+  `${apiUrl}/api/v1`,
+).replace(/\/$/, "");
 
 const nextConfig = {
   reactStrictMode: true,
@@ -17,6 +32,16 @@ const nextConfig = {
         port: "8001",
         pathname: "/uploads/**",
       },
+      {
+        protocol: "https",
+        hostname: "api.chakladekho.com",
+        pathname: "/uploads/**",
+      },
+      {
+        protocol: "https",
+        hostname: "api.chakladekho.in",
+        pathname: "/uploads/**",
+      },
       ...(bunnyCdnHost
         ? [
             {
@@ -29,9 +54,6 @@ const nextConfig = {
     ],
   },
   async rewrites() {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8001";
-    const apiBase =
-      process.env.NEXT_PUBLIC_API_BASE || `${apiUrl}/api/v1`;
     return [
       {
         source: "/uploads/:path*",
