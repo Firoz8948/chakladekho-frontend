@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 
 import ProductCard from "@/components/ProductCard/ProductCard";
-import { getSubCategoryProducts } from "@/services/categoryService";
 import { productService } from "@/services/productService";
 import styles from "./RelatedProducts.module.css";
 
@@ -17,28 +16,11 @@ export default function RelatedProducts({ product }) {
 
     async function load() {
       try {
-        if (product.subcategory_id) {
-          const res = await getSubCategoryProducts(product.subcategory_id, {
-            page: 1,
-            limit: 8,
-          });
-          const list = (res.data?.products || res.products || []).filter(
-            (p) => String(p.id) !== currentId
-          );
-          if (list.length) {
-            if (active) setProducts(list.slice(0, 4));
-            return;
-          }
-        }
-
         const params = { page: 1, page_size: 8, sort: "newest" };
         if (product.category_slug) {
           params.category_slug = product.category_slug;
         } else if (product.category) {
-          const catName = product.category.includes(" / ")
-            ? product.category.split(" / ")[0]
-            : product.category;
-          params.category = catName;
+          params.category = product.category;
         }
 
         const res = await productService.getProducts(params);

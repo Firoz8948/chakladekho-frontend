@@ -21,16 +21,13 @@ export default function ProductCard({ product }) {
   const discount = calcDiscount(listing.mrp, listing.price);
   const outOfStock = listing.outOfStock;
   const proof = getProductSocialProof(product.id);
-  const categoryLabel = product.category || "";
-  const categoryOnly = categoryLabel.includes(" / ")
-    ? categoryLabel.split(" / ")[0]
-    : categoryLabel;
+  const categoryOnly = product.category || "";
 
   const handleAdd = (e) => {
     e.preventDefault();
     e.stopPropagation();
     if (listing.hasVariants) return;
-    if (!outOfStock) addToCart(product, 1);
+    if (!outOfStock) addToCart(product, 1, { source: e.currentTarget });
   };
 
   const handleBuyNow = (e) => {
@@ -49,7 +46,7 @@ export default function ProductCard({ product }) {
     e.stopPropagation();
     const res = await shareLink({
       title: product.name,
-      text: `Check out ${product.name} on M Kharavad`,
+      text: `Check out ${product.name} on ChaklaDekho`,
       url: productShareUrl(product.slug),
     });
     if (res.method === "clipboard") toast.success("Link copied");

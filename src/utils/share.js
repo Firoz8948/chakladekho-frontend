@@ -4,7 +4,7 @@
 export async function shareLink({ title, text, url }) {
   const shareUrl = url || (typeof window !== "undefined" ? window.location.href : "");
   const payload = {
-    title: title || "M Kharavad",
+    title: title || "ChaklaDekho",
     text: text || title || "",
     url: shareUrl,
   };
@@ -30,7 +30,7 @@ export function productShareUrl(slug) {
   const base =
     (typeof window !== "undefined" ? window.location.origin : "") ||
     process.env.NEXT_PUBLIC_SITE_URL ||
-    "https://mkharavad.com";
+    "https://chakladkho.com";
   return `${base.replace(/\/$/, "")}/product/${slug}`;
 }
 
@@ -38,6 +38,6 @@ export function videoShareUrl(id) {
   const base =
     (typeof window !== "undefined" ? window.location.origin : "") ||
     process.env.NEXT_PUBLIC_SITE_URL ||
-    "https://mkharavad.com";
+    "https://chakladkho.com";
   return `${base.replace(/\/$/, "")}/reels?v=${id}`;
 }

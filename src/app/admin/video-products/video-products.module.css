@@ -23,7 +23,7 @@
   background: linear-gradient(135deg, var(--color-primary), var(--color-red));
   color: var(--background);
   padding: 12px 24px;
-  border-radius: 10px;
+  border-radius: 0;
   font-weight: 600;
   font-size: 0.9rem;
   border: none;
@@ -33,7 +33,7 @@
 }
 
 .addBtn:hover {
-  box-shadow: 0 6px 20px rgba(158,31,58,0.3);
+  box-shadow: 0 6px 20px rgba(var(--primary-rgb),0.3);
   transform: translateY(-1px);
 }
 
@@ -45,16 +45,16 @@
 
 .card {
   background: var(--background);
-  border-radius: 16px;
-  border: 1px solid rgba(158,31,58,0.1);
-  box-shadow: 0 2px 12px rgba(158,31,58,0.06);
+  border-radius: 0;
+  border: 1px solid rgba(var(--primary-rgb),0.1);
+  box-shadow: 0 2px 12px rgba(var(--primary-rgb),0.06);
   overflow: hidden;
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 28px rgba(158,31,58,0.12);
+  box-shadow: 0 8px 28px rgba(var(--primary-rgb),0.12);
 }
 
 .card.inactive {
@@ -100,7 +100,7 @@
   font-size: 0.7rem;
   font-weight: 700;
   padding: 4px 10px;
-  border-radius: 6px;
+  border-radius: 0;
 }
 
 .cardBody { padding: 14px 16px; }
@@ -152,7 +152,7 @@
   background: var(--heading);
   color: var(--background);
   border: none;
-  border-radius: 8px;
+  border-radius: 0;
   font-size: 0.8rem;
   font-weight: 600;
   cursor: pointer;
@@ -165,7 +165,7 @@
   padding: 9px 12px;
   background: var(--error-bg);
   border: 1px solid color-mix(in srgb, var(--error) 45%, var(--border-light));
-  border-radius: 8px;
+  border-radius: 0;
   color: var(--error);
   cursor: pointer;
   font-size: 0.85rem;
@@ -179,7 +179,7 @@
 .spinner {
   width: 40px; height: 40px;
   border: 3px solid rgba(var(--heading-rgb), 0.12); border-top-color: var(--color-primary);
-  border-radius: 50%; animation: spin 0.8s linear infinite;
+  border-radius: 0; animation: spin 0.8s linear infinite;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
@@ -208,7 +208,7 @@
 
 .modal {
   background: var(--background);
-  border-radius: 20px;
+  border-radius: 0;
   width: 100%;
   max-width: 900px;
   max-height: 92vh;
@@ -243,7 +243,7 @@
   background: var(--bg-cream);
   border: none;
   width: 34px; height: 34px;
-  border-radius: 8px;
+  border-radius: 0;
   cursor: pointer;
   font-size: 0.85rem;
   color: var(--text-muted);
@@ -295,7 +295,7 @@
   width: 100%;
   padding: 11px 14px;
   border: 2px solid var(--border-medium);
-  border-radius: 10px;
+  border-radius: 0;
   font-size: 0.9rem;
   color: var(--heading);
   background: var(--section-bg);
@@ -309,7 +309,7 @@
 .textarea:focus {
   border-color: var(--color-primary);
   background: var(--background);
-  box-shadow: 0 0 0 3px rgba(158,31,58,0.08);
+  box-shadow: 0 0 0 3px rgba(var(--primary-rgb),0.08);
 }
 
 .textarea { resize: vertical; }
@@ -335,7 +335,7 @@
 
 .toggle {
   width: 44px; height: 24px;
-  border-radius: 12px;
+  border-radius: 0;
   background: var(--border-medium);
   border: none;
   cursor: pointer;
@@ -351,7 +351,7 @@
   top: 2px; left: 2px;
   width: 20px; height: 20px;
   background: var(--background);
-  border-radius: 50%;
+  border-radius: 0;
   transition: transform 0.2s;
   box-shadow: 0 1px 4px rgba(0,0,0,0.2);
 }
@@ -363,7 +363,7 @@
 
 .videoDropZone {
   border: 2px dashed var(--border-medium);
-  border-radius: 14px;
+  border-radius: 0;
   cursor: pointer;
   overflow: hidden;
   aspect-ratio: 9 / 14;
@@ -413,7 +413,7 @@
 .cancelBtn {
   padding: 12px 20px;
   border: 2px solid var(--border-medium);
-  border-radius: 10px;
+  border-radius: 0;
   background: var(--background);
   color: var(--text-muted);
   font-size: 0.88rem;
@@ -429,7 +429,7 @@
   background: linear-gradient(135deg, var(--color-primary), var(--color-red));
   color: var(--background);
   border: none;
-  border-radius: 10px;
+  border-radius: 0;
   font-size: 0.9rem;
   font-weight: 700;
   cursor: pointer;
@@ -443,7 +443,7 @@
 }
 
 .saveBtn:hover:not(:disabled) {
-  box-shadow: 0 6px 20px rgba(158,31,58,0.3);
+  box-shadow: 0 6px 20px rgba(var(--primary-rgb),0.3);
   transform: translateY(-1px);
 }
 
@@ -466,7 +466,7 @@
   position: relative;
   width: 64px;
   height: 64px;
-  border-radius: 8px;
+  border-radius: 0;
   overflow: hidden;
   border: 1px solid var(--border-light);
 }
@@ -484,7 +484,7 @@
   width: 18px;
   height: 18px;
   border: none;
-  border-radius: 50%;
+  border-radius: 0;
   background: rgba(0, 0, 0, 0.65);
   color: #fff;
   font-size: 10px;
@@ -495,7 +495,7 @@
   width: 18px; height: 18px;
   border: 2px solid rgba(255,255,255,0.3);
   border-top-color: var(--background);
-  border-radius: 50%;
+  border-radius: 0;
   animation: spin 0.7s linear infinite;
 }
 
@@ -510,7 +510,7 @@
   border: 1px solid var(--border);
   background: #fff;
   color: var(--heading);
-  border-radius: 999px;
+  border-radius: 0;
   padding: 8px 14px;
   font-weight: 600;
   font-size: 0.84rem;
@@ -518,8 +518,8 @@
 }
 
 .modeBtnActive {
-  background: #041d56;
-  border-color: #041d56;
+  background: var(--primary);
+  border-color: var(--primary);
   color: #fff;
 }
 
@@ -527,8 +527,8 @@
   margin-bottom: 18px;
   padding: 14px;
   border: 1px solid var(--border);
-  border-radius: 12px;
-  background: var(--section-bg, #faf7f5);
+  border-radius: 0;
+  background: var(--section-bg, var(--cream));
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -547,8 +547,8 @@
   justify-content: space-between;
   gap: 10px;
   background: #fff;
-  border: 1px solid rgba(4, 29, 86, 0.15);
-  border-radius: 10px;
+  border: 1px solid rgba(var(--primary-rgb), 0.15);
+  border-radius: 0;
   padding: 10px 12px;
   font-size: 0.88rem;
 }
@@ -575,7 +575,7 @@
   gap: 10px;
   border: 1px solid var(--border);
   background: #fff;
-  border-radius: 10px;
+  border-radius: 0;
   padding: 8px 10px;
   cursor: pointer;
   text-align: left;
@@ -585,7 +585,7 @@
 .pickPlaceholder {
   width: 36px;
   height: 36px;
-  border-radius: 8px;
+  border-radius: 0;
   object-fit: cover;
   flex-shrink: 0;
   background: #eee;

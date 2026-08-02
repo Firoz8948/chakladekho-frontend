@@ -1,6 +1,6 @@
 /**
  * Resolve a media URL stored in the database.
- * Supports full Bunny CDN URLs, legacy /uploads/ paths, and local assets.
+ * Supports /uploads/ paths served by the API, full CDN URLs, and local assets.
  */
 export function mediaUrl(path, apiBase) {
   if (!path) return "";

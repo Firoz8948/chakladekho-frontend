@@ -9,9 +9,18 @@ const OPTIONS = [
   { value: "name_asc", label: "Name: A to Z" },
 ];
 
-export default function SortBar({ total, sort, onSortChange }) {
+export default function SortBar({
+  total,
+  sort,
+  onSortChange,
+  variant = "default",
+}) {
   return (
-    <div className={styles.bar}>
+    <div
+      className={`${styles.bar} ${
+        variant === "sidebar" ? styles.sidebarBar : ""
+      }`}
+    >
       <span className={styles.count}>
         {total} {total === 1 ? "product" : "products"}
       </span>

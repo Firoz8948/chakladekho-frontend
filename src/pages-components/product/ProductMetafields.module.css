@@ -15,7 +15,7 @@
 }
 .item {
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
+  border-radius: 0;
   overflow: hidden;
   background: #fff;
 }
@@ -35,7 +35,7 @@
   text-align: left;
 }
 .trigger:hover {
-  background: #f5efe8;
+  background: var(--cream);
 }
 .triggerOpen {
   background: #fff;
@@ -51,7 +51,7 @@
 .panel {
   padding: 1rem 1.15rem 1.15rem;
   line-height: 1.7;
-  color: #0f172a;
+  color: var(--text);
 }
 .panel p {
   margin: 0 0 0.5rem;

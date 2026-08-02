@@ -6,11 +6,40 @@
   margin-bottom: 24px;
 }
 
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
 .title {
   font-family: var(--font-heading);
   font-size: 1.75rem;
   color: var(--heading);
   margin: 0 0 6px;
+}
+
+.titleRow .title {
+  margin-bottom: 0;
+}
+
+.lockBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--border);
+  background: var(--section-bg);
+  color: var(--primary);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.lockBtn:hover {
+  border-color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 8%, var(--background));
 }
 
 .subtitle {
@@ -23,7 +52,7 @@
 .card {
   background: var(--background);
   border: 1px solid var(--border);
-  border-radius: var(--radius-md);
+  border-radius: 0;
   padding: 24px;
   box-shadow: var(--shadow-sm);
   display: flex;
@@ -47,7 +76,7 @@
   width: 100%;
   padding: 12px 14px;
   border: 1px solid var(--border-medium);
-  border-radius: 8px;
+  border-radius: 0;
   font-family: var(--font-body);
   font-size: 0.95rem;
   color: var(--heading);
@@ -57,6 +86,25 @@
 
 .input:focus {
   border-color: var(--primary);
+}
+
+.input:disabled,
+.input:read-only {
+  background: color-mix(in srgb, var(--section-bg) 80%, var(--background));
+  color: var(--heading);
+  cursor: default;
+  opacity: 0.92;
+}
+
+.locked .input {
+  border-color: color-mix(in srgb, var(--border) 80%, transparent);
+}
+
+.lockedHint {
+  margin: 8px 0 0;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.45;
 }
 
 .phoneWrap {
@@ -71,14 +119,14 @@
   background: var(--section-bg);
   border: 1px solid var(--border-medium);
   border-right: none;
-  border-radius: 8px 0 0 8px;
+  border-radius: 0;
   color: var(--text-muted);
   font-weight: 600;
   font-size: 0.9rem;
 }
 
 .phoneWrap .input {
-  border-radius: 0 8px 8px 0;
+  border-radius: 0;
 }
 
 .hint {
@@ -93,7 +141,7 @@
   align-self: flex-start;
   padding: 12px 22px;
   border: none;
-  border-radius: 8px;
+  border-radius: 0;
   background: var(--primary);
   color: var(--text-light);
   font-weight: 700;
@@ -112,7 +160,7 @@
 
 .success {
   padding: 12px 14px;
-  border-radius: 8px;
+  border-radius: 0;
   background: var(--success-bg);
   color: var(--success);
   font-size: 0.85rem;
@@ -121,7 +169,7 @@
 
 .error {
   padding: 12px 14px;
-  border-radius: 8px;
+  border-radius: 0;
   background: var(--error-bg);
   color: var(--error);
   font-size: 0.85rem;
@@ -139,7 +187,7 @@
   height: 36px;
   border: 3px solid rgba(var(--heading-rgb), 0.12);
   border-top-color: var(--primary);
-  border-radius: 50%;
+  border-radius: 0;
   animation: spin 0.8s linear infinite;
 }
 

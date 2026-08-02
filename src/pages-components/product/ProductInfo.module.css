@@ -8,7 +8,7 @@
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--secondary, #f26a21);
+  color: var(--secondary, var(--primary));
   font-weight: 700;
 }
 
@@ -18,7 +18,7 @@
   font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 1.25;
-  color: #0f172a;
+  color: var(--text);
   margin: 0;
 }
 
@@ -33,10 +33,10 @@
   flex-shrink: 0;
   width: 40px;
   height: 40px;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
+  border: 1px solid var(--border-light);
+  border-radius: 0;
   background: #fff;
-  color: #041d56;
+  color: var(--primary);
   display: grid;
   place-items: center;
   cursor: pointer;
@@ -47,7 +47,7 @@
   align-items: center;
   gap: 0.4rem;
   flex-wrap: wrap;
-  color: #0f172a;
+  color: var(--text);
   font-size: 0.95rem;
 }
 
@@ -68,12 +68,12 @@
 .price {
   font-size: 1.65rem;
   font-weight: 800;
-  color: #041d56;
+  color: var(--primary);
 }
 
 .mrp {
   font-size: 1rem;
-  color: #64748b;
+  color: var(--text-muted);
   text-decoration: line-through;
 }
 
@@ -84,7 +84,7 @@
 }
 
 .weight {
-  color: #475569;
+  color: var(--text-muted);
   font-size: 0.88rem;
   margin: 0;
 }
@@ -98,7 +98,7 @@
 .variantLabel {
   font-size: 0.85rem;
   font-weight: 700;
-  color: #0f172a;
+  color: var(--text);
 }
 
 .variantOptions {
@@ -109,18 +109,18 @@
 
 .variantBtn {
   padding: 0.45rem 0.85rem;
-  border: 1.5px solid #e2e8f0;
-  border-radius: 8px;
+  border: 1.5px solid var(--border-light);
+  border-radius: 0;
   background: #fff;
   font-size: 0.88rem;
   font-weight: 500;
   cursor: pointer;
-  color: #0f172a;
+  color: var(--text);
 }
 
 .variantBtnActive {
-  border-color: #041d56;
-  background: #041d56;
+  border-color: var(--primary);
+  background: var(--primary);
   color: #fff;
   font-weight: 700;
 }
@@ -153,45 +153,45 @@
 .qty {
   display: flex;
   align-items: center;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
+  border: 1px solid var(--border-light);
+  border-radius: 0;
   overflow: hidden;
   background: #fff;
 }
 
 .qty button {
-  background: #f8fafc;
+  background: var(--section-bg);
   border: none;
   width: 40px;
   height: 44px;
   display: grid;
   place-items: center;
   cursor: pointer;
-  color: #0f172a;
+  color: var(--text);
 }
 
 .qty span {
   width: 44px;
   text-align: center;
   font-weight: 700;
-  color: #0f172a;
+  color: var(--text);
 }
 
 .descBlock {
   margin-top: 0.35rem;
   padding-top: 1rem;
-  border-top: 1px solid #e2e8f0;
+  border-top: 1px solid var(--border-light);
 }
 
 .descTitle {
   font-size: 1rem;
   font-weight: 700;
-  color: #0f172a;
+  color: var(--text);
   margin: 0 0 0.55rem;
 }
 
 .description {
-  color: #0f172a;
+  color: var(--text);
   line-height: 1.7;
   font-size: 0.95rem;
   margin: 0;
@@ -199,7 +199,7 @@
 }
 
 .descriptionHtml {
-  color: #0f172a;
+  color: var(--text);
   line-height: 1.7;
   font-size: 0.95rem;
 }
@@ -212,24 +212,24 @@
 
 .descriptionHtml :global(li) {
   margin-bottom: 0.35rem;
-  color: #0f172a;
+  color: var(--text);
 }
 
 .descriptionHtml :global(img) {
   max-width: 100%;
   height: auto;
-  border-radius: 10px;
+  border-radius: 0;
   margin: 0.65rem 0;
   display: block;
 }
 
 .descriptionHtml :global(p) {
   margin: 0 0 0.65rem;
-  color: #0f172a;
+  color: var(--text);
 }
 
 .descriptionHtml :global(a) {
-  color: #041d56;
+  color: var(--primary);
   font-weight: 600;
 }
 

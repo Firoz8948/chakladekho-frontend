@@ -33,10 +33,12 @@ export default function Footer() {
     <footer className={styles.footer}>
       <div className={`container ${styles.grid}`}>
         <div className={styles.brand}>
-          <Logo height={32} className={styles.logo} />
+          <div className={styles.logoPlate}>
+            <Logo height={104} className={styles.logo} />
+          </div>
           <div className={styles.social}>
             <a href="#" aria-label="Facebook">
-              <FiFacebook />
+              <FiFacebook className={styles.outlineSocialIcon} />
             </a>
             <a
               href={BRAND.instagram}
@@ -44,7 +46,7 @@ export default function Footer() {
               rel="noopener noreferrer"
               aria-label="Instagram"
             >
-              <FiInstagram />
+              <FiInstagram className={styles.outlineSocialIcon} />
             </a>
             <a
               href={WHATSAPP_URL}
@@ -52,10 +54,10 @@ export default function Footer() {
               rel="noopener noreferrer"
               aria-label="WhatsApp"
             >
-              <FaWhatsapp />
+              <FaWhatsapp className={styles.filledSocialIcon} />
             </a>
             <a href="#" aria-label="Twitter">
-              <FiTwitter />
+              <FiTwitter className={styles.outlineSocialIcon} />
             </a>
           </div>
         </div>
@@ -64,32 +66,16 @@ export default function Footer() {
           <h4>Shop</h4>
           <Link href="/shop">All Products</Link>
           <ul className={styles.shopList}>
-            {categories.map((cat) => {
-              const subs = (cat.subcategories || []).filter(
-                (sub) => sub.is_active !== false
-              );
-              return (
-                <li key={cat.id} className={styles.shopCat}>
-                  <Link
-                    href={`/shop?category=${cat.slug}`}
-                    className={styles.shopCatLink}
-                  >
-                    {cat.name}
-                  </Link>
-                  {subs.length > 0 && (
-                    <ul className={styles.shopSubList}>
-                      {subs.map((sub) => (
-                        <li key={sub.id}>
-                          <Link href={`/shop?subcategory=${sub.slug}`}>
-                            {sub.name}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </li>
-              );
-            })}
+            {categories.map((category) => (
+              <li key={category.id} className={styles.shopCat}>
+                <Link
+                  href={`/shop?category=${category.slug}`}
+                  className={styles.shopCatLink}
+                >
+                  {category.name}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
 
@@ -145,7 +131,7 @@ export default function Footer() {
 
       <div className={styles.bottom}>
         <div className={`container ${styles.bottomInner}`}>
-          <p>© {year} M Kharavad. All rights reserved.</p>
+          <p>© {year} ChaklaDekho. All rights reserved.</p>
         </div>
       </div>
     </footer>

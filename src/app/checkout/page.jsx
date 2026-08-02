@@ -244,7 +244,7 @@ export default function CheckoutPage() {
         contact: form.phone,
         email: form.email || "",
       },
-      theme: { color: "#041D56" },
+      theme: { color: "#5E3023" },
       handler: async (response) => {
         try {
           const result = await paymentService.verify({
@@ -398,6 +398,7 @@ export default function CheckoutPage() {
               onPromoChange={setPromo}
               pincode={form.pincode}
               state={form.state}
+              phone={form.phone || user?.phone || ""}
               paymentMethod={method}
               onShippingQuoteChange={handleShippingQuoteChange}
             />

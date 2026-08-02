@@ -24,6 +24,11 @@
   border-top: 1px solid var(--color-border);
   color: var(--color-primary-dark);
 }
+.promoLine {
+  margin: 0.55rem 0 0;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
 .section p {
   font-size: 0.9rem;
   color: var(--color-text-muted);
@@ -32,7 +37,7 @@
   width: 100%;
   padding: 0.6rem 0.8rem;
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
+  border-radius: 0;
   text-transform: capitalize;
   outline: none;
   background: var(--color-bg);

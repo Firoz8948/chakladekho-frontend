@@ -4,7 +4,7 @@ import { pageMetadata } from "@/utils/seo";
 export const metadata = pageMetadata({
   title: "About Us",
   description:
-    "Built by Mohan Kharavad in 2012 — M Kharavad Company makes premium cast iron cookware for wholesalers and households, sold online and offline across India.",
+    "ChaklaDekho makes kitchen essentials for every home — chakla, tawa, belan, serving spoons, spatulas, and mortar & pestle. Shop online across India.",
   path: "/about",
 });
 

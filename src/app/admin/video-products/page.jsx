@@ -405,7 +405,7 @@ export default function AdminVideoProductsPage() {
                     <label className={styles.label}>Product Name *</label>
                     <input
                       className={styles.input}
-                      placeholder="e.g. Iron Sheet 0.5mm"
+                      placeholder="e.g. Wooden Chakla 10 inch"
                       value={form.name}
                       onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))}
                       required
@@ -458,7 +458,7 @@ export default function AdminVideoProductsPage() {
                       <label className={styles.label}>Category *</label>
                       <input
                         className={styles.input}
-                        placeholder="Iron Sheet"
+                        placeholder="Chakla"
                         value={form.category}
                         onChange={(e) => setForm((p) => ({ ...p, category: e.target.value }))}
                         required

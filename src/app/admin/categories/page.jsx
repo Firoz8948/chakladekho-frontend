@@ -59,7 +59,7 @@ export default function AdminCategoriesPage() {
     }
     if (
       !confirm(
-        `Delete "${cat.name}" and all its subcategories? Products will be unmapped.`
+        `Delete "${cat.name}"? Products will be left without a category.`
       )
     ) {
       return;
@@ -86,7 +86,7 @@ export default function AdminCategoriesPage() {
         <div>
           <h2 className={styles.title}>Categories</h2>
           <p className={styles.subtitle}>
-            {categories.length} categories · products live in subcategories
+            {categories.length} categories
           </p>
         </div>
         <button type="button" className={styles.addBtn} onClick={handleAdd}>
@@ -143,7 +143,7 @@ export default function AdminCategoriesPage() {
                   <span className={styles.productCount}>
                     {cat.is_reels || cat.slug === "reels"
                       ? "Video feed"
-                      : `${cat.subcategory_count || 0} subcats`}
+                      : `${cat.product_count || 0} products`}
                   </span>
                 </div>
 
@@ -167,7 +167,7 @@ export default function AdminCategoriesPage() {
                 >
                   {cat.is_reels || cat.slug === "reels"
                     ? "Edit Details"
-                    : "Edit & Subcategories"}
+                    : "Edit Details"}
                 </button>
                 {!(cat.is_reels || cat.slug === "reels") && (
                   <button

@@ -107,7 +107,7 @@ export default function AdminLoginPage() {
         </form>
 
         <p className={styles.footer}>
-          M Kharavad Company · Premium Quality, Naturally Pure
+          ChaklaDekho · Kitchen Essentials for Every Home
         </p>
       </div>
     </div>

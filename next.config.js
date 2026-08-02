@@ -1,6 +1,5 @@
 /** @type {import('next').NextConfig} */
-const bunnyCdnHost =
-  process.env.NEXT_PUBLIC_BUNNY_CDN_HOST || "mkharavad-media.b-cdn.net";
+const bunnyCdnHost = process.env.NEXT_PUBLIC_BUNNY_CDN_HOST || "";
 
 const nextConfig = {
   reactStrictMode: true,
@@ -13,14 +12,24 @@ const nextConfig = {
         pathname: "/uploads/**",
       },
       {
-        protocol: "https",
-        hostname: bunnyCdnHost,
-        pathname: "/**",
+        protocol: "http",
+        hostname: "localhost",
+        port: "8001",
+        pathname: "/uploads/**",
       },
+      ...(bunnyCdnHost
+        ? [
+            {
+              protocol: "https",
+              hostname: bunnyCdnHost,
+              pathname: "/**",
+            },
+          ]
+        : []),
     ],
   },
   async rewrites() {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8001";
     const apiBase =
       process.env.NEXT_PUBLIC_API_BASE || `${apiUrl}/api/v1`;
     return [

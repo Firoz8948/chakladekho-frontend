@@ -1,7 +1,7 @@
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(4, 29, 86, 0.42);
+  background: rgba(var(--primary-rgb), 0.42);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   z-index: var(--z-modal, 1000);
@@ -25,10 +25,10 @@
   width: 100%;
   max-width: 420px;
   background: var(--background);
-  border-radius: 20px;
+  border-radius: 0;
   overflow: hidden;
   box-shadow:
-    0 24px 64px rgba(4, 29, 86, 0.22),
+    0 24px 64px rgba(var(--primary-rgb), 0.22),
     0 2px 8px rgba(0, 0, 0, 0.06);
   animation: slideUp 0.28s cubic-bezier(0.22, 1, 0.36, 1);
   position: relative;
@@ -56,7 +56,7 @@
   border: 1px solid var(--border);
   background: var(--background);
   color: var(--heading);
-  border-radius: 50%;
+  border-radius: 0;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -91,7 +91,7 @@
   margin: 0 auto;
   background: var(--section-bg);
   border: 1px solid var(--border);
-  border-radius: 14px;
+  border-radius: 0;
 }
 
 .logo {
@@ -199,7 +199,7 @@
   width: 100%;
   padding: 13px 16px;
   border: 1.5px solid var(--border-medium);
-  border-radius: 12px;
+  border-radius: 0;
   font-size: 0.95rem;
   color: var(--heading);
   background: #ffffff;
@@ -219,7 +219,7 @@
   display: inline-flex;
   align-items: center;
   padding: 0 12px;
-  border-radius: 9px;
+  border-radius: 0;
   font-size: 0.88rem;
   font-weight: 700;
   color: var(--primary-hover);
@@ -245,7 +245,7 @@
   border: 1px solid color-mix(in srgb, var(--error) 28%, var(--border));
   color: var(--error);
   padding: 12px 14px;
-  border-radius: 10px;
+  border-radius: 0;
   font-size: 0.84rem;
   margin-bottom: 14px;
   line-height: 1.4;
@@ -256,7 +256,7 @@
   border: 1px solid color-mix(in srgb, var(--success) 28%, var(--border));
   color: var(--success);
   padding: 12px 14px;
-  border-radius: 10px;
+  border-radius: 0;
   font-size: 0.84rem;
   margin-bottom: 16px;
 }
@@ -266,7 +266,7 @@
   border: 1px solid color-mix(in srgb, var(--warning) 35%, var(--border));
   color: var(--secondary);
   padding: 10px 14px;
-  border-radius: 10px;
+  border-radius: 0;
   font-size: 0.8rem;
   margin-bottom: 16px;
   text-align: center;
@@ -283,7 +283,7 @@
   width: 52px;
   height: 56px;
   border: 1.5px solid var(--border-medium);
-  border-radius: 12px;
+  border-radius: 0;
   text-align: center;
   font-size: 1.35rem;
   font-weight: 700;
@@ -318,10 +318,10 @@
   width: 100%;
   padding: 14px 18px;
   margin-top: 4px;
-  background: #031744;
+  background: var(--primary-hover);
   color: #ffffff;
   border: none;
-  border-radius: 12px;
+  border-radius: 0;
   font-size: 0.98rem;
   font-weight: 700;
   font-family: var(--font-ui);
@@ -341,7 +341,7 @@
 }
 
 .primaryBtn:hover:not(:disabled) {
-  background: #041d56;
+  background: var(--primary);
   transform: translateY(-1px);
   box-shadow: 0 14px 28px rgba(3, 23, 68, 0.34);
   color: #ffffff;
@@ -362,7 +362,7 @@
   height: 18px;
   border: 2px solid rgba(255, 255, 255, 0.3);
   border-top-color: #ffffff;
-  border-radius: 50%;
+  border-radius: 0;
   animation: spin 0.7s linear infinite;
 }
 
@@ -450,7 +450,7 @@
 @media (max-width: 480px) {
   .modal {
     max-width: 100%;
-    border-radius: 18px;
+    border-radius: 0;
   }
 
   .header {

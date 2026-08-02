@@ -15,7 +15,7 @@
   height: 40px;
   border: 3px solid rgba(var(--heading-rgb), 0.12);
   border-top-color: var(--color-primary);
-  border-radius: 50%;
+  border-radius: 0;
   animation: spin 0.8s linear infinite;
 }
 
@@ -45,13 +45,13 @@
 
 .statCard {
   background: var(--background);
-  border-radius: 16px;
+  border-radius: 0;
   padding: 24px;
   display: flex;
   align-items: center;
   gap: 16px;
-  box-shadow: 0 2px 12px rgba(158,31,58,0.06);
-  border: 1px solid rgba(158,31,58,0.08);
+  box-shadow: 0 2px 12px rgba(var(--primary-rgb),0.06);
+  border: 1px solid rgba(var(--primary-rgb),0.08);
   position: relative;
   overflow: hidden;
   transition: transform 0.2s, box-shadow 0.2s;
@@ -59,7 +59,7 @@
 
 .statCard:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(158,31,58,0.12);
+  box-shadow: 0 8px 24px rgba(var(--primary-rgb),0.12);
 }
 
 .statIcon {
@@ -70,7 +70,7 @@
   align-items: center;
   justify-content: center;
   background: color-mix(in srgb, var(--accent) 10%, transparent);
-  border-radius: 14px;
+  border-radius: 0;
 }
 
 .statIconSvg {
@@ -102,7 +102,7 @@
   width: 80px;
   height: 80px;
   background: color-mix(in srgb, var(--accent) 8%, transparent);
-  border-radius: 50%;
+  border-radius: 0;
 }
 
 /* Bottom */
@@ -116,10 +116,10 @@
 
 .card {
   background: var(--background);
-  border-radius: 16px;
+  border-radius: 0;
   padding: 24px;
-  box-shadow: 0 2px 12px rgba(158,31,58,0.06);
-  border: 1px solid rgba(158,31,58,0.08);
+  box-shadow: 0 2px 12px rgba(var(--primary-rgb),0.06);
+  border: 1px solid rgba(var(--primary-rgb),0.08);
 }
 
 .cardTitle {
@@ -161,7 +161,7 @@
   width: 100%;
   max-width: 36px;
   background: linear-gradient(180deg, var(--color-primary), var(--color-red));
-  border-radius: 6px 6px 0 0;
+  border-radius: 0;
   transition: height 0.5s ease;
   min-height: 4px;
 }
@@ -189,7 +189,7 @@
   justify-content: space-between;
   padding: 12px 14px;
   background: var(--section-bg);
-  border-radius: 10px;
+  border-radius: 0;
   border: 1px solid var(--border-light);
 }
 
@@ -207,7 +207,7 @@
   font-size: 0.7rem;
   font-weight: 600;
   padding: 3px 8px;
-  border-radius: 20px;
+  border-radius: 0;
   text-transform: capitalize;
 }
 

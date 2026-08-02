@@ -74,7 +74,7 @@ function AdminShell({ children }) {
           </button>
           <h1 className={styles.pageTitle}>
             <HiOutlineHandRaised className={styles.welcomeIcon} aria-hidden />
-            Welcome Mohan Bhai
+            Welcome Vikram Bhai
           </h1>
           <div className={styles.adminBadge}>{admin?.name || "Admin"}</div>
         </header>

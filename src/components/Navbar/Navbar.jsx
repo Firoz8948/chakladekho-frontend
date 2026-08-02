@@ -5,9 +5,14 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import {
   FiChevronDown,
+  FiGrid,
+  FiHome,
+  FiInfo,
   FiInstagram,
   FiMenu,
+  FiPhone,
   FiSearch,
+  FiShoppingBag,
   FiShoppingCart,
   FiX,
 } from "react-icons/fi";
@@ -49,19 +54,15 @@ export default function Navbar() {
   const [loginOpen, setLoginOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [categoriesOpen, setCategoriesOpen] = useState(false);
   const [categories, setCategories] = useState([]);
-  const [openCatIds, setOpenCatIds] = useState(() => new Set());
   const userMenuRef = useRef(null);
+  const desktopNavRef = useRef(null);
   const drawerRef = useRef(null);
 
   useEffect(() => {
     getCategories()
-      .then((res) => {
-        const list = res.data || [];
-        setCategories(list);
-        // Subcategories stay open by default
-        setOpenCatIds(new Set(list.map((c) => c.id)));
-      })
+      .then((res) => setCategories(res.data || []))
       .catch(console.error);
   }, []);
 
@@ -87,6 +88,12 @@ export default function Navbar() {
       if (userMenuRef.current && !userMenuRef.current.contains(e.target)) {
         setUserMenuOpen(false);
       }
+      if (
+        desktopNavRef.current &&
+        !desktopNavRef.current.contains(e.target)
+      ) {
+        setCategoriesOpen(false);
+      }
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
@@ -94,6 +101,7 @@ export default function Navbar() {
 
   useEffect(() => {
     setMenuOpen(false);
+    setCategoriesOpen(false);
   }, [pathname]);
 
   useEffect(() => {
@@ -149,15 +157,6 @@ export default function Navbar() {
 
   const closeMenu = () => setMenuOpen(false);
 
-  const toggleCategory = (id) => {
-    setOpenCatIds((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-  };
-
   const renderLinks = (keyPrefix) =>
     NAV_LINKS.map((link) => {
       if (keyPrefix === "mobile" && link.href === "/shop") {
@@ -167,49 +166,16 @@ export default function Navbar() {
               Shop
             </Link>
             <div className={styles.shopTree}>
-              {categories.map((cat) => {
-                const open = openCatIds.has(cat.id);
-                const subs = cat.subcategories || [];
-                return (
-                  <div key={cat.id} className={styles.catNode}>
-                    <div className={styles.catRow}>
-                      <Link
-                        href={`/shop?category=${cat.slug}`}
-                        className={styles.catLink}
-                        onClick={closeMenu}
-                      >
-                        {cat.name}
-                      </Link>
-                      <button
-                        type="button"
-                        className={styles.catToggle}
-                        onClick={() => toggleCategory(cat.id)}
-                        aria-expanded={open}
-                        aria-label={`${open ? "Collapse" : "Expand"} ${cat.name}`}
-                      >
-                        <FiChevronDown
-                          size={18}
-                          className={`${styles.catChevron} ${open ? styles.catChevronOpen : ""}`}
-                        />
-                      </button>
-                    </div>
-                    {open && subs.length > 0 && (
-                      <div className={styles.subList}>
-                        {subs.map((sub) => (
-                          <Link
-                            key={sub.id}
-                            href={`/shop?subcategory=${sub.slug}`}
-                            className={styles.subLink}
-                            onClick={closeMenu}
-                          >
-                            {sub.name}
-                          </Link>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
+              {categories.map((category) => (
+                <Link
+                  key={category.id}
+                  href={`/shop?category=${category.slug}`}
+                  className={styles.catLink}
+                  onClick={closeMenu}
+                >
+                  {category.name}
+                </Link>
+              ))}
             </div>
           </div>
         );
@@ -242,27 +208,125 @@ export default function Navbar() {
           </button>
 
           <Link href="/" className={styles.logo}>
-            <Logo height={48} className={styles.logoImage} priority />
+            <Logo height={86} className={styles.logoImage} priority />
           </Link>
 
-          <nav className={styles.navDesktop} aria-label="Primary">
-            {renderLinks("desktop")}
-          </nav>
+          <div
+            ref={desktopNavRef}
+            className={styles.desktopNavWrap}
+            onKeyDown={(event) => {
+              if (event.key === "Escape") setCategoriesOpen(false);
+            }}
+          >
+            <nav className={styles.navDesktop} aria-label="Primary">
+              <Link
+                href="/"
+                className={styles.navMenuItem}
+                onMouseEnter={() => setCategoriesOpen(false)}
+              >
+                <FiHome size={16} aria-hidden="true" />
+                <span>Home</span>
+              </Link>
 
-          <form className={styles.search} onSubmit={handleSearch}>
-            <FiSearch className={styles.searchIcon} />
-            <input
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search here..."
-            />
-          </form>
+              <button
+                type="button"
+                className={styles.navMenuItem}
+                onClick={() => setCategoriesOpen((open) => !open)}
+                onMouseEnter={() => setCategoriesOpen(true)}
+                aria-expanded={categoriesOpen}
+                aria-controls="desktop-category-menu"
+              >
+                <FiGrid size={16} aria-hidden="true" />
+                <span>Categories</span>
+                <FiChevronDown
+                  size={14}
+                  aria-hidden="true"
+                  className={`${styles.menuChevron} ${
+                    categoriesOpen ? styles.menuChevronOpen : ""
+                  }`}
+                />
+              </button>
 
-          <div className={styles.actions}>
+              <Link
+                href="/shop"
+                className={styles.navMenuItem}
+                onMouseEnter={() => setCategoriesOpen(false)}
+              >
+                <FiShoppingBag size={16} aria-hidden="true" />
+                <span>Shop</span>
+              </Link>
+
+              <Link
+                href="/contact"
+                className={styles.navMenuItem}
+                onMouseEnter={() => setCategoriesOpen(false)}
+              >
+                <FiPhone size={16} aria-hidden="true" />
+                <span>Contact</span>
+              </Link>
+            </nav>
+
+            {categoriesOpen ? (
+              <div
+                id="desktop-category-menu"
+                className={styles.megaMenu}
+                aria-label="Product categories"
+              >
+                <div className={`container ${styles.megaMenuInner}`}>
+                  <div className={styles.megaMenuHeading}>
+                    <div>
+                      <span>Shop by category</span>
+                      <strong>Find your kitchen essential</strong>
+                    </div>
+                    <Link href="/shop" onClick={() => setCategoriesOpen(false)}>
+                      View all products <span aria-hidden="true">→</span>
+                    </Link>
+                  </div>
+
+                  <div className={styles.megaMenuGrid}>
+                    {categories.map((cat) => (
+                      <div key={cat.id} className={styles.megaCategory}>
+                        <Link
+                          href={`/shop?category=${cat.slug}`}
+                          className={styles.megaCategoryTitle}
+                          onClick={() => setCategoriesOpen(false)}
+                        >
+                          <span>{cat.name}</span>
+                          <span aria-hidden="true">→</span>
+                        </Link>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ) : null}
+          </div>
+
+          <div className={styles.desktopRight}>
+            <Link
+              href="/about"
+              className={`${styles.navMenuItem} ${styles.aboutDesktop}`}
+              onMouseEnter={() => setCategoriesOpen(false)}
+            >
+              <FiInfo size={16} aria-hidden="true" />
+              <span>About</span>
+            </Link>
+
+            <form className={styles.search} onSubmit={handleSearch}>
+              <FiSearch className={styles.searchIcon} />
+              <input
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search here..."
+              />
+            </form>
+
+            <div className={styles.actions}>
             <Link
               href="/cart"
               className={`${styles.iconBtn} ${styles.cartBtn}`}
               aria-label="Cart"
+              data-cart-target="desktop"
             >
               <FiShoppingCart size={22} strokeWidth={2.75} />
               {itemCount > 0 && <span className={styles.badge}>{itemCount}</span>}
@@ -335,6 +399,7 @@ export default function Navbar() {
                 Sign In
               </button>
             )}
+            </div>
           </div>
         </div>
       </header>
@@ -387,7 +452,7 @@ export default function Navbar() {
             </a>
           </div>
           <p className={styles.drawerCopyright}>
-            © {new Date().getFullYear()} M Kharavad. All rights reserved.
+            © {new Date().getFullYear()} ChaklaDekho. All rights reserved.
           </p>
         </div>
       </aside>

@@ -9,7 +9,7 @@
 
 .tab {
   padding: 8px 16px;
-  border-radius: 20px;
+  border-radius: 0;
   border: 2px solid var(--border-medium);
   background: var(--background);
   color: var(--text-muted);
@@ -28,14 +28,14 @@
 
 .orderCard {
   background: var(--background);
-  border-radius: 14px;
-  border: 1px solid rgba(158,31,58,0.1);
-  box-shadow: 0 2px 8px rgba(158,31,58,0.04);
+  border-radius: 0;
+  border: 1px solid rgba(var(--primary-rgb),0.1);
+  box-shadow: 0 2px 8px rgba(var(--primary-rgb),0.04);
   overflow: hidden;
   transition: box-shadow 0.2s;
 }
 
-.orderCard:hover { box-shadow: 0 4px 16px rgba(158,31,58,0.1); }
+.orderCard:hover { box-shadow: 0 4px 16px rgba(var(--primary-rgb),0.1); }
 
 .orderTop {
   display: flex;
@@ -60,7 +60,7 @@
 
 .statusBadge {
   padding: 5px 12px;
-  border-radius: 20px;
+  border-radius: 0;
   font-size: 0.75rem;
   font-weight: 700;
   text-transform: capitalize;
@@ -73,7 +73,7 @@
   color: var(--text-muted);
   font-size: 0.72rem;
   padding: 4px 8px;
-  border-radius: 4px;
+  border-radius: 0;
   font-weight: 600;
   text-transform: uppercase;
 }
@@ -100,7 +100,7 @@
 }
 
 /* Items */
-.itemsTable { background: var(--background); border-radius: 10px; overflow: hidden; border: 1px solid var(--border-medium); }
+.itemsTable { background: var(--background); border-radius: 0; overflow: hidden; border: 1px solid var(--border-medium); }
 
 .itemsHead {
   display: grid;
@@ -162,7 +162,7 @@
 
 .shipBtn {
   border: none;
-  border-radius: 8px;
+  border-radius: 0;
   background: var(--primary);
   color: #fff;
   padding: 9px 14px;
@@ -180,7 +180,7 @@
   font-size: 0.7rem;
   font-weight: 700;
   padding: 3px 8px;
-  border-radius: 999px;
+  border-radius: 0;
   background: #e8f5e9;
   color: #1b5e20;
 }
@@ -190,7 +190,7 @@
 
 .statusBtn {
   padding: 8px 14px;
-  border-radius: 8px;
+  border-radius: 0;
   border: 2px solid var(--border-medium);
   background: var(--background);
   color: var(--text-muted);
@@ -210,7 +210,7 @@
 .pageBtn {
   padding: 9px 18px;
   border: 2px solid var(--color-primary);
-  border-radius: 8px;
+  border-radius: 0;
   color: var(--color-primary);
   font-weight: 600;
   font-size: 0.85rem;
@@ -228,7 +228,7 @@
   width: 40px; height: 40px;
   border: 3px solid rgba(var(--heading-rgb), 0.12);
   border-top-color: var(--color-primary);
-  border-radius: 50%;
+  border-radius: 0;
   animation: spin 0.8s linear infinite;
 }
 @keyframes spin { to { transform: rotate(360deg); } }

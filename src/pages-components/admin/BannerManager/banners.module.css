@@ -36,7 +36,7 @@
 .uploadBtn,
 .deleteBtn {
   border: none;
-  border-radius: 10px;
+  border-radius: 0;
   font-weight: 600;
   font-size: 0.88rem;
   cursor: pointer;
@@ -70,7 +70,7 @@
   text-align: center;
   background: var(--background);
   border: 1px dashed var(--border);
-  border-radius: 16px;
+  border-radius: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -86,9 +86,9 @@
 .card {
   background: var(--background);
   border: 1px solid var(--border);
-  border-radius: 16px;
+  border-radius: 0;
   padding: 18px;
-  box-shadow: 0 2px 12px rgba(4, 29, 86, 0.05);
+  box-shadow: 0 2px 12px rgba(var(--primary-rgb), 0.05);
 }
 
 .card.inactive {
@@ -127,7 +127,7 @@
   width: 100%;
   min-height: 120px;
   background: var(--section-bg);
-  border-radius: 12px;
+  border-radius: 0;
   display: grid;
   place-items: center;
   color: var(--text-muted);
@@ -153,9 +153,9 @@
 .sizeSuggest {
   font-size: 0.84rem;
   color: var(--heading);
-  background: rgba(4, 29, 86, 0.06);
-  border: 1px solid rgba(4, 29, 86, 0.12);
-  border-radius: 10px;
+  background: rgba(var(--primary-rgb), 0.06);
+  border: 1px solid rgba(var(--primary-rgb), 0.12);
+  border-radius: 0;
   padding: 8px 10px;
   line-height: 1.4;
 }
@@ -167,7 +167,7 @@
 .liveFrame {
   width: 100%;
   background: #111;
-  border-radius: 12px;
+  border-radius: 0;
   overflow: hidden;
   border: 1px solid var(--border);
 }
@@ -184,7 +184,7 @@
   position: relative;
   width: 100%;
   background: #0b0b0b;
-  border-radius: 12px;
+  border-radius: 0;
   overflow: hidden;
   border: 1px solid var(--border);
 }
@@ -206,7 +206,7 @@
   position: absolute;
   box-shadow: 0 0 0 9999px rgba(180, 20, 20, 0.45);
   border: 2px solid #fff;
-  border-radius: 2px;
+  border-radius: 0;
   box-sizing: border-box;
 }
 
@@ -243,7 +243,7 @@
 .fields input,
 .fields textarea {
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 0;
   padding: 10px 12px;
   font: inherit;
   font-weight: 400;

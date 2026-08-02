@@ -1,5 +1,5 @@
 .page {
-  max-width: 1000px;
+  max-width: 1100px;
 }
 
 .header {
@@ -25,7 +25,7 @@
 .tableWrap {
   background: var(--background);
   border: 1px solid var(--border);
-  border-radius: 16px;
+  border-radius: 0;
   padding: 20px;
   margin-bottom: 24px;
 }
@@ -55,7 +55,7 @@
 .form input,
 .form select {
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 0;
   padding: 10px 12px;
   font: inherit;
   font-weight: 400;
@@ -90,7 +90,7 @@
 .saveBtn,
 .cancelBtn {
   border: none;
-  border-radius: 10px;
+  border-radius: 0;
   padding: 10px 18px;
   font-weight: 600;
   cursor: pointer;
@@ -132,7 +132,7 @@
 .inactive {
   display: inline-block;
   padding: 4px 10px;
-  border-radius: 999px;
+  border-radius: 0;
   font-size: 0.75rem;
   font-weight: 600;
 }
@@ -155,7 +155,7 @@
 .rowActions button {
   border: 1px solid var(--border);
   background: #fff;
-  border-radius: 8px;
+  border-radius: 0;
   padding: 6px 10px;
   cursor: pointer;
   font-size: 0.8rem;
@@ -164,6 +164,18 @@
 .rowActions .danger {
   color: var(--danger);
   border-color: rgba(234, 67, 53, 0.3);
+}
+
+.usageHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.usageHeader h3 {
+  margin: 0;
 }
 
 @media (max-width: 720px) {

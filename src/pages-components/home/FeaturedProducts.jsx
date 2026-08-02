@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { FiArrowRight } from "react-icons/fi";
 
 import ProductCard from "@/components/ProductCard/ProductCard";
 import { productService } from "@/services/productService";
@@ -51,7 +50,9 @@ export default function FeaturedProducts() {
         <div className={styles.cta}>
           <Link href="/shop" className={styles.ctaBtn}>
             <span>View All Products</span>
-            <FiArrowRight className={styles.ctaIcon} aria-hidden />
+            <span className={styles.ctaArrow} aria-hidden="true">
+              →
+            </span>
           </Link>
         </div>
       </div>

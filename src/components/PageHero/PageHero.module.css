@@ -68,7 +68,7 @@
   width: 56px;
   height: 3px;
   margin: 0 auto 1.15rem;
-  border-radius: var(--radius-full);
+  border-radius: 0;
   background: var(--secondary);
 }
 

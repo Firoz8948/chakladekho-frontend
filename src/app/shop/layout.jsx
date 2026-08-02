@@ -1,9 +1,9 @@
 import { pageMetadata } from "@/utils/seo";
 
 export const metadata = pageMetadata({
-  title: "Shop Cast Iron Cookware",
+  title: "Shop Kitchen Essentials",
   description:
-    "Browse M Kharavad's full range of cast iron & sheet iron cookware — tawas, kadhai, skillets, utensils and sets. Wholesale & retail across India.",
+    "Browse ChaklaDekho's range — chakla, tawa, belan, serving spoons, spatulas, and mortar & pestle. Quality kitchen tools shipped across India.",
   path: "/shop",
 });
 

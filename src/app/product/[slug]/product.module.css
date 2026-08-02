@@ -9,21 +9,21 @@
   align-items: center;
   gap: 0.35rem;
   font-size: 0.82rem;
-  color: #64748b;
+  color: var(--text-muted);
   margin-bottom: 1.35rem;
 }
 
 .breadcrumb a {
-  color: #64748b;
+  color: var(--text-muted);
   text-decoration: none;
 }
 
 .breadcrumb a:hover {
-  color: #041d56;
+  color: var(--primary);
 }
 
 .crumbCurrent {
-  color: #0f172a;
+  color: var(--text);
   font-weight: 600;
 }
 
@@ -37,12 +37,8 @@
 .back {
   display: inline-block;
   margin-top: 1rem;
-  color: #041d56;
+  color: var(--primary);
   font-weight: 600;
-}
-
-.subcats {
-  padding-bottom: 1rem;
 }
 
 @media (max-width: 860px) {

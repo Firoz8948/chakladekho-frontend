@@ -69,14 +69,12 @@ export default function ProductInfo({ product }) {
 
   const discount = calcDiscount(displayMrp, displayPrice);
   const outOfStock = displayStock <= 0;
-  const categoryOnly = (product.category || "").includes(" / ")
-    ? product.category.split(" / ")[0]
-    : product.category;
+  const categoryOnly = product.category || "";
   const description =
     product.description ||
-    "Premium iron cookware designed for reliable everyday cooking.";
+    "Quality kitchen essentials designed for reliable everyday cooking.";
 
-  const handleAdd = async () => {
+  const handleAdd = async (e) => {
     setAdding(true);
     const variantInfo = selectedOption
       ? {
@@ -93,6 +91,7 @@ export default function ProductInfo({ product }) {
       stock: displayStock,
       weightGrams,
       variantInfo,
+      source: e?.currentTarget || null,
     });
     setAdding(false);
   };
@@ -119,7 +118,7 @@ export default function ProductInfo({ product }) {
   const handleShare = async () => {
     const res = await shareLink({
       title: product.name,
-      text: `Check out ${product.name} on M Kharavad`,
+      text: `Check out ${product.name} on ChaklaDekho`,
       url: productShareUrl(product.slug),
     });
     if (res.method === "clipboard") toast.success("Link copied");

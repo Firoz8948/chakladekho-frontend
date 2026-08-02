@@ -8,69 +8,63 @@ export default function OurStory() {
   return (
     <section className={`section ${styles.section}`}>
       <div className={`container ${styles.grid}`}>
-        <div className={styles.portraitCol}>
-          <div className={styles.portraitFrame}>
-            <span className={styles.yearBadge} aria-hidden="true">
-              Est. 2012
-            </span>
+        <div className={styles.logoStage}>
+          <span className={styles.stageEyebrow}>Made for Indian kitchens</span>
+          <div className={styles.logoFrame}>
             <Image
-              src={ASSETS.owner}
-              alt="Founder of M Kharavad — Mohan Kharavad"
-              width={720}
-              height={900}
-              sizes="(max-width: 900px) 100vw, 420px"
-              className={styles.portrait}
-              priority
+              src={ASSETS.logo}
+              alt={`${BRAND.name} — kitchen essentials`}
+              width={684}
+              height={492}
+              sizes="(max-width: 900px) 80vw, 420px"
+              className={styles.logoArtwork}
             />
           </div>
-          <div className={styles.portraitMeta}>
-            <strong>Mohan Kharavad</strong>
-            <span>Founder · M Kharavad</span>
+          <div className={styles.stageCaption}>
+            <strong>{BRAND.name}</strong>
+            <span>Kitchen essentials for every home</span>
           </div>
         </div>
 
-        <div className={styles.content}>
+        <div className={`${styles.content} ${styles.contentPanel}`}>
           <p className="section-tag">Our Journey</p>
           <h2 className={styles.title}>
-            From Mohan Kharavad to kitchens across India
+            Everyday kitchen tools, thoughtfully chosen
           </h2>
           <p className={styles.lead}>
-            In 2012, Mohan Kharavad established {BRAND.name} with a clear
-            purpose — bring pure, durable cast iron cookware to every kitchen,
-            without chemical coatings or shortcuts.
+            {BRAND.name} brings the essentials of Indian cooking to your
+            kitchen — chakla, tawa, belan, serving spoons, spatulas, and mortar
+            & pestle — built for daily use and lasting performance.
           </p>
           <p>
-            What began as a focused manufacturing and trading vision has grown
-            into a trusted name for tawas, kadhai, utensils, and cookware across
-            multiple categories. We serve wholesalers who stock our range, and
-            customers who cook with it every day — both in our storefront and
-            through online orders.
+            From rolling dough to tempering spices, every product in our range
+            is selected for comfort, finish, and real kitchen performance.
+            Whether you cook for family or stock your store, you get tools that
+            feel right in hand and hold up over time.
           </p>
           <p>
-            Every piece is chosen for strength, finish, and real kitchen
-            performance. Whether you buy one pan or place a bulk order, the
-            promise stays the same: toxin-free cooking, honest iron quality, and
-            service you can rely on.
+            Shop online with secure checkout, fast shipping, and support you can
+            rely on — so your kitchen stays ready for every meal.
           </p>
 
           <div className={styles.stats}>
             <div className={styles.stat}>
-              <strong>2012</strong>
-              <span>Year established</span>
+              <strong>6</strong>
+              <span>Core categories</span>
             </div>
             <div className={styles.stat}>
-              <strong>Multi-category</strong>
-              <span>Cast iron range</span>
+              <strong>Daily use</strong>
+              <span>Built for kitchens</span>
             </div>
             <div className={styles.stat}>
-              <strong>B2B + B2C</strong>
-              <span>Wholesale & retail</span>
+              <strong>Pan-India</strong>
+              <span>Ships nationwide</span>
             </div>
           </div>
 
           <div className={styles.ctaWrap}>
             <Link href="/shop" className={styles.cta}>
-              Explore our products
+              Explore our products <span aria-hidden>→</span>
             </Link>
           </div>
         </div>

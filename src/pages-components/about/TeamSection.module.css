@@ -13,7 +13,7 @@
   padding: var(--space-8) var(--space-5);
   background: var(--bg-primary);
   border: 1px solid var(--border-light);
-  border-radius: var(--radius-md);
+  border-radius: 0;
   box-shadow: var(--shadow-card);
   transition: var(--transition-normal);
 }
@@ -28,7 +28,7 @@
   width: 60px;
   height: 60px;
   margin: 0 auto var(--space-4);
-  border-radius: 50%;
+  border-radius: 0;
   background: var(--warning-bg);
   color: var(--color-orange);
   display: grid;

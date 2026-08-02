@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { FiUser } from "react-icons/fi";
 
 import { useAdminAuth } from "@/context/AdminAuthContext";
 import Logo from "@/components/Logo/Logo";
@@ -32,7 +33,7 @@ const NAV_ITEMS = [
     ),
   },
   {
-    label: "Categories",
+    label: "Category",
     href: "/admin/categories",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
@@ -44,7 +45,7 @@ const NAV_ITEMS = [
     ),
   },
   {
-    label: "Banners",
+    label: "Banner",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
         <rect x="3" y="4" width="18" height="16" rx="2" />
@@ -119,7 +120,7 @@ const NAV_ITEMS = [
     ),
   },
   {
-    label: "Settings",
+    label: "Setting",
     href: "/admin/settings",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
@@ -140,18 +141,40 @@ const NAV_ITEMS = [
   },
 ];
 
+const NAV_ORDER = [
+  "Dashboard",
+  "Banner",
+  "Category",
+  "Products",
+  "Metafields",
+  "Video Products",
+  "Promo Codes",
+  "Orders",
+  "Payments",
+  "Users",
+  "Setting",
+  "Profile",
+];
+
 export default function AdminSidebar({ open, onClose }) {
   const pathname = usePathname();
-  const { logout, admin } = useAdminAuth();
+  const { logout } = useAdminAuth();
   const bannersOpenDefault = pathname.startsWith("/admin/banners");
   const [bannersOpen, setBannersOpen] = useState(bannersOpenDefault);
 
-  const items = useMemo(() => NAV_ITEMS, []);
+  const items = useMemo(
+    () =>
+      [...NAV_ITEMS].sort(
+        (first, second) =>
+          NAV_ORDER.indexOf(first.label) - NAV_ORDER.indexOf(second.label),
+      ),
+    [],
+  );
 
   return (
     <aside className={`${styles.sidebar} ${open ? styles.open : ""}`}>
       <div className={styles.brand}>
-        <Logo size={36} className={styles.brandLogo} priority />
+        <Logo size={52} className={styles.brandLogo} priority />
         <button
           type="button"
           className={styles.closeBtn}
@@ -165,14 +188,12 @@ export default function AdminSidebar({ open, onClose }) {
       </div>
 
       <div className={styles.adminInfo}>
-        <div className={styles.avatar}>{admin?.name?.charAt(0) || "A"}</div>
+        <div className={styles.avatar}>
+          <FiUser aria-hidden />
+        </div>
         <div>
-          <div className={styles.adminName}>
-            {admin?.company_name || admin?.name || "Admin"}
-          </div>
-          <div className={styles.adminRole}>
-            {admin?.phone ? `+91 ${admin.phone}` : admin?.role || "admin"}
-          </div>
+          <div className={styles.adminName}>ChaklaDekho</div>
+          <div className={styles.adminRole}>Admin</div>
         </div>
       </div>
 
@@ -259,7 +280,7 @@ export default function AdminSidebar({ open, onClose }) {
           Logout
         </button>
         <p className={styles.sidebarCopyright}>
-          © {new Date().getFullYear()} M Kharavad. All rights reserved.
+          © {new Date().getFullYear()} ChaklaDekho. All rights reserved.
         </p>
       </div>
     </aside>

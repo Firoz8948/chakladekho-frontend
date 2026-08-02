@@ -5,40 +5,40 @@ import styles from "./Testimonials.module.css";
 
 const REVIEWS_ROW1 = [
   {
-    name: "Rajesh Kumar",
-    city: "Mumbai",
+    name: "Kavita Deshmukh",
+    city: "Nagpur",
     rating: 5,
-    text: "The iron sheets are incredibly sturdy. Perfect for our roofing project. Quality is top notch and delivery was fast!",
+    text: "The chakla and belan set is perfectly balanced. Rolling rotis is so much easier now. Great quality!",
   },
   {
-    name: "Sunita Patel",
-    city: "Ahmedabad",
+    name: "Ankit Bhatt",
+    city: "Surat",
     rating: 5,
-    text: "Best cast iron cookware I've ever used. The heat retention is amazing and food doesn't stick at all.",
+    text: "Love the tawa — heats evenly and my rotis come out soft every time. Fast delivery too.",
   },
   {
-    name: "Vikram Singh",
-    city: "Delhi",
+    name: "Farah Qureshi",
+    city: "Lucknow",
     rating: 5,
-    text: "Ordered galvanized iron sheets in bulk for construction. Exceptional quality and great pricing for the quantity.",
+    text: "Ordered serving spoons and spatulas in bulk for our kitchen. Solid build and fair pricing.",
   },
   {
-    name: "Meena Joshi",
-    city: "Pune",
+    name: "Rohan Iyer",
+    city: "Bengaluru",
     rating: 4,
-    text: "The cast iron pan is heavy and solid. Heats evenly. My rotis come out perfectly every single time.",
+    text: "The mortar and pestle feels sturdy and traditional. Perfect for grinding masalas at home.",
   },
   {
-    name: "Arjun Nair",
-    city: "Kochi",
+    name: "Neha Kulkarni",
+    city: "Indore",
     rating: 5,
-    text: "Iron sheets arrived on time, well packed. No dents or damage. Will definitely order again for the next phase.",
+    text: "Belan arrived well packed with a smooth finish. Exactly what I needed for my kitchen setup.",
   },
   {
-    name: "Priya Sharma",
-    city: "Jaipur",
+    name: "Siddharth Menon",
+    city: "Hyderabad",
     rating: 5,
-    text: "Superb cast iron tawa. Seasoned it once and it performs flawlessly. Worth every rupee spent on it.",
+    text: "Superb chakla — flat, sturdy, and easy to clean. Will order more gifts from ChaklaDekho.",
   },
 ];
 
@@ -63,7 +63,6 @@ function ReviewCard({ review }) {
       <StarRating rating={review.rating} />
       <p className={styles.text}>&ldquo;{review.text}&rdquo;</p>
       <div className={styles.author}>
-        <span className={styles.avatar}>{review.name.charAt(0)}</span>
         <div>
           <strong>{review.name}</strong>
           <span>{review.city}</span>

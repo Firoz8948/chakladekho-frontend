@@ -31,7 +31,9 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 16px 14px 16px 12px;
+  height: 64px;
+  padding: 5px 14px 5px 12px;
+  box-sizing: border-box;
   background: var(--background);
   border-bottom: 1px solid var(--border);
   flex-shrink: 0;
@@ -39,7 +41,7 @@
 
 .brandLogo {
   width: auto;
-  height: 32px;
+  height: 50px;
   flex-shrink: 0;
   object-fit: contain;
 }
@@ -52,7 +54,7 @@
   color: var(--heading);
   width: 36px;
   height: 36px;
-  border-radius: 8px;
+  border-radius: 0;
   cursor: pointer;
   align-items: center;
   justify-content: center;
@@ -80,7 +82,7 @@
   padding: 16px 14px;
   margin: 8px 6px;
   background: rgba(var(--white-rgb), 0.05);
-  border-radius: 12px;
+  border-radius: 0;
   border: 1px solid rgba(var(--white-rgb), 0.08);
   flex-shrink: 0;
 }
@@ -89,13 +91,19 @@
   width: 38px;
   height: 38px;
   background: var(--secondary);
-  border-radius: 10px;
+  border-radius: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 700;
   color: var(--background);
   font-size: 1rem;
+}
+
+.avatar svg {
+  width: 20px;
+  height: 20px;
+  stroke-width: 2;
 }
 
 .adminName {
@@ -136,7 +144,7 @@
 
 .nav::-webkit-scrollbar-thumb {
   background: rgba(var(--white-rgb), 0.28);
-  border-radius: 999px;
+  border-radius: 0;
 }
 
 .nav::-webkit-scrollbar-thumb:hover {
@@ -148,7 +156,7 @@
   align-items: center;
   gap: 10px;
   padding: 12px 12px 12px 8px;
-  border-radius: 10px;
+  border-radius: 0;
   color: rgba(var(--white-rgb), 0.65);
   text-decoration: none;
   font-size: 0.88rem;
@@ -216,7 +224,7 @@
 
 .subNavItem {
   padding: 8px 10px;
-  border-radius: 8px;
+  border-radius: 0;
   color: rgba(var(--white-rgb), 0.6);
   text-decoration: none;
   font-size: 0.82rem;
@@ -238,7 +246,7 @@
   width: 4px;
   height: 20px;
   background: linear-gradient(180deg, var(--secondary), var(--warning));
-  border-radius: 2px;
+  border-radius: 0;
   position: absolute;
   right: -1px;
 }
@@ -257,7 +265,7 @@
   padding: 12px 14px;
   background: rgba(var(--secondary-rgb), 0.15);
   border: 1px solid rgba(var(--secondary-rgb), 0.25);
-  border-radius: 10px;
+  border-radius: 0;
   color: var(--error);
   font-size: 0.88rem;
   font-weight: 500;

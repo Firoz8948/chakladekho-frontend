@@ -23,10 +23,10 @@
     justify-content: space-between;
     gap: 1rem;
     padding: 0.75rem 0.85rem 0.75rem 0.75rem;
-    background: #041d56;
+    background: var(--primary);
     color: #fff;
-    border-radius: 14px;
-    box-shadow: 0 12px 40px rgba(4, 29, 86, 0.35);
+    border-radius: 0;
+    box-shadow: 0 12px 40px rgba(var(--primary-rgb), 0.35);
   }
 
   .preview {
@@ -40,7 +40,7 @@
   .thumbPlaceholder {
     width: 48px;
     height: 48px;
-    border-radius: 10px;
+    border-radius: 0;
     object-fit: cover;
     flex-shrink: 0;
     background: rgba(255, 255, 255, 0.12);
@@ -69,16 +69,16 @@
   .cta {
     flex-shrink: 0;
     background: #fff;
-    color: #041d56;
+    color: var(--primary);
     font-weight: 700;
     font-size: 0.88rem;
     padding: 0.65rem 1.1rem;
-    border-radius: 10px;
+    border-radius: 0;
     text-decoration: none;
   }
 
   .cta:hover {
-    color: #041d56;
+    color: var(--primary);
     opacity: 0.92;
   }
 }

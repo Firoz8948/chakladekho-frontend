@@ -3,11 +3,15 @@
 import ProductCard from "@/components/ProductCard/ProductCard";
 import styles from "./ProductGrid.module.css";
 
-export default function ProductGrid({ products = [], loading }) {
+export default function ProductGrid({
+  products = [],
+  loading,
+  loadingMore = false,
+}) {
   if (loading) {
     return (
       <div className={styles.grid}>
-        {Array.from({ length: 9 }).map((_, i) => (
+        {Array.from({ length: 15 }).map((_, i) => (
           <div key={i} className={`skeleton ${styles.skeletonCard}`} />
         ))}
       </div>
@@ -29,6 +33,15 @@ export default function ProductGrid({ products = [], loading }) {
       {products.map((p) => (
         <ProductCard key={p.id} product={p} />
       ))}
+      {loadingMore
+        ? Array.from({ length: 3 }).map((_, i) => (
+            <div
+              key={`loading-more-${i}`}
+              className={`skeleton ${styles.skeletonCard}`}
+              aria-hidden="true"
+            />
+          ))
+        : null}
     </div>
   );
 }

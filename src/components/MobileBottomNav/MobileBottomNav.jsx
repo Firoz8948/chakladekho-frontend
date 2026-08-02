@@ -47,6 +47,7 @@ export default function MobileBottomNav({ onProfileClick }) {
       <Link
         href="/cart"
         className={`${styles.item} ${isActive("/cart") ? styles.active : ""}`}
+        data-cart-target="mobile"
       >
         <span className={styles.iconWrap}>
           <FiShoppingCart size={22} strokeWidth={2} aria-hidden />

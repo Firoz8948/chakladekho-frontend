@@ -42,7 +42,7 @@ function useIsMobile(breakpoint = 768) {
 async function handleShareClick(item) {
   const res = await shareLink({
     title: item.name,
-    text: `Check out ${item.name} on M Kharavad`,
+    text: `Check out ${item.name} on ChaklaDekho`,
     url: videoShareUrl(item.id),
   });
   if (res.method === "clipboard") toast.success("Link copied");
@@ -89,8 +89,11 @@ export default function VideoProducts() {
     router.push(`/reels?v=${item.id}`);
   };
 
-  const handleAdd = (item, qty = 1) => {
-    addToCart(toCartProduct(item), qty, videoCartOptions(item));
+  const handleAdd = (item, qty = 1, source = null) => {
+    addToCart(toCartProduct(item), qty, {
+      ...videoCartOptions(item),
+      source,
+    });
   };
 
   const handleBuyNow = (item, qty = 1) => {
@@ -137,7 +140,7 @@ export default function VideoProducts() {
                   item={item}
                   isMobile={isMobile}
                   onOpen={() => handleOpen(item)}
-                  onAdd={() => handleAdd(item, 1)}
+                  onAdd={(e) => handleAdd(item, 1, e.currentTarget)}
                   onBuyNow={() => handleBuyNow(item, 1)}
                   onShare={() => handleShareClick(item)}
                 />
@@ -223,7 +226,7 @@ function VideoProductCard({ item, isMobile, onOpen, onAdd, onBuyNow, onShare }) 
   const stopAnd = (fn) => (e) => {
     e.preventDefault();
     e.stopPropagation();
-    fn();
+    fn?.(e);
   };
 
   return (

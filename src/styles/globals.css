@@ -1,65 +1,69 @@
 /* ============================================
-   M KHARAVAD COMPANY - Global CSS
+   CHAKLADEKHO - Global CSS
    ============================================ */
 
-/* Fonts are self-hosted via next/font in app/layout.jsx (Montserrat + Roboto).
-   Do not @import Google Fonts here — that often fails on production CDN/Vercel. */
+/* Fonts are self-hosted via next/font in app/layout.jsx
+   (Cormorant Garamond headings + Manrope body/UI). */
 
 /* ---------- CSS VARIABLES ---------- */
 :root {
-  /* --- New Brand Color Scheme --- */
-  --primary: #041D56;
-  --primary-hover: #031744;
-  --primary-rgb: 4, 29, 86;
+  /* --- Brand Color Scheme: brown / cream / white / black --- */
+  --primary: #5E3023;
+  --primary-hover: #4A261C;
+  --primary-rgb: 94, 48, 35;
 
-  --secondary: #F26A21;
-  --secondary-hover: #D95A14;
-  --secondary-rgb: 242, 106, 33;
+  /* Accent CTAs use primary brown; cream is reserved for soft surfaces */
+  --secondary: #5E3023;
+  --secondary-hover: #4A261C;
+  --secondary-rgb: 94, 48, 35;
+
+  --cream: #F3E9DC;
+  --cream-rgb: 243, 233, 220;
 
   --success: #34A853;
   --warning: #FABB05;
   --danger: #EA4335;
 
-  --heading: #1E293B;
-  --heading-rgb: 30, 41, 59;
-  --text: #0F172A;
-  --text-muted-color: #64748B;
+  --heading: #000000;
+  --heading-rgb: 0, 0, 0;
+  --text: #000000;
+  --text-muted-color: rgba(0, 0, 0, 0.58);
 
   --background: #FFFFFF;
-  --section-bg: #F8FAFC;
+  --section-bg: #F3E9DC;
   --card-bg: #FFFFFF;
   --white-rgb: 255, 255, 255;
   --black-rgb: 0, 0, 0;
 
-  --border: #E2E8F0;
+  --border: rgba(94, 48, 35, 0.16);
 
   /* --- Legacy Variable Mapping to preserve existing stylesheet selectors --- */
   --color-maroon: var(--primary);
-  --color-red: var(--secondary);
-  --color-orange: var(--secondary-hover);
+  --color-red: var(--primary);
+  --color-orange: var(--primary-hover);
   --color-gold: var(--warning);
 
   /* --- Background Colors --- */
   --bg-primary: var(--background);
   --bg-soft: var(--section-bg);
-  --bg-cream: #F1F5F9;
-  --bg-light-orange: var(--border);
-  --bg-dark: #0F172A;
+  --bg-cream: var(--cream);
+  --bg-light-orange: var(--cream);
+  --bg-dark: #000000;
 
   /* --- Text Colors --- */
   --text-primary: var(--text);
   --text-secondary: var(--heading);
   --text-muted: var(--text-muted-color);
   --text-light: #FFFFFF;
-  --text-orange: var(--secondary);
+  --text-orange: var(--primary);
 
   /* --- Button Colors --- */
   --btn-primary-bg: var(--primary);
   --btn-primary-hover: var(--primary-hover);
   --btn-primary-text: #FFFFFF;
 
-  --btn-secondary-bg: var(--secondary);
-  --btn-secondary-hover: var(--secondary-hover);
+  --btn-secondary-bg: var(--primary);
+  --btn-secondary-hover: var(--primary-hover);
   --btn-secondary-text: #FFFFFF;
 
   --btn-outline-border: var(--primary);
@@ -68,7 +72,7 @@
 
   /* --- Border Colors --- */
   --border-light: var(--border);
-  --border-medium: #CBD5E1;
+  --border-medium: rgba(94, 48, 35, 0.28);
   --border-dark: var(--heading);
 
   /* --- Status Colors --- */
@@ -78,15 +82,15 @@
   --warning-bg: #FFF3E0;
   --error: var(--danger);
   --error-bg: #FFEBEE;
-  --info: #1565C0;
-  --info-bg: #E3F2FD;
+  --info: #5E3023;
+  --info-bg: #F3E9DC;
 
   /* --- Shadows --- */
-  --shadow-sm: 0 1px 4px rgba(158, 31, 58, 0.08);
-  --shadow-md: 0 4px 16px rgba(158, 31, 58, 0.12);
-  --shadow-lg: 0 8px 32px rgba(158, 31, 58, 0.16);
-  --shadow-xl: 0 16px 48px rgba(158, 31, 58, 0.20);
-  --shadow-card: 0 2px 12px rgba(228, 121, 17, 0.10);
+  --shadow-sm: 0 1px 4px rgba(var(--primary-rgb), 0.08);
+  --shadow-md: 0 4px 16px rgba(var(--primary-rgb), 0.12);
+  --shadow-lg: 0 8px 32px rgba(var(--primary-rgb), 0.16);
+  --shadow-xl: 0 16px 48px rgba(var(--primary-rgb), 0.20);
+  --shadow-card: 0 2px 12px rgba(var(--primary-rgb), 0.10);
 
   /* --- Border Radius --- */
   --radius-sm: 6px;
@@ -95,14 +99,12 @@
   --radius-xl: 32px;
   --radius-full: 9999px;
 
-  /* --- Typography: simple system fonts --- */
-  --font-heading: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    sans-serif;
-  --font-body: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    sans-serif;
-  --font-ui: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-product-title: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    sans-serif;
+  /* --- Typography: Cormorant Garamond + Manrope via next/font --- */
+  --font-heading: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+  --font-body: var(--font-manrope), Manrope, system-ui, sans-serif;
+  --font-ui: var(--font-manrope), Manrope, system-ui, sans-serif;
+  --font-product-title: var(--font-cormorant), "Cormorant Garamond", Georgia,
+    serif;
   --font-mono: ui-monospace, "Cascadia Code", "Courier New", monospace;
 
   /* --- Font Sizes --- */
@@ -208,7 +210,7 @@ body {
   font-size: var(--text-base);
   font-weight: var(--font-regular);
   color: var(--text-primary);
-  background-color: var(--bg-soft);
+  background-color: var(--bg-primary);
   line-height: var(--leading-normal);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -398,19 +400,39 @@ button {
   font-size: var(--text-base);
   font-weight: var(--font-semibold);
   padding: 12px 28px;
-  border-radius: var(--radius-sm);
+  border-radius: 0;
   border: 2px solid transparent;
   cursor: pointer;
   transition: var(--transition-normal);
   text-decoration: none;
   white-space: nowrap;
   letter-spacing: 0.02em;
+  position: relative;
+}
+
+.btn::after {
+  content: "";
+  position: absolute;
+  left: 28px;
+  right: 28px;
+  bottom: 7px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 0.18s ease-out;
 }
 
 .btn:hover {
   text-decoration: none;
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
+}
+
+.btn:hover::after,
+.btn:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left center;
 }
 
 .btn:active {
@@ -438,7 +460,7 @@ button {
 .btn-secondary:hover {
   background-color: var(--btn-secondary-hover);
   border-color: var(--btn-secondary-hover);
-  color: var(--text-primary);
+  color: var(--text-light);
 }
 
 .btn-outline {
@@ -480,9 +502,21 @@ button {
   padding: 8px 20px;
 }
 
+.btn-sm::after {
+  left: 20px;
+  right: 20px;
+  bottom: 5px;
+}
+
 .btn-lg {
   font-size: var(--text-md);
   padding: 16px 40px;
+}
+
+.btn-lg::after {
+  left: 40px;
+  right: 40px;
+  bottom: 9px;
 }
 
 .btn-full {
@@ -495,7 +529,7 @@ button {
 
 .card {
   background-color: var(--bg-primary);
-  border-radius: var(--radius-md);
+  border-radius: 0;
   box-shadow: var(--shadow-card);
   border: 1px solid var(--border-light);
   overflow: hidden;
@@ -523,7 +557,7 @@ button {
   font-size: var(--text-xs);
   font-weight: var(--font-semibold);
   padding: 4px 10px;
-  border-radius: var(--radius-full);
+  border-radius: 0;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   background-color: var(--color-gold);
@@ -592,7 +626,7 @@ button {
   color: var(--text-primary);
   background-color: var(--bg-primary);
   border: 1.5px solid var(--border-medium);
-  border-radius: var(--radius-sm);
+  border-radius: 0;
   padding: 12px 16px;
   outline: none;
   transition: var(--transition-fast);
@@ -602,7 +636,7 @@ button {
 .form-select:focus,
 .form-textarea:focus {
   border-color: var(--color-orange);
-  box-shadow: 0 0 0 3px rgba(228, 121, 17, 0.15);
+  box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.15);
   background-color: var(--bg-soft);
 }
 
@@ -689,7 +723,7 @@ button {
   align-items: center;
   gap: var(--space-3);
   padding: var(--space-4) var(--space-5);
-  border-radius: var(--radius-sm);
+  border-radius: 0;
   font-family: var(--font-ui);
   font-size: var(--text-sm);
   font-weight: var(--font-medium);
@@ -725,7 +759,7 @@ button {
       var(--bg-cream) 63%);
   background-size: 400% 100%;
   animation: shimmer 1.4s ease infinite;
-  border-radius: var(--radius-sm);
+  border-radius: 0;
 }
 
 @keyframes shimmer {
@@ -753,7 +787,7 @@ button {
 
 ::-webkit-scrollbar-thumb {
   background: var(--color-gold);
-  border-radius: var(--radius-full);
+  border-radius: 0;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -1010,15 +1044,15 @@ ol {
   }
 
   h1 {
-    font-size: var(--text-3xl);
+    font-size: calc(var(--text-3xl) + 2px);
   }
 
   h2 {
-    font-size: var(--text-2xl);
+    font-size: calc(var(--text-2xl) + 2px);
   }
 
   h3 {
-    font-size: var(--text-xl);
+    font-size: calc(var(--text-xl) + 2px);
   }
 
   .section {
@@ -1032,7 +1066,7 @@ ol {
   }
 
   .section-title {
-    font-size: var(--text-2xl);
+    font-size: calc(var(--text-2xl) + 2px);
   }
 
   .btn-lg {
@@ -1043,15 +1077,15 @@ ol {
 
 @media (max-width: 640px) {
   h1 {
-    font-size: var(--text-2xl);
+    font-size: calc(var(--text-2xl) + 2px);
   }
 
   h2 {
-    font-size: var(--text-xl);
+    font-size: calc(var(--text-xl) + 2px);
   }
 
   h3 {
-    font-size: var(--text-lg);
+    font-size: calc(var(--text-lg) + 2px);
   }
 
   .section {
@@ -1060,7 +1094,7 @@ ol {
   }
 
   .section-title {
-    font-size: var(--text-xl);
+    font-size: calc(var(--text-xl) + 2px);
   }
 }
 
@@ -1073,4 +1107,92 @@ ol {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* Add-to-cart feedback toast (replaces default green tick) */
+.chakla-cart-toast {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: min(320px, calc(100vw - 32px));
+  padding: 12px 16px;
+  background: var(--primary);
+  color: var(--cream);
+  border: 1px solid color-mix(in srgb, var(--cream) 28%, transparent);
+  box-shadow: 0 14px 32px rgba(var(--primary-rgb), 0.28);
+  font-family: var(--font-ui);
+}
+
+.chakla-cart-toast-in {
+  animation: chaklaToastIn 0.28s ease-out;
+}
+
+.chakla-cart-toast-out {
+  animation: chaklaToastOut 0.2s ease-in forwards;
+}
+
+.chakla-cart-toast-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  background: color-mix(in srgb, var(--cream) 14%, transparent);
+  color: var(--cream);
+}
+
+.chakla-cart-toast-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: left;
+}
+
+.chakla-cart-toast-copy strong {
+  font-size: 0.92rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.chakla-cart-toast-copy span {
+  font-size: 0.78rem;
+  opacity: 0.82;
+}
+
+@keyframes chaklaToastIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes chaklaToastOut {
+  to {
+    opacity: 0;
+    transform: translateY(8px) scale(0.96);
+  }
+}
+
+@keyframes chaklaCartBump {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.22);
+  }
+  70% {
+    transform: scale(0.94);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.chakla-cart-bump {
+  animation: chaklaCartBump 0.45s ease;
 }

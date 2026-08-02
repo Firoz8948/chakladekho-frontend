@@ -34,7 +34,7 @@
 .scrollBtn {
   width: 42px;
   height: 42px;
-  border-radius: 50%;
+  border-radius: 0;
   border: 2px solid color-mix(in srgb, var(--color-maroon) 20%, transparent);
   background: var(--bg-primary);
   color: var(--color-maroon);
@@ -57,29 +57,45 @@
 .desktopRow {
   display: flex;
   flex-wrap: wrap;
-  gap: 1.75rem;
   justify-content: center;
+  width: 100%;
+  gap: var(--space-2);
   align-items: flex-start;
 }
 
 .catCard {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 14px;
-  width: 240px;
+  display: block;
+  flex: 0 0 calc((100% - 2 * var(--space-2)) / 3);
+  width: auto;
   text-decoration: none;
   color: var(--heading);
+  border-radius: 0;
 }
 
 .catImgWrap {
-  width: 240px;
-  height: 240px;
-  border-radius: 22px;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 0;
   overflow: hidden;
   border: 2px solid color-mix(in srgb, var(--color-maroon) 14%, transparent);
-  box-shadow: 0 12px 28px rgba(4, 29, 86, 0.1);
-  background: color-mix(in srgb, #041d56 5%, #f7f3ef);
+  box-shadow: 0 12px 28px rgba(var(--primary-rgb), 0.1);
+  background: color-mix(in srgb, var(--primary) 5%, var(--cream));
+}
+
+.catImgWrap::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    180deg,
+    transparent 28%,
+    rgba(var(--black-rgb), 0.72) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.28s ease;
+  pointer-events: none;
 }
 
 .catImg {
@@ -87,6 +103,7 @@
   height: 100%;
   object-fit: cover;
   display: block;
+  transition: transform 0.34s ease;
 }
 
 .catPlaceholder {
@@ -97,84 +114,106 @@
   justify-content: center;
   font-size: 3.5rem;
   font-weight: 700;
-  color: #f26a21;
+  color: var(--primary);
 }
 
 .catLabel {
-  font-family: var(--font-ui);
-  font-weight: 700;
-  font-size: 1rem;
-  padding: 10px 22px;
-  border-radius: 999px;
-  background: var(--btn-primary-bg);
-  color: white;
-  text-align: center;
-  line-height: 1.25;
-  max-width: 100%;
-}
-
-/* —— Mobile accordion (hidden on desktop) —— */
-.mobileList {
-  display: none;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.accItem {
-  border: 1.5px solid color-mix(in srgb, #041d56 12%, transparent);
-  border-radius: 14px;
-  background: #fff;
-  overflow: hidden;
-}
-
-.accItem.accOpen {
-  border-color: color-mix(in srgb, #f26a21 40%, transparent);
-  box-shadow: 0 6px 16px rgba(4, 29, 86, 0.06);
-}
-
-.accTrigger {
-  width: 100%;
+  position: absolute;
+  left: var(--space-4);
+  right: var(--space-4);
+  bottom: var(--space-4);
+  z-index: 2;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  padding: 16px 18px;
+  gap: var(--space-3);
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 1.15rem;
+  padding: 8px 2px;
   border: none;
   background: transparent;
-  cursor: pointer;
+  color: var(--text-light);
   text-align: left;
-  font-family: var(--font-ui);
+  line-height: 1.25;
+  text-shadow: 0 2px 10px rgba(var(--black-rgb), 0.72);
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.24s ease,
+    transform 0.28s ease;
+  pointer-events: none;
+}
+
+.catArrow {
+  flex-shrink: 0;
+  font-size: 1.45rem;
+  line-height: 1;
+  transition: transform 0.2s ease;
+}
+
+.catCard:hover .catImgWrap::after,
+.catCard:focus-visible .catImgWrap::after {
+  opacity: 1;
+}
+
+.catCard:hover .catLabel,
+.catCard:focus-visible .catLabel {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.catCard:hover .catArrow,
+.catCard:focus-visible .catArrow {
+  transform: translateX(4px);
+}
+
+.catCard:hover .catImg,
+.catCard:focus-visible .catImg {
+  transform: scale(1.055);
+}
+
+.catCard:focus-visible {
+  outline: 3px solid rgba(var(--primary-rgb), 0.42);
+  outline-offset: 4px;
+}
+
+/* —— Mobile category chips in a horizontal row (hidden on desktop) —— */
+.mobileList {
+  display: none;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 10px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: 2px;
+}
+
+.mobileList::-webkit-scrollbar {
+  display: none;
+}
+
+.accItem {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  gap: 0;
+  padding: 12px 16px;
+  border: 1.5px solid color-mix(in srgb, var(--primary) 12%, transparent);
+  border-radius: 0;
+  background: #fff;
+  text-decoration: none;
+  white-space: nowrap;
 }
 
 .accName {
   font-weight: 700;
-  font-size: 0.98rem;
-  color: #041d56;
-  line-height: 1.3;
-}
-
-.accChevron {
-  flex-shrink: 0;
-  color: #f26a21;
-  font-size: 0.95rem;
-}
-
-.accBody {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding: 0 10px 12px;
-  border-top: 1px solid color-mix(in srgb, #041d56 8%, transparent);
-}
-
-.accSubLink {
-  display: block;
-  padding: 12px 14px;
-  border-radius: 10px;
-  text-decoration: none;
-  color: #041d56;
   font-size: 0.9rem;
-  font-weight: 600;
+  color: var(--primary);
+  line-height: 1.3;
 }
 
 .skeletonRow {
@@ -188,7 +227,7 @@
   flex: 0 0 240px;
   width: 240px;
   height: 280px;
-  border-radius: 22px;
+  border-radius: 0;
   background: linear-gradient(
     90deg,
     var(--border-light) 25%,
@@ -210,16 +249,17 @@
 
 @media (min-width: 1100px) {
   .catCard {
-    width: 280px;
-  }
-
-  .catImgWrap {
-    width: 280px;
-    height: 280px;
+    flex-basis: calc((100% - 3 * var(--space-2)) / 4);
   }
 
   .scrollBtns {
     display: none;
+  }
+}
+
+@media (min-width: 769px) {
+  .categoryContainer {
+    padding-inline: var(--space-4);
   }
 }
 
@@ -239,7 +279,7 @@
   .skeleton {
     flex: 1;
     height: 56px;
-    border-radius: 14px;
+    border-radius: 0;
   }
 
   .skeletonRow {
@@ -253,7 +293,7 @@
   gap: 0.75rem;
   padding: 0.65rem 0.25rem;
   border-bottom: 1px solid var(--border-light);
-  color: #041d56;
+  color: var(--primary);
   font-weight: 700;
   text-decoration: none;
 }
@@ -261,7 +301,7 @@
 .accReelsPreview {
   width: 56px;
   height: 56px;
-  border-radius: 14px;
+  border-radius: 0;
   overflow: hidden;
   flex-shrink: 0;
 }
@@ -286,5 +326,14 @@
 }
 
 .reelsCard .catImgWrap {
-  border-color: color-mix(in srgb, #041d56 35%, transparent);
+  border-color: color-mix(in srgb, var(--primary) 35%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .catImgWrap::after,
+  .catImg,
+  .catLabel,
+  .catArrow {
+    transition: none;
+  }
 }

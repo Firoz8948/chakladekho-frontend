@@ -5,7 +5,8 @@ import {
   FaqSection,
   FeaturedProducts,
   HeroSection,
-  SubCategoryStrip,
+  MobileCategoryShowcase,
+  ShopCollectionBanner,
   Testimonials,
   VideoProducts,
   WhyChooseUs,
@@ -14,9 +15,9 @@ import { fetchBanners } from "@/utils/homeData";
 import { pageMetadata } from "@/utils/seo";
 
 export const metadata = pageMetadata({
-  title: "Premium Cast Iron & Sheet Iron Cookware",
+  title: "Kitchen Essentials — Chakla, Tawa, Belan & More",
   description:
-    "M Kharavad Company — premium cast iron cookware by Mohan Kharavad since 2012. Shop tawas, kadhai, skillets & utensils online. Free shipping across India.",
+    "ChaklaDekho — shop chakla, tawa, belan, serving spoons, spatulas, and mortar & pestle. Quality kitchen essentials with free shipping across India.",
   path: "/",
 });
 
@@ -57,11 +58,12 @@ export default async function HomePage() {
       <MarqueeBanner />
       <CategorySection />
       <FeaturedProducts />
+      <ShopCollectionBanner />
+      <MobileCategoryShowcase />
       <WhyChooseUs />
       <VideoProducts />
       <Testimonials />
       <FaqSection />
-      <SubCategoryStrip />
     </>
   );
 }

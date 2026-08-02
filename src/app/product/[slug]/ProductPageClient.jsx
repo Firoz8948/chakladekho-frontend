@@ -5,7 +5,6 @@ import Link from "next/link";
 
 import Loader from "@/components/Loader/Loader";
 import Testimonials from "@/pages-components/home/Testimonials";
-import SubCategoryStrip from "@/pages-components/home/SubCategoryStrip";
 import VideoProducts from "@/pages-components/home/VideoProducts";
 import {
   ProductBenefitIcons,
@@ -77,13 +76,6 @@ export default function ProductPageClient({ slug }) {
       <RelatedProducts product={product} />
 
       <Testimonials />
-
-      <div className={styles.subcats}>
-        <SubCategoryStrip
-          title="Shop our other collections"
-          tag="Browse more"
-        />
-      </div>
     </div>
   );
 }

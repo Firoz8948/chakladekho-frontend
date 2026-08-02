@@ -2,23 +2,23 @@ import { BRAND } from "@/utils/constants";
 
 /** Canonical production origin (no trailing slash) */
 export const SITE_URL = (
-  process.env.NEXT_PUBLIC_SITE_URL || "https://mkharavad.com"
+  process.env.NEXT_PUBLIC_SITE_URL || "https://chakladkho.com"
 ).replace(/\/$/, "");
-
-export const OG_IMAGE =
-  process.env.NEXT_PUBLIC_OG_IMAGE ||
-  "https://mkharavad-media.b-cdn.net/banners/ChatGPT%20Image%20Jul%2023%2C%202026%2C%2002_51_15%20PM.jpg";
-
-export const SITE_NAME = BRAND.name;
-
-export const DEFAULT_DESCRIPTION =
-  "Shop premium cast iron & sheet iron cookware from M Kharavad — tawas, kadhai, skillets & utensils. Built by Mohan Kharavad since 2012. Free shipping across India.";
 
 export function absoluteUrl(path = "/") {
   if (!path) return SITE_URL;
   if (path.startsWith("http")) return path;
   return `${SITE_URL}${path.startsWith("/") ? path : `/${path}`}`;
 }
+
+export const OG_IMAGE =
+  process.env.NEXT_PUBLIC_OG_IMAGE ||
+  absoluteUrl("/assets/images/banners/herobanner.webp");
+
+export const SITE_NAME = BRAND.name;
+
+export const DEFAULT_DESCRIPTION =
+  "Shop chakla, tawa, belan, serving spoons, spatulas, and mortar & pestle from ChaklaDekho. Quality kitchen essentials with free shipping across India.";
 
 export function stripHtml(html = "") {
   return String(html)
@@ -40,7 +40,7 @@ export function socialImages(image = OG_IMAGE) {
       url: image,
       width: 1200,
       height: 630,
-      alt: `${SITE_NAME} — Premium Cast Iron Cookware`,
+      alt: `${SITE_NAME} — Kitchen Essentials`,
     },
   ];
 }
@@ -122,7 +122,7 @@ export function websiteJsonLd() {
 export function productJsonLd(product, imageUrl) {
   const desc =
     truncate(stripHtml(product.description || ""), 300) ||
-    `${product.name} — premium iron cookware from ${SITE_NAME}`;
+    `${product.name} — kitchen essential from ${SITE_NAME}`;
 
   const data = {
     "@context": "https://schema.org",

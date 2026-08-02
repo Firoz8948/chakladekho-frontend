@@ -1,11 +1,6 @@
 .featuredSection {
   min-height: 480px;
-}
-
-@media (min-width: 861px) {
-  .featuredSection {
-    padding-top: 0;
-  }
+  padding-block: var(--space-20);
 }
 
 .grid {
@@ -18,7 +13,7 @@
 .skeletonCard {
   min-height: 360px;
   aspect-ratio: 3 / 4;
-  border-radius: var(--radius-md);
+  border-radius: 0;
 }
 
 .cta {
@@ -32,7 +27,7 @@
   align-items: center;
   gap: var(--space-3);
   padding: 14px 32px;
-  border-radius: var(--radius-sm);
+  border-radius: 0;
   background: linear-gradient(
     135deg,
     var(--primary) 0%,
@@ -52,9 +47,9 @@
     background 0.2s ease;
 }
 
-.ctaIcon {
-  width: 18px;
-  height: 18px;
+.ctaArrow {
+  font-size: 1.25rem;
+  line-height: 1;
   transition: transform 0.2s ease;
 }
 
@@ -69,7 +64,7 @@
   color: var(--text-light);
 }
 
-.ctaBtn:hover .ctaIcon {
+.ctaBtn:hover .ctaArrow {
   transform: translateX(4px);
 }
 
@@ -80,7 +75,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .ctaBtn,
-  .ctaIcon {
+  .ctaArrow {
     transition: none;
   }
 
@@ -88,7 +83,7 @@
     transform: none;
   }
 
-  .ctaBtn:hover .ctaIcon {
+  .ctaBtn:hover .ctaArrow {
     transform: none;
   }
 }

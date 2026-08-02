@@ -20,9 +20,9 @@
 .thumb {
   width: 68px;
   height: 68px;
-  border-radius: 10px;
+  border-radius: 0;
   overflow: hidden;
-  border: 2px solid var(--border-light, #e2e8f0);
+  border: 2px solid var(--border-light, var(--border-light));
   background: #fff;
   padding: 0;
   cursor: pointer;
@@ -37,7 +37,7 @@
 }
 
 .activeThumb {
-  border-color: var(--primary, #041d56);
+  border-color: var(--primary, var(--primary));
 }
 
 .main {
@@ -45,10 +45,10 @@
   min-width: 0;
   aspect-ratio: 1 / 1;
   max-height: 520px;
-  border-radius: 14px;
+  border-radius: 0;
   overflow: hidden;
-  background: #f8fafc;
-  border: 1px solid var(--border-light, #e2e8f0);
+  background: var(--section-bg);
+  border: 1px solid var(--border-light, var(--border-light));
 }
 
 .main img {

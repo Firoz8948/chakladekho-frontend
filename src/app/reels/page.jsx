@@ -25,7 +25,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 async function handleShare(item) {
   const res = await shareLink({
     title: item.name,
-    text: `Check out ${item.name} on M Kharavad`,
+    text: `Check out ${item.name} on ChaklaDekho`,
     url: videoShareUrl(item.id),
   });
   if (res.method === "clipboard") toast.success("Link copied");
@@ -120,8 +120,11 @@ function ReelsContent() {
     }
   };
 
-  const handleAdd = (item, qty = 1) => {
-    addToCart(toCartProduct(item), qty, videoCartOptions(item));
+  const handleAdd = (item, qty = 1, source = null) => {
+    addToCart(toCartProduct(item), qty, {
+      ...videoCartOptions(item),
+      source,
+    });
   };
 
   const handleBuyNow = (item, qty = 1) => {
@@ -348,7 +351,7 @@ function ReelSlide({
             <button
               type="button"
               className={styles.panelAddBtn}
-              onClick={() => onAdd(item)}
+              onClick={(e) => onAdd(item, 1, e.currentTarget)}
               disabled={soldOut}
             >
               <FiShoppingCart size={16} />

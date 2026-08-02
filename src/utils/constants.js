@@ -7,17 +7,17 @@ export const API_URL =
 export const RAZORPAY_KEY_ID = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "";
 
 export const BRAND = {
-  name: "M Kharavad Company",
-  tagline: "Premium Quality Iron Cookware",
-  phone: "+91 9167607442",
-  whatsapp: "919167607442",
-  whatsappDisplay: "+91 91676 07442",
-  email: "Mohanenterprises2132@gmail.com",
+  name: "ChaklaDekho",
+  tagline: "Kitchen Essentials for Every Home",
+  phone: "+91 96991 64131",
+  whatsapp: "919699164131",
+  whatsappDisplay: "+91 96991 64131",
+  email: "hello@chakladkho.com",
   address:
-    "Shop no 01 Roshan palace ayppa mandir pp Marg virar west Palghar Mumbai Maharashtra 401303",
-  packagedBy: "Mohan Enterprises",
+    "Umadevi mandir, Umrale, Samel Pada, Nalasopara West, Vasai-Virar, Maharashtra 401203",
+  packagedBy: "ChaklaDekho",
   hours: "Daily: 9:00 AM - 8:00 PM",
-  mapsUrl: "https://maps.app.goo.gl/3SN6ZqUP2k3YWDMBA",
+  mapsUrl: "https://maps.app.goo.gl/6vu33aYvzsYzrq4YA",
   instagram: "https://www.instagram.com/",
 };
 
@@ -38,21 +38,12 @@ export const ASSETS = {
 };
 
 export const CATEGORIES = [
-  {
-    name: "Tawas",
-    slug: "tawas",
-    image: "tawa.webp",
-    imageHover: "tawa-hover.webp",
-  },
-  {
-    name: "Kadhai",
-    slug: "kadhai",
-    image: "kadhai.webp",
-    imageHover: "kadhai-hover.webp",
-  },
-  { name: "Skillets", slug: "skillets" },
-  { name: "Utensils", slug: "utensils" },
-  { name: "Cast Iron Sets", slug: "cast-iron-sets" },
+  { name: "Chakla", slug: "chakla" },
+  { name: "Tawa", slug: "tawa" },
+  { name: "Belan / Rolling Pin", slug: "belan-rolling-pin" },
+  { name: "Serving Spoon", slug: "serving-spoon" },
+  { name: "Spatula", slug: "spatula" },
+  { name: "Mortar and Pestle", slug: "mortar-and-pestle" },
 ];
 
 export const ORDER_STATUS = [
@@ -68,5 +59,5 @@ export const FREE_SHIPPING_THRESHOLD = 999;
 export const FLAT_SHIPPING_CHARGE = 49;
 
 export const TOKEN_COOKIE = "access_token";
-export const CART_STORAGE_KEY = "mkharavad_cart";
-export const LAST_ORDER_KEY = "mkharavad_last_order";
+export const CART_STORAGE_KEY = "chakladkho_cart";
+export const LAST_ORDER_KEY = "chakladkho_last_order";

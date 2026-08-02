@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { FiLock, FiUnlock } from "react-icons/fi";
 
 import { useAdminAuth } from "@/context/AdminAuthContext";
 import { getAdminMe, updateAdminProfile } from "@/services/adminService";
@@ -16,6 +17,7 @@ export default function AdminProfilePage() {
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [locked, setLocked] = useState(true);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
@@ -29,12 +31,14 @@ export default function AdminProfilePage() {
           phone: p.phone || "",
           company_name: p.company_name || "",
         });
+        setLocked(true);
       })
       .catch(() => setError("Failed to load profile."))
       .finally(() => setLoading(false));
   }, []);
 
   const onChange = (e) => {
+    if (locked) return;
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
     setMessage("");
@@ -43,6 +47,7 @@ export default function AdminProfilePage() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    if (locked) return;
     setSaving(true);
     setMessage("");
     setError("");
@@ -62,8 +67,9 @@ export default function AdminProfilePage() {
         phone: updated.phone || "",
         company_name: updated.company_name || "",
       });
+      setLocked(true);
       setMessage(
-        "Profile saved. New orders will SMS this number when a phone is set."
+        "Profile saved and locked. New orders will SMS this number when a phone is set."
       );
     } catch (err) {
       setError(
@@ -87,14 +93,33 @@ export default function AdminProfilePage() {
   return (
     <div className={styles.page}>
       <div className={styles.header}>
-        <h2 className={styles.title}>Admin Profile</h2>
+        <div className={styles.titleRow}>
+          <h2 className={styles.title}>Admin Profile</h2>
+          <button
+            type="button"
+            className={styles.lockBtn}
+            onClick={() => {
+              setLocked((prev) => !prev);
+              setMessage("");
+              setError("");
+            }}
+            aria-label={locked ? "Unlock profile for editing" : "Lock profile"}
+            title={locked ? "Unlock to edit" : "Lock"}
+          >
+            {locked ? <FiLock size={18} /> : <FiUnlock size={18} />}
+          </button>
+        </div>
         <p className={styles.subtitle}>
           Company details and the mobile number that receives new-order SMS
           alerts.
+          {locked ? " Profile is locked — click the lock to edit." : ""}
         </p>
       </div>
 
-      <form className={styles.card} onSubmit={onSubmit}>
+      <form
+        className={`${styles.card} ${locked ? styles.locked : ""}`}
+        onSubmit={onSubmit}
+      >
         {message ? <div className={styles.success}>{message}</div> : null}
         {error ? <div className={styles.error}>{error}</div> : null}
 
@@ -108,7 +133,9 @@ export default function AdminProfilePage() {
             className={styles.input}
             value={form.company_name}
             onChange={onChange}
-            placeholder="M Kharavad Company"
+            placeholder="ChaklaDekho"
+            disabled={locked}
+            readOnly={locked}
           />
         </div>
 
@@ -122,7 +149,9 @@ export default function AdminProfilePage() {
             className={styles.input}
             value={form.name}
             onChange={onChange}
-            placeholder="Mohan Bhai"
+            placeholder="Vikram Bhai"
+            disabled={locked}
+            readOnly={locked}
           />
         </div>
 
@@ -137,8 +166,10 @@ export default function AdminProfilePage() {
             className={styles.input}
             value={form.email}
             onChange={onChange}
-            placeholder="admin@mkharavad.com"
+            placeholder="admin@chakladkho.com"
             required
+            disabled={locked}
+            readOnly={locked}
           />
         </div>
 
@@ -154,9 +185,11 @@ export default function AdminProfilePage() {
               className={styles.input}
               value={form.phone}
               onChange={onChange}
-              placeholder="9167607442"
+              placeholder="9699164131"
               inputMode="numeric"
               maxLength={10}
+              disabled={locked}
+              readOnly={locked}
             />
           </div>
           <p className={styles.hint}>
@@ -165,9 +198,16 @@ export default function AdminProfilePage() {
           </p>
         </div>
 
-        <button type="submit" className={styles.saveBtn} disabled={saving}>
-          {saving ? "Saving…" : "Save Profile"}
-        </button>
+        {!locked ? (
+          <button type="submit" className={styles.saveBtn} disabled={saving}>
+            {saving ? "Saving…" : "Save and Lock"}
+          </button>
+        ) : (
+          <p className={styles.lockedHint}>
+            Details are locked. Click the lock icon next to Admin Profile to
+            unlock and edit.
+          </p>
+        )}
       </form>
     </div>
   );

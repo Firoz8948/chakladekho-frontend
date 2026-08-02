@@ -13,7 +13,7 @@ const iconProps = {
 
 const marqueeItems = [
   {
-    text: "100% Pure Cast Iron",
+    text: "Kitchen Essentials",
     icon: (
       <svg {...iconProps}>
         <circle cx="12" cy="12" r="9" />
@@ -23,7 +23,7 @@ const marqueeItems = [
     ),
   },
   {
-    text: "No Chemical Coating",
+    text: "Chakla · Tawa · Belan",
     icon: (
       <svg {...iconProps}>
         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
@@ -32,7 +32,7 @@ const marqueeItems = [
     ),
   },
   {
-    text: "Toxin-Free Cooking",
+    text: "Daily Kitchen Tools",
     icon: (
       <svg {...iconProps}>
         <path d="M12 3c-1.5 4-4 6-4 9a4 4 0 0 0 8 0c0-3-2.5-5-4-9z" />
@@ -43,7 +43,7 @@ const marqueeItems = [
     ),
   },
   {
-    text: "Naturally Adds Iron",
+    text: "Made for Indian Kitchens",
     icon: (
       <svg {...iconProps}>
         <path d="M12 2v4" />
@@ -103,9 +103,9 @@ const styles = `
     width: 100%;
     overflow: hidden;
     padding: 12px 0;
-    background-color: #041D56;
-    border-top: 1px solid #e0e0e0;
-    border-bottom: 1px solid #e0e0e0;
+    background-color: #000000;
+    border-top: 1px solid rgba(var(--white-rgb), 0.18);
+    border-bottom: 1px solid rgba(var(--white-rgb), 0.18);
   }
 
   .marquee-track {
@@ -130,8 +130,8 @@ const styles = `
     gap: 8px;
     padding: 0 32px;
     white-space: nowrap;
-    border-right: 1px solid #e0e0e0;
-    color: #ffffffff;
+    border-right: 1px solid rgba(var(--white-rgb), 0.18);
+    color: #ffffff;
   }
 
   .marquee-icon {
@@ -141,14 +141,14 @@ const styles = `
     flex-shrink: 0;
   }
 
-  .marquee-icon-0 { color: #E8231A; }
-  .marquee-icon-1 { color: #1E5EAE; }
-  .marquee-icon-2 { color: #2EA84A; }
-  .marquee-icon-3 { color: #F5A623; }
-  .marquee-icon-4 { color: #E8231A; }
-  .marquee-icon-5 { color: #1E5EAE; }
-  .marquee-icon-6 { color: #2EA84A; }
-  .marquee-icon-7 { color: #F5A623; }
+  .marquee-icon-0 { color: #F3E9DC; }
+  .marquee-icon-1 { color: #ffffff; }
+  .marquee-icon-2 { color: #F3E9DC; }
+  .marquee-icon-3 { color: #ffffff; }
+  .marquee-icon-4 { color: #F3E9DC; }
+  .marquee-icon-5 { color: #ffffff; }
+  .marquee-icon-6 { color: #F3E9DC; }
+  .marquee-icon-7 { color: #ffffff; }
 
   @keyframes marquee-scroll {
     0% {

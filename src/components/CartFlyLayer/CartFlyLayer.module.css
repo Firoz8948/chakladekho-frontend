@@ -1,0 +1,123 @@
+.root {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 12000;
+  overflow: visible;
+}
+
+.disc {
+  position: fixed;
+  width: 56px;
+  height: 56px;
+  margin-left: -28px;
+  margin-top: -28px;
+  border-radius: 0;
+  overflow: hidden;
+  background: var(--primary);
+  border: 2px solid var(--cream);
+  box-shadow: 0 10px 24px rgba(var(--primary-rgb), 0.35);
+  opacity: 0;
+  z-index: -1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform, opacity, width, height;
+}
+
+.discActive {
+  opacity: 1;
+  z-index: 12001;
+  animation: move 0.75s cubic-bezier(0.4, 0.05, 0.65, 1) forwards;
+}
+
+.thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 0;
+  background: var(--cream);
+}
+
+@keyframes move {
+  0% {
+    width: 56px;
+    height: 56px;
+    margin-left: -28px;
+    margin-top: -28px;
+    opacity: 1;
+    transform: translate(0, 0) scale(1) rotate(0deg);
+  }
+  55% {
+    width: 40px;
+    height: 40px;
+    margin-left: -20px;
+    margin-top: -20px;
+    opacity: 1;
+    transform: translate(calc(var(--dx) * 0.72), calc(var(--dy) * 0.72))
+      scale(0.85) rotate(12deg);
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    width: 10px;
+    height: 10px;
+    margin-left: -5px;
+    margin-top: -5px;
+    opacity: 0;
+    transform: translate(var(--dx), var(--dy)) scale(0.2) rotate(28deg);
+  }
+}
+
+@media (max-width: 860px) {
+  .disc {
+    width: 48px;
+    height: 48px;
+    margin-left: -24px;
+    margin-top: -24px;
+  }
+
+  @keyframes move {
+    0% {
+      width: 48px;
+      height: 48px;
+      margin-left: -24px;
+      margin-top: -24px;
+      opacity: 1;
+      transform: translate(0, 0) scale(1) rotate(0deg);
+    }
+    55% {
+      width: 34px;
+      height: 34px;
+      margin-left: -17px;
+      margin-top: -17px;
+      opacity: 1;
+      transform: translate(calc(var(--dx) * 0.7), calc(var(--dy) * 0.7))
+        scale(0.85) rotate(12deg);
+    }
+    85% {
+      opacity: 1;
+    }
+    100% {
+      width: 8px;
+      height: 8px;
+      margin-left: -4px;
+      margin-top: -4px;
+      opacity: 0;
+      transform: translate(var(--dx), var(--dy)) scale(0.2) rotate(28deg);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .discActive {
+    animation-duration: 0.01ms;
+  }
+}

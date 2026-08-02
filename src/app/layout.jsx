@@ -1,5 +1,7 @@
 import "@/styles/globals.css";
 
+import { Cormorant_Garamond, Manrope } from "next/font/google";
+
 import AppToaster from "@/components/AppToaster/AppToaster";
 import JsonLd from "@/components/JsonLd/JsonLd";
 import MetaPixel from "@/components/MetaPixel/MetaPixel";
@@ -18,6 +20,20 @@ import {
   websiteJsonLd,
 } from "@/utils/seo";
 
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-cormorant",
+  display: "swap",
+});
+
+const manrope = Manrope({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-manrope",
+  display: "swap",
+});
+
 export const metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
@@ -27,14 +43,16 @@ export const metadata = {
   description: DEFAULT_DESCRIPTION,
   applicationName: SITE_NAME,
   keywords: [
-    "cast iron cookware",
-    "iron tawa",
-    "cast iron kadhai",
-    "sheet iron cookware",
-    "M Kharavad",
-    "Mohan Kharavad",
-    "buy cast iron online India",
-    "wholesale iron cookware",
+    "chakla",
+    "tawa",
+    "belan",
+    "rolling pin",
+    "serving spoon",
+    "spatula",
+    "mortar and pestle",
+    "ChaklaDekho",
+    "kitchen essentials India",
+    "buy chakla online",
   ],
   authors: [{ name: SITE_NAME, url: SITE_URL }],
   creator: SITE_NAME,
@@ -83,12 +101,31 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en-IN">
+    <html lang="en-IN" className={`${cormorant.variable} ${manrope.variable}`}>
       <head>
-        <link rel="preconnect" href="https://mkharavad-media.b-cdn.net" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://api.mkharavad.com" crossOrigin="anonymous" />
-        <link rel="dns-prefetch" href="https://mkharavad-media.b-cdn.net" />
-        <link rel="dns-prefetch" href="https://api.mkharavad.com" />
+        {process.env.NEXT_PUBLIC_BUNNY_CDN_HOST ? (
+          <>
+            <link
+              rel="preconnect"
+              href={`https://${process.env.NEXT_PUBLIC_BUNNY_CDN_HOST}`}
+              crossOrigin="anonymous"
+            />
+            <link
+              rel="dns-prefetch"
+              href={`https://${process.env.NEXT_PUBLIC_BUNNY_CDN_HOST}`}
+            />
+          </>
+        ) : null}
+        {process.env.NEXT_PUBLIC_API_URL ? (
+          <>
+            <link
+              rel="preconnect"
+              href={process.env.NEXT_PUBLIC_API_URL}
+              crossOrigin="anonymous"
+            />
+            <link rel="dns-prefetch" href={process.env.NEXT_PUBLIC_API_URL} />
+          </>
+        ) : null}
       </head>
       <body>
         <MetaPixel />

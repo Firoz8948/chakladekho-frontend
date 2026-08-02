@@ -25,6 +25,14 @@ export default function OrderDetail({ order, onStatusChange, updating }) {
           <span>Total</span>
           <span>{formatPrice(order.total ?? order.total_amount)}</span>
         </div>
+        {order.promo_code ? (
+          <p className={styles.promoLine}>
+            Coupon: <strong>{order.promo_code}</strong>
+            {order.discount_amount
+              ? ` (−${formatPrice(order.discount_amount)})`
+              : ""}
+          </p>
+        ) : null}
       </div>
 
       <div className={styles.section}>

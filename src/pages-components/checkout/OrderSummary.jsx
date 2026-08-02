@@ -14,6 +14,7 @@ export default function OrderSummary({
   onPromoChange,
   pincode = "",
   state = "",
+  phone = "",
   paymentMethod = "razorpay",
   onShippingQuoteChange,
 }) {
@@ -106,6 +107,7 @@ export default function OrderSummary({
         code,
         subtotal,
         shipping_charge: baseShipping,
+        phone: phone || undefined,
       });
       onPromoChange?.(res.data);
       toast.success(res.data.message || "Promo applied");

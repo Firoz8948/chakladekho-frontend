@@ -25,7 +25,7 @@
   max-width: 520px;
   max-height: min(92vh, 820px);
   background: #fff;
-  border-radius: 20px;
+  border-radius: 0;
   overflow: hidden;
   box-shadow: 0 24px 64px rgba(0, 0, 0, 0.28);
   animation: slideUp 0.25s ease;
@@ -50,14 +50,14 @@
   justify-content: space-between;
   padding: 20px 22px;
   border-bottom: 1px solid #f0e8e0;
-  background: linear-gradient(135deg, #fdf8f5, #fff);
+  background: linear-gradient(135deg, var(--cream), #fff);
 }
 
 .title {
   font-family: var(--font-heading);
   font-size: 1.2rem;
   font-weight: 700;
-  color: #1a0a10;
+  color: var(--bg-dark);
   margin: 0;
 }
 
@@ -67,7 +67,7 @@
   border: none;
   background: #f5ece4;
   color: #666;
-  border-radius: 50%;
+  border-radius: 0;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -76,7 +76,7 @@
 }
 
 .closeBtn:hover {
-  background: #e8e0da;
+  background: var(--cream);
   color: var(--color-primary);
 }
 
@@ -119,7 +119,7 @@
   display: block;
   font-size: 0.72rem;
   font-weight: 700;
-  color: #555;
+  color: var(--text-muted);
   margin-bottom: 6px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -128,11 +128,11 @@
 .input {
   width: 100%;
   padding: 11px 14px;
-  border: 2px solid #e8e0da;
-  border-radius: 10px;
+  border: 2px solid var(--border-light);
+  border-radius: 0;
   font-size: 0.9rem;
-  color: #1a0a10;
-  background: #fafafa;
+  color: var(--bg-dark);
+  background: var(--cream);
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
   box-sizing: border-box;
@@ -142,7 +142,7 @@
 .input:focus {
   border-color: var(--color-primary);
   background: #fff;
-  box-shadow: 0 0 0 3px rgba(158, 31, 58, 0.1);
+  box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.1);
 }
 
 .input:disabled {
@@ -155,7 +155,7 @@
   border: 1px solid #fecdd3;
   color: var(--color-red);
   padding: 10px 12px;
-  border-radius: 8px;
+  border-radius: 0;
   font-size: 0.8rem;
   margin-bottom: 14px;
 }
@@ -165,7 +165,7 @@
   border: 1px solid #bbf7d0;
   color: #059669;
   padding: 10px 12px;
-  border-radius: 8px;
+  border-radius: 0;
   font-size: 0.8rem;
   margin-bottom: 14px;
 }
@@ -182,7 +182,7 @@
   background: var(--secondary);
   color: #fff;
   border: none;
-  border-radius: 10px;
+  border-radius: 0;
   font-size: 0.9rem;
   font-weight: 700;
   cursor: pointer;
@@ -209,7 +209,7 @@
   background: #f5ece4;
   color: #666;
   border: none;
-  border-radius: 10px;
+  border-radius: 0;
   font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
@@ -217,7 +217,7 @@
 }
 
 .cancelBtn:hover {
-  background: #e8e0da;
+  background: var(--cream);
 }
 
 .spinner {
@@ -225,7 +225,7 @@
   height: 18px;
   border: 2px solid rgba(255, 255, 255, 0.3);
   border-top-color: #fff;
-  border-radius: 50%;
+  border-radius: 0;
   animation: spin 0.7s linear infinite;
 }
 

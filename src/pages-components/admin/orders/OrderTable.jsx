@@ -15,6 +15,7 @@ export default function OrderTable({ orders = [], onView }) {
           <tr>
             <th>Order</th>
             <th>Customer</th>
+            <th>Coupon</th>
             <th>Date</th>
             <th>Total</th>
             <th>Payment</th>
@@ -26,6 +27,7 @@ export default function OrderTable({ orders = [], onView }) {
             <tr key={o.id} onClick={() => onView(o)} className={styles.row}>
               <td>#{o.order_id || o.order_number}</td>
               <td>{o.customer?.name || o.shipping_address?.full_name || "—"}</td>
+              <td>{o.promo_code || "—"}</td>
               <td>{formatDate(o.created_at)}</td>
               <td>{formatPrice(o.total ?? o.total_amount)}</td>
               <td>

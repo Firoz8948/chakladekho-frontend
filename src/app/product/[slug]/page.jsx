@@ -39,7 +39,7 @@ export async function generateMetadata({ params }) {
   const image = mediaUrl(product.images?.[0], API_URL) || OG_IMAGE;
   const description =
     truncate(stripHtml(product.description || ""), 155) ||
-    `Buy ${product.name} from M Kharavad — premium iron cookware. Ships across India.`;
+    `Buy ${product.name} from ChaklaDekho — quality kitchen essentials. Ships across India.`;
 
   return pageMetadata({
     title: product.name,

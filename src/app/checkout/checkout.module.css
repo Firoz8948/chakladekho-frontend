@@ -1,15 +1,15 @@
 .page {
-  color: #0f172a;
+  color: var(--text);
 }
 
 .heading {
   font-size: 1.8rem;
   margin-bottom: 0.5rem;
-  color: #0f172a;
+  color: var(--text);
 }
 
 .subtitle {
-  color: #64748b;
+  color: var(--text-muted);
   margin-bottom: 1.5rem;
 }
 

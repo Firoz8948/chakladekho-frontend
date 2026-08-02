@@ -4,7 +4,7 @@
   justify-content: center;
   gap: 0.5rem;
   border: 1px solid transparent;
-  border-radius: var(--radius-sm);
+  border-radius: 0;
   font-weight: 600;
   transition: transform 0.08s ease, background 0.2s ease, box-shadow 0.2s ease;
   white-space: nowrap;
@@ -81,7 +81,7 @@
   height: 1.05em;
   border: 2px solid rgba(255, 255, 255, 0.5);
   border-top-color: #fff;
-  border-radius: 50%;
+  border-radius: 0;
   animation: spin 0.7s linear infinite;
 }
 

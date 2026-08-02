@@ -1,8 +1,18 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import toast from "react-hot-toast";
 
+import CartFlyLayer, {
+  getCartTargetEl,
+  resolveSourceRect,
+} from "@/components/CartFlyLayer/CartFlyLayer";
 import { CART_STORAGE_KEY } from "@/utils/constants";
 import { trackAddToCart } from "@/utils/metaPixel";
 import { buildCartKey, formatWeightGrams } from "@/utils/productVariants";
@@ -41,9 +51,39 @@ function round(value) {
   return Math.round(value * 100) / 100;
 }
 
+function showAddedToast() {
+  toast.custom(
+    (t) => (
+      <div
+        className={`chakla-cart-toast ${t.visible ? "chakla-cart-toast-in" : "chakla-cart-toast-out"}`}
+        role="status"
+      >
+        <span className="chakla-cart-toast-icon" aria-hidden="true">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="22"
+            height="22"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path d="M24 3l-.743 2h-1.929l-3.474 12h-13.239l-4.615-11h16.812l-.564 2h-13.24l2.937 7h10.428l3.432-12h4.195zm-15.5 15c-.828 0-1.5.672-1.5 1.5 0 .829.672 1.5 1.5 1.5s1.5-.671 1.5-1.5c0-.828-.672-1.5-1.5-1.5zm6.9-7-1.9 7c-.828 0-1.5.671-1.5 1.5s.672 1.5 1.5 1.5 1.5-.671 1.5-1.5c0-.828-.672-1.5-1.5-1.5z" />
+          </svg>
+        </span>
+        <div className="chakla-cart-toast-copy">
+          <strong>Added to cart</strong>
+          <span>Flying to your bag…</span>
+        </div>
+      </div>
+    ),
+    { duration: 1800, position: "top-center" },
+  );
+}
+
 export function CartProvider({ children }) {
   const [cart, setCart] = useState(emptyCart);
   const [ready, setReady] = useState(false);
+  const [flights, setFlights] = useState([]);
+  const [cartBump, setCartBump] = useState(0);
 
   const persist = useCallback((items) => {
     saveItems(items);
@@ -55,12 +95,52 @@ export function CartProvider({ children }) {
     setReady(true);
   }, [persist]);
 
+  const flyToCart = useCallback((source, image) => {
+    const startRect = resolveSourceRect(source);
+    const targetEl = getCartTargetEl();
+    const targetRect = targetEl?.getBoundingClientRect?.();
+    if (!startRect || !targetRect) return false;
+
+    const id =
+      typeof crypto !== "undefined" && crypto.randomUUID
+        ? crypto.randomUUID()
+        : `fly-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+
+    setFlights((prev) => [
+      ...prev,
+      {
+        id,
+        startX: startRect.left + startRect.width / 2,
+        startY: startRect.top + startRect.height / 2,
+        endX: targetRect.left + targetRect.width / 2,
+        endY: targetRect.top + targetRect.height / 2,
+        image: image || null,
+      },
+    ]);
+
+    window.setTimeout(() => {
+      setCartBump((n) => n + 1);
+      targetEl?.classList?.add("chakla-cart-bump");
+      window.setTimeout(
+        () => targetEl?.classList?.remove("chakla-cart-bump"),
+        450,
+      );
+    }, 620);
+
+    return true;
+  }, []);
+
+  const onFlightEnd = useCallback((id) => {
+    setFlights((prev) => prev.filter((f) => f.id !== id));
+  }, []);
+
   const addToCart = (product, quantity = 1, options = {}) => {
     const {
       price = product.price,
       stock = product.stock,
       weightGrams = product.weight ? Number(product.weight) : null,
       variantInfo = null,
+      source = null,
     } = options;
 
     if ((stock ?? 0) <= 0) {
@@ -76,7 +156,9 @@ export function CartProvider({ children }) {
     const weightLabel = weightGrams ? formatWeightGrams(weightGrams) : null;
 
     const items = loadStoredItems();
-    const existing = items.find((i) => (i.cart_key || String(i.product_id)) === cartKey);
+    const existing = items.find(
+      (i) => (i.cart_key || String(i.product_id)) === cartKey,
+    );
 
     if (existing) {
       const nextQty = existing.quantity + quantity;
@@ -116,7 +198,8 @@ export function CartProvider({ children }) {
 
     persist(items);
     trackAddToCart(product, quantity, price);
-    toast.success("Added to cart");
+    flyToCart(source, product.images?.[0] || null);
+    showAddedToast();
     return true;
   };
 
@@ -133,7 +216,7 @@ export function CartProvider({ children }) {
 
   const removeItem = (itemId) => {
     const items = loadStoredItems().filter(
-      (i) => (i.cart_key || String(i.product_id)) !== String(itemId)
+      (i) => (i.cart_key || String(i.product_id)) !== String(itemId),
     );
     persist(items);
     toast.success("Item removed");
@@ -151,9 +234,16 @@ export function CartProvider({ children }) {
     removeItem,
     clearCart,
     itemCount: cart.total_items,
+    cartBump,
+    flyToCart,
   };
 
-  return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
+  return (
+    <CartContext.Provider value={value}>
+      {children}
+      <CartFlyLayer flights={flights} onFlightEnd={onFlightEnd} />
+    </CartContext.Provider>
+  );
 }
 
 export function useCartContext() {

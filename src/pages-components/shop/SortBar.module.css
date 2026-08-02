@@ -20,9 +20,36 @@
 .sort select {
   padding: 0.5rem 0.75rem;
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
+  border-radius: 0;
   background: var(--color-surface);
   font-size: 0.9rem;
   color: var(--color-text);
   outline: none;
+}
+
+.sidebarBar {
+  align-items: stretch;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin: 0;
+  padding: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.sidebarBar .count {
+  font-size: 0.8rem;
+}
+
+.sidebarBar .sort {
+  align-items: stretch;
+  flex-direction: column;
+  gap: 0.4rem;
+  color: var(--heading);
+  font-weight: var(--font-semibold);
+}
+
+.sidebarBar .sort select {
+  width: 100%;
+  background: var(--cream);
+  border-color: var(--border);
 }

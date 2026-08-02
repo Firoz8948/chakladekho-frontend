@@ -11,7 +11,7 @@
 .icon {
   width: 46px;
   height: 46px;
-  border-radius: 50%;
+  border-radius: 0;
   background: rgba(139, 94, 52, 0.1);
   color: var(--color-primary);
   display: grid;

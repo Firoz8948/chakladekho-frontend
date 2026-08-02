@@ -9,11 +9,13 @@ export default function ContactMap() {
     <section className={styles.section} aria-label="Store location map">
       <div className="container">
         <h2 className="section-title">Find Us</h2>
-        <p className="section-subtitle">Visit our shop in Virar West</p>
+        <p className="section-subtitle">
+          Visit us in Nalasopara West, Vasai-Virar
+        </p>
 
         <div className={styles.mapWrap}>
           <iframe
-            title="M Kharavad Company shop location"
+            title="ChaklaDekho shop location"
             src={embedSrc}
             className={styles.map}
             loading="lazy"

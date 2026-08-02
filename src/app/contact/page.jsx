@@ -5,7 +5,7 @@ import styles from "./contact.module.css";
 export const metadata = pageMetadata({
   title: "Contact Us",
   description:
-    "Contact M Kharavad Company in Virar West, Palghar. Call +91 9167607442 or WhatsApp for wholesale & retail cast iron cookware orders across India.",
+    "Contact ChaklaDekho in Nalasopara West. Call +91 96991 64131 or WhatsApp for kitchen essentials orders across India.",
   path: "/contact",
 });
 

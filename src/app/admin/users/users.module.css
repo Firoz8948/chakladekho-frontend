@@ -21,7 +21,7 @@
 
 .tableWrap {
   background: var(--background);
-  border-radius: 16px;
+  border-radius: 0;
   overflow: hidden;
   box-shadow: 0 2px 12px rgba(var(--primary-rgb), 0.06);
   border: 1px solid rgba(var(--primary-rgb), 0.08);
@@ -101,7 +101,7 @@
 .pageBtn {
   padding: 9px 18px;
   border: 2px solid var(--color-primary);
-  border-radius: 8px;
+  border-radius: 0;
   color: var(--color-primary);
   font-weight: 600;
   font-size: 0.85rem;
@@ -136,7 +136,7 @@
   height: 40px;
   border: 3px solid rgba(var(--heading-rgb), 0.12);
   border-top-color: var(--color-primary);
-  border-radius: 50%;
+  border-radius: 0;
   animation: spin 0.8s linear infinite;
 }
 

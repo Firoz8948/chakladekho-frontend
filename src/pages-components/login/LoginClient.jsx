@@ -55,7 +55,7 @@ export default function LoginClient() {
       <div className={styles.card}>
         <div className={styles.brand}>
           <Logo size={72} className={styles.brandLogo} priority />
-          <h1 className={styles.brandName}>M Kharavad Company</h1>
+          <h1 className={styles.brandName}>ChaklaDekho</h1>
           <p className={styles.brandSub}>Premium Quality, Naturally Pure</p>
         </div>
 

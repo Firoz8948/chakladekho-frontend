@@ -67,23 +67,6 @@ export const uploadCategoryImage = (id, formData) =>
     headers: { "Content-Type": "multipart/form-data" },
   });
 
-export const createSubCategory = (categoryId, data) =>
-  adminApi.post(`/categories/${categoryId}/subcategories`, data);
-
-export const updateSubCategory = (id, data) =>
-  adminApi.put(`/categories/subcategories/${id}`, data);
-
-export const deleteSubCategory = (id) =>
-  adminApi.delete(`/categories/subcategories/${id}`);
-
-export const uploadSubCategoryImage = (id, formData) =>
-  adminApi.post(`/categories/subcategories/${id}/image`, formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
-
-export const getProductsForMapping = () =>
-  adminApi.get("/categories/admin/products-for-mapping");
-
 export const getCategoryProducts = (id, params) =>
   adminApi.get(`/categories/${id}/products`, { params });
 
@@ -128,6 +111,9 @@ export const uploadBannerImage = (id, formData) =>
 
 // Promo codes
 export const getAdminPromoCodes = () => adminApi.get("/promocodes/admin/all");
+
+export const getPromoCodeUsage = (id) =>
+  adminApi.get(`/promocodes/admin/${id}/usage`);
 
 export const createPromoCode = (data) => adminApi.post("/promocodes/", data);
 

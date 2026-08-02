@@ -39,7 +39,7 @@ export async function sendOTPEmail(toEmail, toName, otpCode) {
     user_email: email,
     to_name: toName?.trim() || email.split("@")[0],
     otp_code: otpCode,
-    brand_name: "M Kharavad Company",
+    brand_name: "ChaklaDekho",
     expiry_minutes: "10",
   };
 
