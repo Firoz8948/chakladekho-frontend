@@ -15,6 +15,20 @@ export const getAdminProducts = (params) =>
 
 export const getAdminProduct = (id) => adminApi.get(`/admin/products/${id}`);
 
+/** Lightweight product list for attach/mapping UIs (video products, etc.). */
+export const getProductsForMapping = () =>
+  adminApi
+    .get("/admin/products", { params: { page: 1, limit: 100 } })
+    .then((res) => ({
+      ...res,
+      data: (res.data?.products || []).map((p) => ({
+        id: p.id,
+        name: p.name,
+        category: p.category || "",
+        image: Array.isArray(p.images) && p.images[0] ? p.images[0] : null,
+      })),
+    }));
+
 export const createProduct = (data) => adminApi.post("/admin/products", data);
 
 export const updateProduct = (id, data) =>
