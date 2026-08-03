@@ -210,12 +210,14 @@ export default function ProductInfo({ product }) {
               <FiPlus />
             </button>
           </div>
-          <Button size="lg" loading={adding} onClick={handleAdd}>
-            Add to Cart
-          </Button>
-          <Button size="lg" variant="outline" onClick={handleBuyNow}>
-            Buy Now
-          </Button>
+          <div className={styles.actionBtns}>
+            <Button size="lg" loading={adding} onClick={handleAdd}>
+              Add to Cart
+            </Button>
+            <Button size="lg" variant="outline" onClick={handleBuyNow}>
+              Buy Now
+            </Button>
+          </div>
         </div>
       )}
 

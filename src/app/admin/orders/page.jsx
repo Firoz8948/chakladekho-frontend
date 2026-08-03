@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import {
   getAdminOrders,
+  pushOrderToShipmozo,
   pushOrderToShiprocket,
   updateOrderStatus,
 } from "@/services/adminService";
@@ -26,6 +27,7 @@ export default function AdminOrdersPage() {
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(null);
   const [shippingOrder, setShippingOrder] = useState(null);
+  const [shippingProvider, setShippingProvider] = useState(null);
   const [expanded, setExpanded] = useState(null);
   const LIMIT = 15;
 
@@ -60,6 +62,7 @@ export default function AdminOrdersPage() {
 
   const handleShiprocket = async (orderId) => {
     setShippingOrder(orderId);
+    setShippingProvider("shiprocket");
     try {
       const res = await pushOrderToShiprocket(orderId);
       setOrders((prev) =>
@@ -82,10 +85,43 @@ export default function AdminOrdersPage() {
       );
     } finally {
       setShippingOrder(null);
+      setShippingProvider(null);
+    }
+  };
+
+  const handleShipmozo = async (orderId) => {
+    setShippingOrder(orderId);
+    setShippingProvider("shipmozo");
+    try {
+      const res = await pushOrderToShipmozo(orderId);
+      setOrders((prev) =>
+        prev.map((o) =>
+          o.order_id === orderId ? { ...o, shipment: res.data } : o
+        )
+      );
+      if (!res.data?.shipmozo_reference_id) {
+        alert(
+          "Shipmozo did not return a reference id. Check warehouse id and API keys."
+        );
+        return;
+      }
+      const awb = res.data.awb_code ? ` · AWB: ${res.data.awb_code}` : "";
+      alert(`Sent to Shipmozo (Ref: ${res.data.shipmozo_reference_id}${awb})`);
+    } catch (err) {
+      alert(
+        err?.response?.data?.detail ||
+          err.message ||
+          "Failed to send order to Shipmozo"
+      );
+    } finally {
+      setShippingOrder(null);
+      setShippingProvider(null);
     }
   };
 
   const totalPages = Math.ceil(total / LIMIT);
+  const isBusy = (orderId, provider) =>
+    shippingOrder === orderId && shippingProvider === provider;
 
   return (
     <div className={styles.page}>
@@ -155,6 +191,9 @@ export default function AdminOrdersPage() {
                   {order.shipment?.shiprocket_order_id ? (
                     <span className={styles.shipBadge}>Shiprocket</span>
                   ) : null}
+                  {order.shipment?.shipmozo_reference_id ? (
+                    <span className={styles.shipBadgeMozo}>Shipmozo</span>
+                  ) : null}
                   <span className={styles.chevron}>
                     {expanded === order.id ? "▲" : "▼"}
                   </span>
@@ -201,37 +240,65 @@ export default function AdminOrdersPage() {
                   </div>
 
                   <div className={styles.shipBox}>
-                    <h4 className={styles.detailTitle}>Shiprocket</h4>
-                    {order.shipment?.shiprocket_order_id ? (
+                    <h4 className={styles.detailTitle}>Shipping partners</h4>
+                    <div className={styles.shipPartner}>
                       <p className={styles.shipInfo}>
-                        SR Order: {order.shipment.shiprocket_order_id}
-                        {order.shipment.awb_code
-                          ? ` · AWB: ${order.shipment.awb_code}`
-                          : ""}
-                        {order.shipment.courier_name
-                          ? ` · ${order.shipment.courier_name}`
-                          : ""}
-                        {order.shipment.status
-                          ? ` · ${order.shipment.status}`
-                          : ""}
+                        {order.shipment?.shiprocket_order_id ? (
+                          <>
+                            Shiprocket: {order.shipment.shiprocket_order_id}
+                            {order.shipment.awb_code
+                              ? ` · AWB: ${order.shipment.awb_code}`
+                              : ""}
+                            {order.shipment.courier_name
+                              ? ` · ${order.shipment.courier_name}`
+                              : ""}
+                          </>
+                        ) : (
+                          "Shiprocket: not sent yet."
+                        )}
                       </p>
-                    ) : (
+                      <button
+                        type="button"
+                        className={styles.shipBtn}
+                        disabled={!!shippingOrder}
+                        onClick={() => handleShiprocket(order.order_id)}
+                      >
+                        {isBusy(order.order_id, "shiprocket")
+                          ? "Sending…"
+                          : order.shipment?.shiprocket_order_id
+                            ? "Re-sync Shiprocket"
+                            : "Send to Shiprocket"}
+                      </button>
+                    </div>
+                    <div className={styles.shipPartner}>
                       <p className={styles.shipInfo}>
-                        Not sent to Shiprocket yet.
+                        {order.shipment?.shipmozo_reference_id ? (
+                          <>
+                            Shipmozo: {order.shipment.shipmozo_reference_id}
+                            {order.shipment.awb_code
+                              ? ` · AWB: ${order.shipment.awb_code}`
+                              : ""}
+                            {order.shipment.courier_name
+                              ? ` · ${order.shipment.courier_name}`
+                              : ""}
+                          </>
+                        ) : (
+                          "Shipmozo: not sent yet."
+                        )}
                       </p>
-                    )}
-                    <button
-                      type="button"
-                      className={styles.shipBtn}
-                      disabled={shippingOrder === order.order_id}
-                      onClick={() => handleShiprocket(order.order_id)}
-                    >
-                      {shippingOrder === order.order_id
-                        ? "Sending…"
-                        : order.shipment?.shiprocket_order_id
-                          ? "Re-sync Shiprocket"
-                          : "Send to Shiprocket"}
-                    </button>
+                      <button
+                        type="button"
+                        className={styles.shipBtnMozo}
+                        disabled={!!shippingOrder}
+                        onClick={() => handleShipmozo(order.order_id)}
+                      >
+                        {isBusy(order.order_id, "shipmozo")
+                          ? "Sending…"
+                          : order.shipment?.shipmozo_reference_id
+                            ? "Re-sync Shipmozo"
+                            : "Send to Shipmozo"}
+                      </button>
+                    </div>
                   </div>
 
                   <div className={styles.statusUpdate}>

@@ -55,6 +55,9 @@ export const updateOrderStatus = (orderId, status) =>
 export const pushOrderToShiprocket = (orderId) =>
   adminApi.post(`/admin/orders/${orderId}/shiprocket`);
 
+export const pushOrderToShipmozo = (orderId) =>
+  adminApi.post(`/admin/orders/${orderId}/shipmozo`);
+
 export const getAdminPayments = (params) =>
   adminApi.get("/admin/payments", { params });
 
