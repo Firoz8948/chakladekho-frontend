@@ -37,7 +37,9 @@
   }
 
   .backBtn,
-  .shareBtn {
+  .shareBtn,
+  .cartIconBtn,
+  .topRightActions {
     /* Keep controls over the phone frame */
     top: calc((100vh - min(860px, 92vh)) / 2 + 14px);
   }
@@ -46,8 +48,13 @@
     left: calc(50% - min(420px, 42vw) / 2 + 14px);
   }
 
-  .shareBtn {
+  .topRightActions {
     right: calc(50% - min(420px, 42vw) / 2 + 14px);
+    left: auto;
+  }
+
+  .shareBtn {
+    position: static;
   }
 
   .loading,
@@ -132,10 +139,8 @@
 
 /* ---------- Persistent top controls ---------- */
 .backBtn,
-.shareBtn {
-  position: absolute;
-  top: calc(14px + env(safe-area-inset-top, 0px));
-  z-index: 20;
+.shareBtn,
+.cartIconBtn {
   width: 40px;
   height: 40px;
   border-radius: 0;
@@ -147,19 +152,34 @@
   cursor: pointer;
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
+  padding: 0;
 }
 
 .backBtn {
+  position: absolute;
+  top: calc(14px + env(safe-area-inset-top, 0px));
   left: 14px;
+  z-index: 20;
 }
 
-.shareBtn {
+.topRightActions {
+  position: absolute;
+  top: calc(14px + env(safe-area-inset-top, 0px));
   right: 14px;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
 }
 
-.shareBtn:disabled {
+.shareBtn:disabled,
+.cartIconBtn:disabled {
   opacity: 0.4;
   cursor: default;
+}
+
+.cartIconBtn {
+  background: var(--btn-primary-bg, var(--primary));
 }
 
 /* ---------- Loading / empty ---------- */
@@ -241,7 +261,7 @@
 
 .category {
   display: block;
-  font-family: var(--font-ui);
+  font-family: var(--font-product-title);
   font-size: 0.68rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -251,6 +271,7 @@
 }
 
 .panelName {
+  font-family: var(--font-ui);
   font-size: 0.98rem;
   font-weight: 700;
   color: var(--text, var(--text));
@@ -291,31 +312,6 @@
   align-items: center;
   gap: 0.4rem;
   flex-shrink: 0;
-}
-
-.panelTeaserBuyCol {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 0.35rem;
-}
-
-.panelTeaserBuyBtn {
-  border: none;
-  background: var(--btn-primary-bg, var(--primary));
-  color: #fff;
-  font-weight: 700;
-  font-size: 0.78rem;
-  line-height: 1;
-  padding: 0.45rem 0.85rem;
-  border-radius: 0;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.panelTeaserBuyBtn:disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
 }
 
 .panelTeaserPrice {
@@ -359,6 +355,51 @@
   max-height: 62vh;
   overflow-y: auto;
   padding: 0 16px 20px;
+}
+
+.previewBuyNow {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  border: none;
+  background: var(--btn-primary-bg, var(--primary));
+  color: #fff;
+  padding: 0.75rem 1rem;
+  border-radius: 0;
+  cursor: pointer;
+  margin-bottom: 0.85rem;
+  font-family: var(--font-ui);
+}
+
+.previewBuyNow:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.previewBuyLabel {
+  font-weight: 800;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+}
+
+.previewBuyPrices {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.45rem;
+}
+
+.previewBuyPrices strong {
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+.previewBuyMrp {
+  font-style: normal;
+  font-size: 0.82rem;
+  opacity: 0.8;
+  text-decoration: line-through;
 }
 
 .panelPriceRow {

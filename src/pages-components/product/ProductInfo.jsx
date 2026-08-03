@@ -23,10 +23,6 @@ function resolveOptionWeight(option) {
   return parseWeightGrams(option.name);
 }
 
-function isHtmlDescription(text) {
-  return /<\/?[a-z][\s\S]*>/i.test(text || "");
-}
-
 export default function ProductInfo({ product }) {
   const { addToCart } = useCart();
   const buyNow = useBuyNow();
@@ -70,9 +66,6 @@ export default function ProductInfo({ product }) {
   const discount = calcDiscount(displayMrp, displayPrice);
   const outOfStock = displayStock <= 0;
   const categoryOnly = product.category || "";
-  const description =
-    product.description ||
-    "Quality kitchen essentials designed for reliable everyday cooking.";
 
   const handleAdd = async (e) => {
     setAdding(true);
@@ -233,18 +226,6 @@ export default function ProductInfo({ product }) {
         quantity={buyNow.quantity}
         options={buyNow.options}
       />
-
-      <div className={styles.descBlock}>
-        <h2 className={styles.descTitle}>About this product</h2>
-        {isHtmlDescription(description) ? (
-          <div
-            className={styles.descriptionHtml}
-            dangerouslySetInnerHTML={{ __html: description }}
-          />
-        ) : (
-          <p className={styles.description}>{description}</p>
-        )}
-      </div>
     </div>
   );
 }

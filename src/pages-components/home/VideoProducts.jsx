@@ -316,7 +316,7 @@ function VideoProductCard({ item, isMobile, onOpen, onAdd, onBuyNow, onShare }) 
         <div className={styles.footer}>
           <div className={styles.priceBlock}>
             <span className={styles.price}>{formatPrice(item.price)}</span>
-            {item.mrp > item.price && (
+            {Number(item.mrp) > Number(item.price) && (
               <span className={styles.mrp}>{formatPrice(item.mrp)}</span>
             )}
           </div>

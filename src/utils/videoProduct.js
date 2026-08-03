@@ -39,6 +39,7 @@ export function toCartProduct(item) {
 export function videoCartOptions(item) {
   return {
     price: item.price,
+    mrp: item.mrp,
     stock: item.stock,
     weightGrams: item.weight,
     length_cm: item.length_cm,

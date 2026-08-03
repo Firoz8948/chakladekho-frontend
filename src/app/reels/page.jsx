@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 import { FiChevronUp, FiShare2, FiShoppingCart, FiX } from "react-icons/fi";
 
 import BuyNowModal, { useBuyNow } from "@/components/BuyNowModal/BuyNowModal";
-import { ProductImages } from "@/pages-components/product";
+import { ProductImages, ProductMetafields } from "@/pages-components/product";
 import { useCart } from "@/hooks/useCart";
 import { calcDiscount, formatPrice } from "@/utils/formatPrice";
 import { mediaUrl } from "@/utils/mediaUrl";
@@ -19,6 +19,7 @@ import {
   videoCartOptions,
 } from "@/utils/videoProduct";
 import styles from "./reels.module.css";
+import metafieldStyles from "@/pages-components/product/ProductMetafields.module.css";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -132,6 +133,7 @@ function ReelsContent() {
   };
 
   const activeItem = items[activeIndex];
+  const activeSoldOut = activeItem?.stock === 0;
 
   return (
     <div className={styles.page}>
@@ -144,15 +146,26 @@ function ReelsContent() {
         <FiX size={22} />
       </button>
 
-      <button
-        type="button"
-        className={styles.shareBtn}
-        onClick={() => activeItem && handleShare(activeItem)}
-        disabled={!activeItem}
-        aria-label="Share this reel"
-      >
-        <FiShare2 size={18} />
-      </button>
+      <div className={styles.topRightActions}>
+        <button
+          type="button"
+          className={styles.shareBtn}
+          onClick={() => activeItem && handleShare(activeItem)}
+          disabled={!activeItem}
+          aria-label="Share this reel"
+        >
+          <FiShare2 size={18} />
+        </button>
+        <button
+          type="button"
+          className={styles.cartIconBtn}
+          onClick={(e) => activeItem && handleAdd(activeItem, 1, e.currentTarget)}
+          disabled={!activeItem || activeSoldOut}
+          aria-label="Add to cart"
+        >
+          <FiShoppingCart size={18} />
+        </button>
+      </div>
 
       {loading ? (
         <div className={styles.loading}>
@@ -208,6 +221,7 @@ function ReelSlide({
   const proof = getProductSocialProof(item.product_id || item.id);
   const discount = calcDiscount(item.mrp, item.price);
   const soldOut = item.stock === 0;
+  const hasMrp = Number(item.mrp) > Number(item.price);
 
   const handleTouchStart = (e) => {
     touchStartY.current = e.touches[0].clientY;
@@ -304,25 +318,11 @@ function ReelSlide({
               </div>
             </div>
             <div className={styles.panelTeaserRight}>
-              <div className={styles.panelTeaserBuyCol}>
-                <button
-                  type="button"
-                  className={styles.panelTeaserBuyBtn}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    onBuyNow(item);
-                  }}
-                  disabled={soldOut}
-                >
-                  {soldOut ? "Sold out" : "Buy"}
-                </button>
-                <div className={styles.panelTeaserPrice}>
-                  <span className={styles.panelPrice}>{formatPrice(item.price)}</span>
-                  {item.mrp > item.price && (
-                    <span className={styles.panelMrp}>{formatPrice(item.mrp)}</span>
-                  )}
-                </div>
+              <div className={styles.panelTeaserPrice}>
+                <span className={styles.panelPrice}>{formatPrice(item.price)}</span>
+                {hasMrp && (
+                  <span className={styles.panelMrp}>{formatPrice(item.mrp)}</span>
+                )}
               </div>
               <FiChevronUp
                 size={16}
@@ -333,19 +333,32 @@ function ReelSlide({
         </div>
 
         <div className={styles.panelBody}>
+          <button
+            type="button"
+            className={styles.previewBuyNow}
+            onClick={() => onBuyNow(item)}
+            disabled={soldOut}
+          >
+            <span className={styles.previewBuyLabel}>
+              {soldOut ? "Sold out" : "Buy Now"}
+            </span>
+            {!soldOut && (
+              <span className={styles.previewBuyPrices}>
+                <strong>{formatPrice(item.price)}</strong>
+                {hasMrp && (
+                  <em className={styles.previewBuyMrp}>{formatPrice(item.mrp)}</em>
+                )}
+              </span>
+            )}
+          </button>
+
           <ProductImages images={item.images} name={item.name} />
 
-          <div className={styles.panelPriceRow}>
-            <span className={styles.panelPriceLg}>{formatPrice(item.price)}</span>
-            {item.mrp > item.price && (
-              <>
-                <span className={styles.panelMrp}>{formatPrice(item.mrp)}</span>
-                <span className={styles.panelSave}>{discount}% off</span>
-              </>
-            )}
-          </div>
-
-          {item.description && <p className={styles.panelDesc}>{item.description}</p>}
+          <ProductMetafields
+            product={item}
+            showHeading={false}
+            className={metafieldStyles.sectionCompact}
+          />
 
           <div className={styles.panelActions}>
             <button

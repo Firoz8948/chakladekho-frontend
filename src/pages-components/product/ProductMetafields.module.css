@@ -48,6 +48,12 @@
 .chevronOpen {
   transform: rotate(180deg);
 }
+.sectionCompact {
+  margin-top: 1rem;
+  padding-top: 0;
+  border-top: none;
+}
+
 .panel {
   padding: 1rem 1.15rem 1.15rem;
   line-height: 1.7;
@@ -58,4 +64,37 @@
 }
 .panel p:last-child {
   margin-bottom: 0;
+}
+
+.html {
+  color: var(--text);
+  line-height: 1.7;
+  font-size: 0.95rem;
+}
+
+.html :global(ul),
+.html :global(ol) {
+  margin: 0.35rem 0 0.5rem 1.15rem;
+  padding: 0;
+}
+
+.html :global(li) {
+  margin-bottom: 0.35rem;
+  color: var(--text);
+}
+
+.html :global(p) {
+  margin: 0 0 0.55rem;
+}
+
+.html :global(a) {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.html :global(img) {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0.5rem 0;
 }

@@ -62,15 +62,15 @@
 }
 
 .skeletonCard {
-  flex: 0 0 280px;
+  flex: 0 0 300px;
   scroll-snap-align: start;
   aspect-ratio: 9 / 16;
   border-radius: 0;
-  max-height: 480px;
+  max-height: 520px;
 }
 
 .card {
-  flex: 0 0 280px;
+  flex: 0 0 300px;
   scroll-snap-align: start;
   background: var(--bg-primary);
   border: 1px solid var(--border-light);
@@ -79,7 +79,7 @@
   overflow: hidden;
   box-shadow: var(--shadow-card);
   aspect-ratio: 9 / 16;
-  max-height: 460px;
+  max-height: 500px;
   cursor: pointer;
 }
 
@@ -194,7 +194,7 @@
 }
 
 .category {
-  font-family: var(--font-ui);
+  font-family: var(--font-product-title);
   font-size: var(--text-xs);
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -203,7 +203,7 @@
 }
 
 .name {
-  font-family: var(--font-heading);
+  font-family: var(--font-ui);
   font-size: var(--text-base);
   font-weight: var(--font-bold);
   color: #fff;
@@ -237,7 +237,11 @@
 
 .priceBlock {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem;
+  min-width: 0;
 }
 
 .price {
@@ -249,7 +253,7 @@
 
 .mrp {
   font-size: var(--text-sm);
-  color: var(--text-muted);
+  color: rgba(255, 255, 255, 0.72);
   text-decoration: line-through;
 }
 
@@ -530,8 +534,8 @@
 @media (max-width: 900px) {
   .card,
   .skeletonCard {
-    flex: 0 0 240px;
-    max-height: 400px;
+    flex: 0 0 260px;
+    max-height: 440px;
   }
 }
 
@@ -543,10 +547,10 @@
 
   .card,
   .skeletonCard {
-    flex: 0 0 148px;
-    width: 148px;
-    max-width: 148px;
-    max-height: 280px;
+    flex: 0 0 168px;
+    width: 168px;
+    max-width: 168px;
+    max-height: 320px;
   }
 
   .body {
@@ -582,6 +586,7 @@
 
   .mrp {
     font-size: 0.62rem;
+    color: rgba(255, 255, 255, 0.7);
   }
 
   .cartIconBtn {
