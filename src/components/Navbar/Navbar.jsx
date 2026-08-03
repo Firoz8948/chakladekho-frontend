@@ -334,22 +334,21 @@ export default function Navbar() {
                 aria-label="Product categories"
               >
                 <div className={`container ${styles.megaMenuInner}`}>
-                  <div className={styles.megaMenuLayout}>
-                    <div className={styles.megaMenuLeft}>
-                      <div className={styles.megaMenuHeading}>
-                        <div>
-                          <span>Shop by category</span>
-                          <strong>Find your kitchen essential</strong>
-                        </div>
-                        <Link
-                          href="/shop"
-                          onClick={() => setCategoriesOpen(false)}
-                        >
-                          View all products{" "}
-                          <span aria-hidden="true">→</span>
-                        </Link>
-                      </div>
+                  <div className={styles.megaMenuHeading}>
+                    <div>
+                      <span>Shop by category</span>
+                      <strong>Find your kitchen essential</strong>
+                    </div>
+                    <Link
+                      href="/shop"
+                      onClick={() => setCategoriesOpen(false)}
+                    >
+                      View all products <span aria-hidden="true">→</span>
+                    </Link>
+                  </div>
 
+                  <div className={styles.megaMenuBody}>
+                    <div className={styles.megaMenuCats}>
                       <div className={styles.megaCatColumns}>
                         {categoryColumns.map((column, index) => (
                           <ul
