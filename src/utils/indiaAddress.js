@@ -1,3 +1,5 @@
+import { API_BASE } from "@/utils/constants";
+
 export const INDIAN_STATES = [
   "Andaman and Nicobar Islands",
   "Andhra Pradesh",
@@ -38,7 +40,8 @@ export const INDIAN_STATES = [
 ];
 
 /**
- * Lookup city/state from Indian pincode via postalpincode.in
+ * Lookup city/state from Indian pincode via our backend proxy
+ * (avoids browser CORS / flaky direct calls to postalpincode.in).
  */
 export async function lookupPincode(pincode) {
   const pin = String(pincode || "").replace(/\D/g, "");
@@ -47,18 +50,19 @@ export async function lookupPincode(pincode) {
   }
 
   try {
-    const res = await fetch(`https://api.postalpincode.in/pincode/${pin}`);
-    const data = await res.json();
-    const entry = Array.isArray(data) ? data[0] : null;
-    if (!entry || entry.Status !== "Success" || !entry.PostOffice?.length) {
+    const res = await fetch(`${API_BASE}/shipping-zones/pincode/${pin}`, {
+      method: "GET",
+      headers: { Accept: "application/json" },
+    });
+    if (!res.ok) {
       return { ok: false, error: "Pincode not found" };
     }
-    const office = entry.PostOffice[0];
+    const data = await res.json();
     return {
       ok: true,
-      city: office.District || office.Block || office.Name || "",
-      state: office.State || "",
-      pincode: pin,
+      city: data.city || "",
+      state: data.state || "",
+      pincode: data.pincode || pin,
     };
   } catch {
     return { ok: false, error: "Could not look up pincode" };
