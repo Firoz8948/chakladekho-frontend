@@ -131,7 +131,13 @@ export default function Footer() {
 
       <div className={styles.bottom}>
         <div className={`container ${styles.bottomInner}`}>
-          <p>© {year} ChaklaDekho. All rights reserved.</p>
+          <p>
+            © {year} ChaklaDekho
+            <span className={styles.tm} title="Trademark" aria-label="Trademark">
+              TM
+            </span>
+            . All rights reserved.
+          </p>
         </div>
       </div>
     </footer>

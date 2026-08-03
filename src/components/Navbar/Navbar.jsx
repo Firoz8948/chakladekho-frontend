@@ -26,6 +26,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useCart } from "@/hooks/useCart";
 import { getCategories } from "@/services/categoryService";
 import { BRAND } from "@/utils/constants";
+import { mediaUrl } from "@/utils/mediaUrl";
 import styles from "./Navbar.module.css";
 
 const NAV_LINKS = [
@@ -56,13 +57,18 @@ export default function Navbar() {
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [categoriesOpen, setCategoriesOpen] = useState(false);
   const [categories, setCategories] = useState([]);
+  const [previewCategoryId, setPreviewCategoryId] = useState(null);
   const userMenuRef = useRef(null);
   const desktopNavRef = useRef(null);
   const drawerRef = useRef(null);
 
   useEffect(() => {
     getCategories()
-      .then((res) => setCategories(res.data || []))
+      .then((res) => {
+        const list = res.data || [];
+        setCategories(list);
+        if (list[0]) setPreviewCategoryId(list[0].id);
+      })
       .catch(console.error);
   }, []);
 
@@ -160,6 +166,50 @@ export default function Navbar() {
 
   const closeMenu = () => setMenuOpen(false);
 
+  const openCategories = () => {
+    setCategoriesOpen((open) => {
+      if (!open && categories[0]) {
+        setPreviewCategoryId(categories[0].id);
+      }
+      return true;
+    });
+  };
+
+  const categoryHref = (cat) =>
+    cat.is_reels || cat.slug === "reels"
+      ? "/reels"
+      : `/shop?category=${cat.slug}`;
+
+  const mid = Math.ceil(categories.length / 2);
+  const categoryColumns = [
+    categories.slice(0, mid),
+    categories.slice(mid),
+  ];
+  const previewCategory =
+    categories.find((cat) => cat.id === previewCategoryId) ||
+    categories[0] ||
+    null;
+
+  const renderCategoryLink = (cat) => {
+    const active = previewCategory?.id === cat.id;
+    return (
+      <li key={cat.id}>
+        <Link
+          href={categoryHref(cat)}
+          className={`${styles.megaCategoryLink} ${
+            active ? styles.megaCategoryLinkActive : ""
+          }`}
+          onMouseEnter={() => setPreviewCategoryId(cat.id)}
+          onFocus={() => setPreviewCategoryId(cat.id)}
+          onClick={() => setCategoriesOpen(false)}
+        >
+          <span>{cat.name}</span>
+          <span aria-hidden="true">→</span>
+        </Link>
+      </li>
+    );
+  };
+
   const renderLinks = (keyPrefix) =>
     NAV_LINKS.map((link) => {
       if (keyPrefix === "mobile" && link.href === "/shop") {
@@ -234,8 +284,16 @@ export default function Navbar() {
               <button
                 type="button"
                 className={styles.navMenuItem}
-                onClick={() => setCategoriesOpen((open) => !open)}
-                onMouseEnter={() => setCategoriesOpen(true)}
+                onClick={() =>
+                  setCategoriesOpen((open) => {
+                    const next = !open;
+                    if (next && categories[0]) {
+                      setPreviewCategoryId(categories[0].id);
+                    }
+                    return next;
+                  })
+                }
+                onMouseEnter={openCategories}
                 aria-expanded={categoriesOpen}
                 aria-controls="desktop-category-menu"
               >
@@ -276,29 +334,77 @@ export default function Navbar() {
                 aria-label="Product categories"
               >
                 <div className={`container ${styles.megaMenuInner}`}>
-                  <div className={styles.megaMenuHeading}>
-                    <div>
-                      <span>Shop by category</span>
-                      <strong>Find your kitchen essential</strong>
-                    </div>
-                    <Link href="/shop" onClick={() => setCategoriesOpen(false)}>
-                      View all products <span aria-hidden="true">→</span>
-                    </Link>
-                  </div>
-
-                  <div className={styles.megaMenuGrid}>
-                    {categories.map((cat) => (
-                      <div key={cat.id} className={styles.megaCategory}>
+                  <div className={styles.megaMenuLayout}>
+                    <div className={styles.megaMenuLeft}>
+                      <div className={styles.megaMenuHeading}>
+                        <div>
+                          <span>Shop by category</span>
+                          <strong>Find your kitchen essential</strong>
+                        </div>
                         <Link
-                          href={`/shop?category=${cat.slug}`}
-                          className={styles.megaCategoryTitle}
+                          href="/shop"
                           onClick={() => setCategoriesOpen(false)}
                         >
-                          <span>{cat.name}</span>
+                          View all products{" "}
                           <span aria-hidden="true">→</span>
                         </Link>
                       </div>
-                    ))}
+
+                      <div className={styles.megaCatColumns}>
+                        {categoryColumns.map((column, index) => (
+                          <ul
+                            key={`mega-col-${index}`}
+                            className={styles.megaCatColumn}
+                          >
+                            {column.map(renderCategoryLink)}
+                          </ul>
+                        ))}
+                      </div>
+                    </div>
+
+                    <aside
+                      className={styles.megaMenuPreview}
+                      aria-live="polite"
+                    >
+                      {previewCategory ? (
+                        <>
+                          <div className={styles.megaPreviewMedia}>
+                            {previewCategory.image_url ? (
+                              // eslint-disable-next-line @next/next/no-img-element
+                              <img
+                                key={previewCategory.id}
+                                src={mediaUrl(previewCategory.image_url)}
+                                alt={previewCategory.name}
+                                className={styles.megaPreviewImage}
+                              />
+                            ) : (
+                              <div className={styles.megaPreviewPlaceholder}>
+                                {(previewCategory.name || "?").charAt(0)}
+                              </div>
+                            )}
+                          </div>
+                          <div className={styles.megaPreviewCopy}>
+                            <h3>{previewCategory.name}</h3>
+                            <p>
+                              {previewCategory.description?.trim() ||
+                                `Explore our ${previewCategory.name} collection — thoughtfully chosen for everyday Indian cooking.`}
+                            </p>
+                            <Link
+                              href={categoryHref(previewCategory)}
+                              className={styles.megaPreviewCta}
+                              onClick={() => setCategoriesOpen(false)}
+                            >
+                              Shop {previewCategory.name}{" "}
+                              <span aria-hidden="true">→</span>
+                            </Link>
+                          </div>
+                        </>
+                      ) : (
+                        <div className={styles.megaPreviewEmpty}>
+                          Categories coming soon
+                        </div>
+                      )}
+                    </aside>
                   </div>
                 </div>
               </div>

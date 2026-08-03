@@ -9,15 +9,21 @@
 }
 
 .card {
+  position: relative;
+  z-index: 0;
   text-align: center;
   padding: var(--space-8) var(--space-5);
   background: var(--bg-primary);
   border: 1px solid var(--border-light);
   border-radius: 0;
   box-shadow: var(--shadow-card);
+  overflow: hidden;
+  isolation: isolate;
 }
 
 .iconWrap {
+  position: relative;
+  z-index: 1;
   width: 60px;
   height: 60px;
   margin: 0 auto var(--space-4);
@@ -26,6 +32,12 @@
   color: var(--color-orange);
   display: grid;
   place-items: center;
+}
+
+.card h3,
+.card p {
+  position: relative;
+  z-index: 1;
 }
 
 .card h3 {
@@ -39,6 +51,60 @@
   font-size: var(--text-sm);
   color: var(--text-muted);
   line-height: var(--leading-loose);
+}
+
+/* Desktop: dark brown border segment travels clockwise on hover */
+@media (hover: hover) and (min-width: 901px) {
+  .card {
+    border-color: transparent;
+    transition: box-shadow 0.25s ease;
+  }
+
+  .card::before {
+    content: "";
+    position: absolute;
+    z-index: -2;
+    top: 50%;
+    left: 50%;
+    width: 220%;
+    aspect-ratio: 1;
+    translate: -50% -50%;
+    background: conic-gradient(
+      from 0deg,
+      transparent 0deg,
+      transparent 290deg,
+      var(--primary) 320deg,
+      var(--primary-hover) 350deg,
+      transparent 360deg
+    );
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+  }
+
+  .card::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: 2px;
+    background: var(--bg-primary);
+    pointer-events: none;
+  }
+
+  .card:hover {
+    box-shadow: var(--shadow-md);
+  }
+
+  .card:hover::before {
+    opacity: 1;
+    animation: whyBorderSpin 1.5s linear infinite;
+  }
+
+  @keyframes whyBorderSpin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
 }
 
 @media (max-width: 900px) {
@@ -75,5 +141,11 @@
 @media (max-width: 768px) {
   .scrollWrap {
     --section-edge: var(--space-4);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card:hover::before {
+    animation: none;
   }
 }
