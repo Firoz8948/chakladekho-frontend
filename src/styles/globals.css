@@ -825,6 +825,11 @@ main.site-main {
 }
 
 @media (min-width: 861px) {
+  :root {
+    /* Desktop navbar bar is 60px (logo overhangs separately) */
+    --header-height: 60px;
+  }
+
   main.site-main {
     /* Match fixed navbar height so hero never slides under it */
     padding-top: var(--header-height);

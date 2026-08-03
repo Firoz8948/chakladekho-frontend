@@ -8,11 +8,23 @@
   padding-right: clamp(1rem, 2vw, 2rem);
 }
 
+.headingRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
 .heading {
   font-size: clamp(1.45rem, 2.4vw, 1.9rem);
-  margin-bottom: 1.25rem;
-  text-align: center;
+  margin: 0;
+  text-align: left;
   color: var(--primary);
+}
+
+.desktopSort {
+  flex-shrink: 0;
 }
 
 .shopLayout {
@@ -82,8 +94,18 @@
     display: block;
   }
 
-  .desktopSidebar {
+  .desktopSidebar,
+  .desktopSort {
     display: none;
+  }
+
+  .headingRow {
+    margin-bottom: 1rem;
+    justify-content: center;
+  }
+
+  .heading {
+    text-align: center;
   }
 
   .mobileBrowse,
@@ -93,10 +115,6 @@
 
   .mobileBrowse {
     margin-bottom: 1.25rem;
-  }
-
-  .heading {
-    margin-bottom: 1rem;
   }
 
   .loadMoreMarker {

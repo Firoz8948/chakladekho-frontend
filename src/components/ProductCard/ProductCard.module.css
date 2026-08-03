@@ -48,6 +48,53 @@
   font-weight: var(--font-bold);
   padding: 0.2rem 0.5rem;
   border-radius: 0;
+  z-index: 2;
+}
+
+/* Desktop: discount + share/cart slide in L→R on hover, out R→L on leave */
+@media (hover: hover) and (min-width: 769px) {
+  .discount,
+  .topActions .shareBtn,
+  .topActions .addBtn {
+    opacity: 0;
+    transform: translateX(-14px);
+    pointer-events: none;
+    transition:
+      opacity 0.28s ease,
+      transform 0.28s ease;
+  }
+
+  .topActions .addBtn {
+    transition-delay: 0.05s;
+  }
+
+  .card:hover .discount,
+  .card:hover .topActions .shareBtn,
+  .card:hover .topActions .addBtn,
+  .card:focus-within .discount,
+  .card:focus-within .topActions .shareBtn,
+  .card:focus-within .topActions .addBtn {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+  }
+
+  .card:hover .topActions .addBtn,
+  .card:focus-within .topActions .addBtn {
+    transition-delay: 0.05s;
+  }
+
+  .card:not(:hover):not(:focus-within) .topActions .addBtn {
+    transition-delay: 0s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .discount,
+  .topActions .shareBtn,
+  .topActions .addBtn {
+    transition: none !important;
+  }
 }
 
 .soldOut {
@@ -203,6 +250,10 @@
 }
 
 @media (max-width: 768px) {
+  .body {
+    padding: 0 var(--space-4) 5px;
+  }
+
   .topActions .shareBtn,
   .topActions .addBtn {
     width: 30px;

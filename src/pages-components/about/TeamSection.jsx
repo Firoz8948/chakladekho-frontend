@@ -1,5 +1,8 @@
+"use client";
+
 import { FiGlobe, FiHome, FiPackage, FiUsers } from "react-icons/fi";
 
+import useScrollReveal from "@/hooks/useScrollReveal";
 import styles from "./TeamSection.module.css";
 
 const PILLARS = [
@@ -26,18 +29,29 @@ const PILLARS = [
 ];
 
 export default function TeamSection() {
+  const [ref, visible] = useScrollReveal({ threshold: 0.12 });
+
   return (
-    <section className="section">
+    <section
+      ref={ref}
+      className={`section ${visible ? styles.visible : ""}`}
+    >
       <div className="container">
-        <h2 className="section-title">How We Serve</h2>
-        <p className="section-subtitle">
+        <h2 className={`section-title ${styles.reveal} ${styles.heading}`}>
+          How We Serve
+        </h2>
+        <p className={`section-subtitle ${styles.reveal} ${styles.sub}`}>
           Wholesale, retail, online & offline — kitchen tools you can trust
         </p>
 
         <div className={styles.scrollWrap}>
           <div className={styles.grid}>
-            {PILLARS.map(({ icon: Icon, title, text }) => (
-              <div key={title} className={styles.card}>
+            {PILLARS.map(({ icon: Icon, title, text }, index) => (
+              <div
+                key={title}
+                className={`${styles.card} ${styles.reveal}`}
+                style={{ "--reveal-delay": `${0.12 + index * 0.1}s` }}
+              >
                 <div className={styles.iconWrap}>
                   <Icon size={26} />
                 </div>

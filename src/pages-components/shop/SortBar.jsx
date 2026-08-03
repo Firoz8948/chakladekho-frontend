@@ -19,11 +19,13 @@ export default function SortBar({
     <div
       className={`${styles.bar} ${
         variant === "sidebar" ? styles.sidebarBar : ""
-      }`}
+      } ${variant === "inline" ? styles.inlineBar : ""}`}
     >
-      <span className={styles.count}>
-        {total} {total === 1 ? "product" : "products"}
-      </span>
+      {variant !== "inline" ? (
+        <span className={styles.count}>
+          {total} {total === 1 ? "product" : "products"}
+        </span>
+      ) : null}
       <label className={styles.sort}>
         Sort by:
         <select value={sort} onChange={(e) => onSortChange(e.target.value)}>

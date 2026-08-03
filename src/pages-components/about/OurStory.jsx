@@ -1,14 +1,22 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 
+import useScrollReveal from "@/hooks/useScrollReveal";
 import { ASSETS, BRAND } from "@/utils/constants";
 import styles from "./OurStory.module.css";
 
 export default function OurStory() {
+  const [ref, visible] = useScrollReveal({ threshold: 0.15 });
+
   return (
-    <section className={`section ${styles.section}`}>
+    <section
+      ref={ref}
+      className={`section ${styles.section} ${visible ? styles.visible : ""}`}
+    >
       <div className={`container ${styles.grid}`}>
-        <div className={styles.logoStage}>
+        <div className={`${styles.logoStage} ${styles.reveal}`}>
           <span className={styles.stageEyebrow}>Made for Indian kitchens</span>
           <div className={styles.logoFrame}>
             <Image
@@ -26,7 +34,9 @@ export default function OurStory() {
           </div>
         </div>
 
-        <div className={`${styles.content} ${styles.contentPanel}`}>
+        <div
+          className={`${styles.content} ${styles.contentPanel} ${styles.reveal}`}
+        >
           <p className="section-tag">Our Journey</p>
           <h2 className={styles.title}>
             Everyday kitchen tools, thoughtfully chosen

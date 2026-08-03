@@ -59,6 +59,35 @@
   color: var(--text-light);
 }
 
+.revealItem {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.65s ease,
+    transform 0.65s ease;
+}
+
+.textVisible .revealItem {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.textVisible .eyebrow {
+  transition-delay: 0.05s;
+}
+
+.textVisible .title {
+  transition-delay: 0.16s;
+}
+
+.textVisible .copy {
+  transition-delay: 0.28s;
+}
+
+.textVisible .cta {
+  transition-delay: 0.4s;
+}
+
 .eyebrow {
   grid-area: eyebrow;
   align-self: end;
@@ -272,8 +301,14 @@
   .cta,
   .cta span,
   .videoFrame::before,
-  .videoFrame::after {
+  .videoFrame::after,
+  .revealItem {
     transition: none;
+  }
+
+  .revealItem {
+    opacity: 1;
+    transform: none;
   }
 
   .section:hover .backdrop,

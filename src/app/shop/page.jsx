@@ -162,7 +162,17 @@ function ShopContent() {
   return (
     <>
       <div className={`container section ${styles.page} ${styles.shopContainer}`}>
-        <h1 className={styles.heading}>{title}</h1>
+        <div className={styles.headingRow}>
+          <h1 className={styles.heading}>{title}</h1>
+          <div className={styles.desktopSort}>
+            <SortBar
+              total={data.total}
+              sort={sort}
+              onSortChange={setSort}
+              variant="inline"
+            />
+          </div>
+        </div>
 
         <div className={styles.mobileBrowse}>
           {!query ? <ShopBrowse /> : null}
@@ -175,12 +185,6 @@ function ShopContent() {
               <h2>Filters</h2>
             </div>
             <CategorySidebar />
-            <SortBar
-              total={data.total}
-              sort={sort}
-              onSortChange={setSort}
-              variant="sidebar"
-            />
           </aside>
 
           <main className={styles.productArea}>

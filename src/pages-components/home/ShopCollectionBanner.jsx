@@ -3,11 +3,13 @@
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 
+import useScrollReveal from "@/hooks/useScrollReveal";
 import styles from "./ShopCollectionBanner.module.css";
 
 export default function ShopCollectionBanner() {
   const sectionRef = useRef(null);
   const videoRef = useRef(null);
+  const [revealRef, textVisible] = useScrollReveal({ threshold: 0.2 });
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -45,12 +47,22 @@ export default function ShopCollectionBanner() {
       aria-labelledby="collection-banner-title"
     >
       <div className={styles.backdrop} aria-hidden="true" />
-      <div className={`container ${styles.content}`}>
-        <p className={styles.eyebrow}>The ChaklaDekho Collection</p>
-        <h2 id="collection-banner-title" className={styles.title}>
+      <div
+        ref={revealRef}
+        className={`container ${styles.content} ${
+          textVisible ? styles.textVisible : ""
+        }`}
+      >
+        <p className={`${styles.eyebrow} ${styles.revealItem}`}>
+          The ChaklaDekho Collection
+        </p>
+        <h2
+          id="collection-banner-title"
+          className={`${styles.title} ${styles.revealItem}`}
+        >
           Everything your kitchen needs, in one place
         </h2>
-        <p className={styles.copy}>
+        <p className={`${styles.copy} ${styles.revealItem}`}>
           Discover thoughtfully selected tools made for everyday Indian cooking.
         </p>
         <div className={styles.videoFrame}>
@@ -65,7 +77,7 @@ export default function ShopCollectionBanner() {
             aria-label="ChaklaDekho kitchen collection"
           />
         </div>
-        <Link href="/shop" className={styles.cta}>
+        <Link href="/shop" className={`${styles.cta} ${styles.revealItem}`}>
           Explore All Products
           <span aria-hidden="true">→</span>
         </Link>

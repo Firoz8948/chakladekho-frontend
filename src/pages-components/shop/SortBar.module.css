@@ -53,3 +53,13 @@
   background: var(--cream);
   border-color: var(--border);
 }
+
+.inlineBar {
+  margin: 0;
+  gap: 0;
+}
+
+.inlineBar .sort {
+  color: var(--heading);
+  font-weight: var(--font-semibold);
+}

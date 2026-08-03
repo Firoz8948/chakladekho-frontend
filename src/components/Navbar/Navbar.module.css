@@ -211,14 +211,15 @@
 }
 
 .megaMenu {
-  position: absolute;
-  top: 100%;
+  position: fixed;
+  top: 60px;
   left: 0;
   right: 0;
+  width: 100%;
   z-index: 350;
   max-height: calc(100vh - 60px);
   overflow-y: auto;
-  background: var(--cream);
+  background: #ffffff;
   color: var(--text-primary);
   border-top: 1px solid rgba(var(--primary-rgb), 0.12);
   box-shadow: 0 22px 45px rgba(var(--black-rgb), 0.16);

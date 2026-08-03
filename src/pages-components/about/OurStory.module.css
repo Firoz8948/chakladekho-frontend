@@ -28,7 +28,26 @@
   margin: 0 auto;
   border: 1px solid rgba(var(--primary-rgb), 0.16);
   box-shadow: 18px 18px 0 rgba(var(--primary-rgb), 0.08);
-  animation: storyReveal 0.55s ease-out both;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s ease;
+}
+
+.visible .logoStage.reveal {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.05s;
+}
+
+.visible .contentPanel.reveal {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.2s;
 }
 
 .logoStage {
@@ -252,20 +271,11 @@
   }
 }
 
-@keyframes storyReveal {
-  from {
-    opacity: 0;
-    transform: translateY(18px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .grid {
-    animation: none;
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 
   .cta {
