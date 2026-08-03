@@ -169,6 +169,7 @@
   font-size: 0.82rem;
   font-weight: 600;
   cursor: pointer;
+  width: fit-content;
 }
 
 .shipBtn:disabled {
