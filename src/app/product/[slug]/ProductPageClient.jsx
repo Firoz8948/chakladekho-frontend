@@ -7,11 +7,9 @@ import Loader from "@/components/Loader/Loader";
 import Testimonials from "@/pages-components/home/Testimonials";
 import VideoProducts from "@/pages-components/home/VideoProducts";
 import {
-  ProductBenefitIcons,
   ProductImages,
   ProductInfo,
   ProductMetafields,
-  ProductTrustBar,
   RelatedProducts,
 } from "@/pages-components/product";
 import { productService } from "@/services/productService";
@@ -64,9 +62,6 @@ export default function ProductPageClient({ slug }) {
           <ProductImages images={product.images} name={product.name} />
           <ProductInfo product={product} />
         </div>
-
-        <ProductTrustBar />
-        <ProductBenefitIcons />
 
         <ProductMetafields product={product} />
       </div>

@@ -1,14 +1,21 @@
 /**
- * Deterministic fake rating/review counts for display (not real reviews).
- * Same product id always gets the same review count in 2000–2500.
+ * Deterministic display rating/review counts (not real reviews).
+ * Same product id always gets the same values.
+ * Rating: 4.7 | 4.8 | 4.9 | 5.0
+ * Reviews: 300–500 inclusive
  */
 export function getProductSocialProof(id) {
-  const n = Number(id) || 0;
-  const reviews = 2000 + (Math.abs(n * 7919) % 501); // 2000..2500
+  const n = Math.abs(Number(id) || 0);
+  const ratings = [4.7, 4.8, 4.9, 5.0];
+  const rating = ratings[n % ratings.length];
+  const reviews = 300 + (Math.abs(n * 7919) % 201); // 300..500
+  const ratingLabel = Number.isInteger(rating)
+    ? `(${rating.toFixed(1)})`
+    : `(${rating})`;
   return {
-    rating: 4.9,
+    rating,
     reviews,
-    ratingLabel: "(4.9)",
+    ratingLabel,
     label: `${reviews.toLocaleString("en-IN")} Reviews`,
   };
 }

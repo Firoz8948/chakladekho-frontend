@@ -69,7 +69,7 @@
 }
 
 .category {
-  font-family: var(--font-ui);
+  font-family: var(--font-product-title);
   font-size: var(--text-xs);
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -78,7 +78,7 @@
 }
 
 .name {
-  font-family: var(--font-product-title);
+  font-family: var(--font-ui);
   font-size: var(--text-base);
   font-weight: var(--font-semibold);
   color: var(--color-maroon);
