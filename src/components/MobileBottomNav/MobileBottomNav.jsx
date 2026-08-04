@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   FiHome,
+  FiPlayCircle,
   FiShoppingBag,
   FiShoppingCart,
   FiUser,
@@ -42,6 +43,14 @@ export default function MobileBottomNav({ onProfileClick }) {
       >
         <FiShoppingBag size={22} strokeWidth={2} aria-hidden />
         <span>Shop</span>
+      </Link>
+
+      <Link
+        href="/reels"
+        className={`${styles.item} ${isActive("/reels") ? styles.active : ""}`}
+      >
+        <FiPlayCircle size={22} strokeWidth={2} aria-hidden />
+        <span>Watch&Shop</span>
       </Link>
 
       <Link
