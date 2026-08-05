@@ -135,8 +135,8 @@ export default function Footer() {
             © {year} ChaklaDekho
             <span className={styles.tm} title="Trademark" aria-label="Trademark">
               TM
-            </span>
-            . All rights reserved.
+            </span>{" "}
+            Powered by SUPER STEEL CENTRE. All rights reserved.
           </p>
         </div>
       </div>
