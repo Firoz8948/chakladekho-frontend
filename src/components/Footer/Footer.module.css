@@ -170,7 +170,7 @@
   border-top: 1px solid rgba(255, 255, 255, 0.12);
   padding: var(--space-5) 0;
   font-size: var(--text-sm);
-  color: rgba(255, 255, 255, 0.5);
+  color: #ffffff;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -193,6 +193,7 @@
 
 .bottomInner p {
   margin: 0;
+  color: #ffffff;
 }
 
 .tm {
