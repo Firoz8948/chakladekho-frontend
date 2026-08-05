@@ -2,9 +2,11 @@
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { FiCopy, FiEdit2, FiTrash2 } from "react-icons/fi";
 import {
   getAdminProducts,
   deleteProduct,
+  duplicateProduct,
   getAdminCategories,
 } from "@/services/adminService";
 import { mediaUrl } from "@/utils/mediaUrl";
@@ -19,6 +21,7 @@ export default function AdminProductsPage() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(null);
+  const [duplicating, setDuplicating] = useState(null);
   const router = useRouter();
   const LIMIT = 12;
 
@@ -58,6 +61,25 @@ export default function AdminProductsPage() {
       alert("Failed to delete product.");
     } finally {
       setDeleting(null);
+    }
+  };
+
+  const handleDuplicate = async (id, name) => {
+    if (!confirm(`Duplicate "${name}"? A copy will be created as inactive.`)) {
+      return;
+    }
+    setDuplicating(id);
+    try {
+      const res = await duplicateProduct(id);
+      const copied = res.data;
+      fetchProducts();
+      if (copied?.id) {
+        router.push(`/admin/products/edit/${copied.id}`);
+      }
+    } catch {
+      alert("Failed to duplicate product.");
+    } finally {
+      setDuplicating(null);
     }
   };
 
@@ -196,15 +218,35 @@ export default function AdminProductsPage() {
                         <Link
                           href={`/admin/products/edit/${p.id}`}
                           className={styles.editBtn}
+                          title="Edit"
+                          aria-label={`Edit ${p.name}`}
                         >
-                          Edit
+                          <FiEdit2 size={14} aria-hidden />
+                          <span>Edit</span>
                         </Link>
                         <button
+                          type="button"
+                          className={styles.duplicateBtn}
+                          onClick={() => handleDuplicate(p.id, p.name)}
+                          disabled={duplicating === p.id}
+                          title="Duplicate"
+                          aria-label={`Duplicate ${p.name}`}
+                        >
+                          <FiCopy size={14} aria-hidden />
+                          <span>
+                            {duplicating === p.id ? "…" : "Duplicate"}
+                          </span>
+                        </button>
+                        <button
+                          type="button"
                           className={styles.deleteBtn}
                           onClick={() => handleDelete(p.id, p.name)}
                           disabled={deleting === p.id}
+                          title="Delete"
+                          aria-label={`Delete ${p.name}`}
                         >
-                          {deleting === p.id ? "…" : "Delete"}
+                          <FiTrash2 size={14} aria-hidden />
+                          <span>{deleting === p.id ? "…" : "Delete"}</span>
                         </button>
                       </div>
                     </td>

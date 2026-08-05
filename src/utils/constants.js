@@ -24,6 +24,7 @@ export const BRAND = {
 export const ASSETS = {
   logo: "/assets/images/logo/logo.svg",
   icon: "/assets/images/logo/icon.svg",
+  ogImage: "/assets/images/logo/ogimage.webp",
   heroVideo: "/assets/videos/hero.mp4",
   heroBanner: "/assets/images/banners/herobanner.webp",
   aboutStory: "/assets/images/banners/about.webp",

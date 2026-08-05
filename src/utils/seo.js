@@ -1,8 +1,8 @@
-import { BRAND } from "@/utils/constants";
+import { ASSETS, BRAND } from "@/utils/constants";
 
 /** Canonical production origin (no trailing slash) */
 export const SITE_URL = (
-  process.env.NEXT_PUBLIC_SITE_URL || "https://chakladkho.com"
+  process.env.NEXT_PUBLIC_SITE_URL || "https://www.chakladekho.com"
 ).replace(/\/$/, "");
 
 export function absoluteUrl(path = "/") {
@@ -11,9 +11,12 @@ export function absoluteUrl(path = "/") {
   return `${SITE_URL}${path.startsWith("/") ? path : `/${path}`}`;
 }
 
+/** Verified compatible: 2848×1504 (~1.89:1), ~155KB WebP */
 export const OG_IMAGE =
-  process.env.NEXT_PUBLIC_OG_IMAGE ||
-  absoluteUrl("/assets/images/banners/herobanner.webp");
+  process.env.NEXT_PUBLIC_OG_IMAGE || absoluteUrl(ASSETS.ogImage);
+
+export const OG_IMAGE_WIDTH = 1200;
+export const OG_IMAGE_HEIGHT = 630;
 
 export const SITE_NAME = BRAND.name;
 
@@ -34,13 +37,13 @@ export function truncate(text = "", max = 155) {
 }
 
 /** Shared Open Graph + Twitter defaults */
-export function socialImages(image = OG_IMAGE) {
+export function socialImages(image = OG_IMAGE, alt = `${SITE_NAME} — Kitchen Essentials`) {
   return [
     {
       url: image,
-      width: 1200,
-      height: 630,
-      alt: `${SITE_NAME} — Kitchen Essentials`,
+      width: OG_IMAGE_WIDTH,
+      height: OG_IMAGE_HEIGHT,
+      alt,
     },
   ];
 }
@@ -51,35 +54,104 @@ export function pageMetadata({
   path = "/",
   image = OG_IMAGE,
   noIndex = false,
+  keywords,
+  type = "website",
 }) {
   const url = absoluteUrl(path);
   const fullTitle = title.includes(SITE_NAME)
     ? title
     : `${title} | ${SITE_NAME}`;
+  const desc = truncate(description);
+  const imageAlt = `${title} | ${SITE_NAME}`;
 
   return {
     title: { absolute: fullTitle },
-    description: truncate(description),
+    description: desc,
+    ...(keywords?.length ? { keywords } : {}),
     alternates: { canonical: url },
     openGraph: {
-      type: "website",
+      type,
       locale: "en_IN",
       url,
       siteName: SITE_NAME,
       title: fullTitle,
-      description: truncate(description),
-      images: socialImages(image),
+      description: desc,
+      images: socialImages(image, imageAlt),
     },
     twitter: {
       card: "summary_large_image",
       title: fullTitle,
-      description: truncate(description),
+      description: desc,
       images: [image],
     },
     ...(noIndex
-      ? { robots: { index: false, follow: false, googleBot: { index: false, follow: false } } }
+      ? {
+          robots: {
+            index: false,
+            follow: false,
+            googleBot: { index: false, follow: false },
+          },
+        }
       : {}),
   };
+}
+
+/** Auto SEO for products when admin SEO fields are empty */
+export function productSeoMeta(product, { imageUrl } = {}) {
+  const title =
+    product.seo_title?.trim() ||
+    `${product.name} Online | Buy ${product.name}`;
+
+  const description =
+    product.seo_description?.trim() ||
+    truncate(
+      stripHtml(product.description || "") ||
+        `Buy ${product.name} from ${SITE_NAME}. Quality kitchen essentials shipped across India.`,
+      155,
+    );
+
+  const image = imageUrl || OG_IMAGE;
+  const keywords = [
+    product.name,
+    product.category,
+    ...(product.tags || []),
+    "ChaklaDekho",
+    "kitchen essentials",
+    "buy online India",
+  ].filter(Boolean);
+
+  return pageMetadata({
+    title,
+    description,
+    path: `/product/${product.slug}`,
+    image,
+    keywords,
+    type: "website",
+  });
+}
+
+/** Auto SEO for categories when admin SEO fields are empty */
+export function categorySeoMeta(category, { imageUrl } = {}) {
+  const name = category.name || "Category";
+  const title =
+    category.seo_title?.trim() ||
+    `${name} | Shop ${name} Kitchen Essentials`;
+
+  const description =
+    category.seo_description?.trim() ||
+    truncate(
+      stripHtml(category.description || "") ||
+        `Shop ${name} from ${SITE_NAME}. Quality kitchen tools with delivery across India.`,
+      155,
+    );
+
+  return pageMetadata({
+    title,
+    description,
+    path: `/shop?category=${encodeURIComponent(category.slug)}`,
+    image: imageUrl || OG_IMAGE,
+    keywords: [name, "ChaklaDekho", "kitchen essentials", "buy online"],
+  });
 }
 
 export function organizationJsonLd() {
@@ -88,7 +160,7 @@ export function organizationJsonLd() {
     "@type": "Organization",
     name: SITE_NAME,
     url: SITE_URL,
-    logo: absoluteUrl("/assets/images/logo/logo.svg"),
+    logo: absoluteUrl(ASSETS.logo),
     image: OG_IMAGE,
     description: DEFAULT_DESCRIPTION,
     email: BRAND.email,
@@ -112,7 +184,7 @@ export function websiteJsonLd() {
       "@type": "SearchAction",
       target: {
         "@type": "EntryPoint",
-        urlTemplate: `${SITE_URL}/shop?search={search_term_string}`,
+        urlTemplate: `${SITE_URL}/shop?q={search_term_string}`,
       },
       "query-input": "required name=search_term_string",
     },
@@ -121,13 +193,16 @@ export function websiteJsonLd() {
 
 export function productJsonLd(product, imageUrl) {
   const desc =
-    truncate(stripHtml(product.description || ""), 300) ||
-    `${product.name} — kitchen essential from ${SITE_NAME}`;
+    truncate(
+      product.seo_description?.trim() ||
+        stripHtml(product.description || ""),
+      300,
+    ) || `${product.name} — kitchen essential from ${SITE_NAME}`;
 
   const data = {
     "@context": "https://schema.org",
     "@type": "Product",
-    name: product.name,
+    name: product.seo_title?.trim() || product.name,
     description: desc,
     sku: String(product.id),
     url: absoluteUrl(`/product/${product.slug}`),
@@ -152,7 +227,7 @@ export function productJsonLd(product, imageUrl) {
   if (product.category) data.category = product.category;
   if (product.mrp && product.mrp > product.price) {
     data.offers.priceValidUntil = new Date(
-      Date.now() + 90 * 24 * 60 * 60 * 1000
+      Date.now() + 90 * 24 * 60 * 60 * 1000,
     )
       .toISOString()
       .slice(0, 10);
@@ -171,5 +246,33 @@ export function breadcrumbJsonLd(items) {
       name: item.name,
       item: absoluteUrl(item.path),
     })),
+  };
+}
+
+export function collectionPageJsonLd({ name, description, path, items = [] }) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name,
+    description,
+    url: absoluteUrl(path),
+    isPartOf: {
+      "@type": "WebSite",
+      name: SITE_NAME,
+      url: SITE_URL,
+    },
+    ...(items.length
+      ? {
+          mainEntity: {
+            "@type": "ItemList",
+            itemListElement: items.slice(0, 20).map((item, index) => ({
+              "@type": "ListItem",
+              position: index + 1,
+              url: absoluteUrl(`/product/${item.slug}`),
+              name: item.name,
+            })),
+          },
+        }
+      : {}),
   };
 }

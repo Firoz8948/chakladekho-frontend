@@ -31,6 +31,9 @@ export const getProductsForMapping = () =>
 
 export const createProduct = (data) => adminApi.post("/admin/products", data);
 
+export const duplicateProduct = (id) =>
+  adminApi.post(`/admin/products/${id}/duplicate`);
+
 export const updateProduct = (id, data) =>
   adminApi.put(`/admin/products/${id}`, data);
 

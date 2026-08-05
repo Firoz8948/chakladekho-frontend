@@ -24,6 +24,8 @@ export default function CategoryModal({ category, onClose, onSuccess }) {
   const [form, setForm] = useState({
     name: category?.name || "",
     description: category?.description || "",
+    seo_title: category?.seo_title || "",
+    seo_description: category?.seo_description || "",
     is_active: category?.is_active ?? true,
     position: category?.position ?? 0,
   });
@@ -65,6 +67,8 @@ export default function CategoryModal({ category, onClose, onSuccess }) {
       const payload = {
         name: form.name.trim(),
         description: form.description.trim(),
+        seo_title: form.seo_title.trim(),
+        seo_description: form.seo_description.trim(),
         is_active: form.is_active,
         position: Number.parseInt(form.position, 10) || 0,
       };
@@ -138,6 +142,29 @@ export default function CategoryModal({ category, onClose, onSuccess }) {
                 value={form.description}
                 onChange={(event) =>
                   setField("description", event.target.value)
+                }
+              />
+            </label>
+
+            <label className={styles.field}>
+              <span>SEO title (optional)</span>
+              <input
+                value={form.seo_title}
+                maxLength={70}
+                placeholder="Leave blank to use category name"
+                onChange={(event) => setField("seo_title", event.target.value)}
+              />
+            </label>
+
+            <label className={styles.field}>
+              <span>SEO meta description (optional)</span>
+              <textarea
+                rows={3}
+                maxLength={160}
+                value={form.seo_description}
+                placeholder="Leave blank to auto-generate from description"
+                onChange={(event) =>
+                  setField("seo_description", event.target.value)
                 }
               />
             </label>

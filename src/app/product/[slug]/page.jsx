@@ -6,8 +6,7 @@ import {
   breadcrumbJsonLd,
   pageMetadata,
   productJsonLd,
-  stripHtml,
-  truncate,
+  productSeoMeta,
 } from "@/utils/seo";
 
 import ProductPageClient from "./ProductPageClient";
@@ -37,16 +36,20 @@ export async function generateMetadata({ params }) {
   }
 
   const image = mediaUrl(product.images?.[0], API_URL) || OG_IMAGE;
-  const description =
-    truncate(stripHtml(product.description || ""), 155) ||
-    `Buy ${product.name} from ChaklaDekho — quality kitchen essentials. Ships across India.`;
+  const meta = productSeoMeta(product, { imageUrl: image });
 
-  return pageMetadata({
-    title: product.name,
-    description,
-    path: `/product/${product.slug}`,
-    image,
-  });
+  if (!product.is_active) {
+    return {
+      ...meta,
+      robots: {
+        index: false,
+        follow: false,
+        googleBot: { index: false, follow: false },
+      },
+    };
+  }
+
+  return meta;
 }
 
 export default async function ProductPage({ params }) {
@@ -61,6 +64,14 @@ export default async function ProductPage({ params }) {
         breadcrumbJsonLd([
           { name: "Home", path: "/" },
           { name: "Shop", path: "/shop" },
+          ...(product.category_slug
+            ? [
+                {
+                  name: product.category,
+                  path: `/shop?category=${product.category_slug}`,
+                },
+              ]
+            : []),
           { name: product.name, path: `/product/${product.slug}` },
         ]),
       ]

@@ -305,6 +305,8 @@ export default function ProductForm({ mode = "add", productId = null }) {
     is_featured: false,
     is_active: true,
     tags: "",
+    seo_title: "",
+    seo_description: "",
   });
 
   const [variants, setVariants] = useState([]);
@@ -362,6 +364,8 @@ export default function ProductForm({ mode = "add", productId = null }) {
             is_featured: p.is_featured || false,
             is_active: p.is_active ?? true,
             tags: (p.tags || []).join(", "),
+            seo_title: p.seo_title || "",
+            seo_description: p.seo_description || "",
           });
           setImages(p.images || []);
           setVariants(p.variants || []);
@@ -415,6 +419,8 @@ export default function ProductForm({ mode = "add", productId = null }) {
         tags: form.tags
           ? form.tags.split(",").map((t) => t.trim()).filter(Boolean)
           : [],
+        seo_title: form.seo_title.trim(),
+        seo_description: form.seo_description.trim(),
         variants: variants.map((v) => ({
           name: v.name,
           options: v.options.map((o) => ({
@@ -733,7 +739,38 @@ export default function ProductForm({ mode = "add", productId = null }) {
                   value={form.tags}
                   onChange={(e) => setField("tags", e.target.value)}
                 />
-                <span className={styles.hint}>Used for filtering and SEO</span>
+                <span className={styles.hint}>
+                  Internal labels / filtering. Not used as primary SEO ranking.
+                </span>
+              </div>
+
+              <div className={styles.field}>
+                <label className={styles.label}>SEO title (optional)</label>
+                <input
+                  className={styles.input}
+                  placeholder="Leave blank to use product name"
+                  value={form.seo_title}
+                  maxLength={70}
+                  onChange={(e) => setField("seo_title", e.target.value)}
+                />
+                <span className={styles.hint}>
+                  Browser tab &amp; Google title. {form.seo_title.length}/70
+                </span>
+              </div>
+
+              <div className={styles.field}>
+                <label className={styles.label}>SEO meta description (optional)</label>
+                <textarea
+                  className={styles.textarea}
+                  rows={3}
+                  placeholder="Leave blank to auto-generate from product description"
+                  value={form.seo_description}
+                  maxLength={160}
+                  onChange={(e) => setField("seo_description", e.target.value)}
+                />
+                <span className={styles.hint}>
+                  Shown in search results. {form.seo_description.length}/160
+                </span>
               </div>
             </div>
 
