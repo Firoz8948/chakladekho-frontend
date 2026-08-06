@@ -88,6 +88,13 @@ export default function Footer() {
         </div>
 
         <div className={styles.col}>
+          <h4>Policies</h4>
+          <Link href="/privacy">Privacy Policy</Link>
+          <Link href="/terms">Terms of Service</Link>
+          <Link href="/shipping-returns">Shipping &amp; Returns</Link>
+        </div>
+
+        <div className={styles.col}>
           <h4>Get in Touch</h4>
           <p className={styles.contactLine}>
             <FiMapPin

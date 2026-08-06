@@ -69,6 +69,9 @@ export default async function sitemap() {
     { path: "/shop", priority: 0.95, changeFrequency: "daily" },
     { path: "/about", priority: 0.7, changeFrequency: "monthly" },
     { path: "/contact", priority: 0.65, changeFrequency: "monthly" },
+    { path: "/privacy", priority: 0.4, changeFrequency: "yearly" },
+    { path: "/terms", priority: 0.4, changeFrequency: "yearly" },
+    { path: "/shipping-returns", priority: 0.55, changeFrequency: "monthly" },
     { path: "/reels", priority: 0.6, changeFrequency: "weekly" },
   ].map(({ path, priority, changeFrequency }) => ({
     url: `${SITE_URL}${path}`,
