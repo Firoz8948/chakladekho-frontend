@@ -12,7 +12,7 @@ export const BRAND = {
   phone: "+91 96991 64131",
   whatsapp: "919699164131",
   whatsappDisplay: "+91 96991 64131",
-  email: "hello@chakladkho.com",
+  email: "brjangu29@gmail.com",
   address:
     "Umadevi mandir, Umrale, Samel Pada, Nalasopara West, Vasai-Virar, Maharashtra 401203",
   packagedBy: "ChaklaDekho",
