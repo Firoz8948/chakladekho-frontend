@@ -1,22 +1,64 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import toast from "react-hot-toast";
 
 import Loader from "@/components/Loader/Loader";
 import { useAuth } from "@/hooks/useAuth";
+import { useCart } from "@/hooks/useCart";
 import { orderService } from "@/services/orderService";
+import { trackPurchase } from "@/utils/metaPixel";
 import { formatDate, formatPrice } from "@/utils/formatPrice";
 import styles from "./orders.module.css";
 
 function OrdersContent() {
   const searchParams = useSearchParams();
   const { isAuthenticated, loading: authLoading } = useAuth();
+  const { clearCart } = useCart();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const handledReturnRef = useRef(false);
 
   const highlightedId = searchParams.get("order");
+  const paymentStatus = searchParams.get("payment");
+
+  useEffect(() => {
+    if (authLoading) return;
+    if (!isAuthenticated) {
+      setLoading(false);
+      return;
+    }
+    orderService
+      .getMyOrders()
+      .then((data) => setOrders(data.orders || []))
+      .catch(() => setOrders([]))
+      .finally(() => setLoading(false));
+  }, [authLoading, isAuthenticated]);
+
+  useEffect(() => {
+    if (handledReturnRef.current) return;
+    if (paymentStatus !== "success" || !highlightedId) return;
+    handledReturnRef.current = true;
+    clearCart();
+    toast.success("Payment successful!");
+    try {
+      const raw = sessionStorage.getItem("cd_pending_purchase");
+      if (raw) {
+        const pending = JSON.parse(raw);
+        trackPurchase({
+          orderId: highlightedId,
+          total: pending.total,
+          items: pending.items || [],
+          eventId: pending.eventId,
+        });
+        sessionStorage.removeItem("cd_pending_purchase");
+      }
+    } catch {
+      /* ignore */
+    }
+  }, [paymentStatus, highlightedId, clearCart]);
 
   useEffect(() => {
     if (authLoading) return;

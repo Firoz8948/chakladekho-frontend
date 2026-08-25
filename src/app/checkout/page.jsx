@@ -71,6 +71,22 @@ async function saveAddressToProfile(form) {
   }
 }
 
+function submitPayuForm(paymentUrl, fields) {
+  const form = document.createElement("form");
+  form.method = "POST";
+  form.action = paymentUrl;
+  form.style.display = "none";
+  Object.entries(fields || {}).forEach(([name, value]) => {
+    const input = document.createElement("input");
+    input.type = "hidden";
+    input.name = name;
+    input.value = value == null ? "" : String(value);
+    form.appendChild(input);
+  });
+  document.body.appendChild(form);
+  form.submit();
+}
+
 function loadRazorpay() {
   return new Promise((resolve) => {
     if (window.Razorpay) return resolve(true);
@@ -143,7 +159,7 @@ export default function CheckoutPage() {
   const { isAuthenticated, user, loading: authLoading, refresh } = useAuth();
 
   const [form, setForm] = useState(emptyForm);
-  const [method, setMethod] = useState("razorpay");
+  const [method, setMethod] = useState("payu");
   const [placing, setPlacing] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
   const [promo, setPromo] = useState(null);
@@ -160,6 +176,14 @@ export default function CheckoutPage() {
       setLoginOpen(true);
     }
   }, [authLoading, isAuthenticated]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("payment") === "failed") {
+      toast.error("Payment failed or cancelled. You can try again.");
+    }
+  }, []);
 
   useEffect(() => {
     if (
@@ -212,7 +236,7 @@ export default function CheckoutPage() {
     return true;
   };
 
-  const handleRazorpay = async () => {
+  const handleOnlinePayment = async () => {
     const config = await paymentService.getConfig();
     if (!config?.configured) {
       toast.error(
@@ -221,16 +245,35 @@ export default function CheckoutPage() {
       return;
     }
 
+    const purchaseEventId = newEventId("Purchase");
+    const meta = { meta_event_id: purchaseEventId, ...metaCookies() };
+    const payload = buildCheckoutPayload(cart, form, promo?.code, meta);
+    const data = await paymentService.createOrder(payload);
+
+    if (data.provider === "payu" || data.payu) {
+      // Store meta for post-return analytics (PayU redirects away)
+      try {
+        sessionStorage.setItem(
+          "cd_pending_purchase",
+          JSON.stringify({
+            eventId: purchaseEventId,
+            total: data.amount,
+            items: cart.items,
+          })
+        );
+      } catch {
+        /* ignore */
+      }
+      await saveAddressToProfile(form);
+      submitPayuForm(data.payment_url, data.payu);
+      return;
+    }
+
     const ok = await loadRazorpay();
     if (!ok) {
       toast.error("Failed to load payment gateway");
       return;
     }
-
-    const purchaseEventId = newEventId("Purchase");
-    const meta = { meta_event_id: purchaseEventId, ...metaCookies() };
-    const payload = buildCheckoutPayload(cart, form, promo?.code, meta);
-    const data = await paymentService.createOrder(payload);
 
     const options = {
       key: data.key_id || config.key_id,
@@ -296,7 +339,7 @@ export default function CheckoutPage() {
       const meta = { meta_event_id: purchaseEventId, ...metaCookies() };
       const payload = {
         ...buildCheckoutPayload(cart, form, promo?.code, meta),
-        payment_method: method,
+        payment_method: method === "payu" ? "payu" : method,
       };
 
       if (method === "cod") {
@@ -313,7 +356,7 @@ export default function CheckoutPage() {
         toast.success("Order placed successfully!");
         router.push(`/orders?order=${order.order_id}`);
       } else {
-        await handleRazorpay();
+        await handleOnlinePayment();
       }
     } catch (err) {
       toast.error(err.message);

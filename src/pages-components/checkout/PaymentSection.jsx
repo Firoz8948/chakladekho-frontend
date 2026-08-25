@@ -22,9 +22,9 @@ export default function PaymentSection({
 }) {
   const methods = [
     {
-      value: "razorpay",
-      label: "Pay Online (Razorpay)",
-      desc: "Cards, UPI, Netbanking & Wallets",
+      value: "payu",
+      label: "Pay Online",
+      desc: "Cards, UPI, Netbanking & Wallets (PayU)",
       icon: FiCreditCard,
       shipping: prepaidShipping,
     },
