@@ -84,6 +84,23 @@
   color: var(--text-muted);
 }
 
+.error {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #b42318;
+}
+
+.invalid {
+  border-color: #b42318 !important;
+}
+
+.invalid:focus {
+  border-color: #b42318 !important;
+  box-shadow: 0 0 0 2px rgba(180, 35, 24, 0.12);
+}
+
 @media (max-width: 560px) {
   .grid {
     grid-template-columns: 1fr;

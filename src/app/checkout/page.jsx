@@ -19,7 +19,7 @@ import {
   trackInitiateCheckout,
   trackPurchase,
 } from "@/utils/metaPixel";
-import { isValidPincode, required } from "@/utils/validators";
+import { validateCheckoutAddress } from "@/utils/validators";
 import styles from "./checkout.module.css";
 
 const emptyForm = {
@@ -99,23 +99,24 @@ function loadRazorpay() {
 }
 
 function buildCheckoutPayload(cart, form, promoCode, meta = {}) {
+  const email = String(form.email || "").trim();
   return {
     customer: {
-      name: form.full_name,
-      mobile: form.phone,
-      email: form.email || null,
+      name: String(form.full_name || "").trim(),
+      mobile: String(form.phone || "").trim(),
+      email: email || null,
     },
     address: {
-      line1: form.line1,
-      line2: form.line2 || null,
-      landmark: form.landmark || null,
-      city: form.city,
-      state: form.state,
-      pincode: form.pincode,
-      country: form.country,
+      line1: String(form.line1 || "").trim(),
+      line2: String(form.line2 || "").trim() || null,
+      landmark: String(form.landmark || "").trim() || null,
+      city: String(form.city || "").trim(),
+      state: String(form.state || "").trim(),
+      pincode: String(form.pincode || "").replace(/\D/g, "").slice(0, 6),
+      country: form.country || "India",
     },
     items: cart.items.map((item) => ({
-      product_id: item.product_id,
+      product_id: String(item.product_id),
       name: item.name,
       price: item.price,
       quantity: item.quantity,
@@ -164,6 +165,7 @@ export default function CheckoutPage() {
   const [loginOpen, setLoginOpen] = useState(false);
   const [promo, setPromo] = useState(null);
   const [shippingQuote, setShippingQuote] = useState(null);
+  const [fieldErrors, setFieldErrors] = useState({});
   const prefilledRef = useRef(false);
   const checkoutTrackedRef = useRef(false);
 
@@ -222,18 +224,22 @@ export default function CheckoutPage() {
   };
 
   const validateForm = () => {
-    const requiredFields = ["full_name", "phone", "line1", "city", "state", "pincode"];
-    for (const f of requiredFields) {
-      if (!required(form[f])) {
-        toast.error("Please fill in all required fields");
-        return false;
-      }
-    }
-    if (!isValidPincode(form.pincode)) {
-      toast.error("Enter a valid 6-digit pincode");
+    const result = validateCheckoutAddress(form);
+    setFieldErrors(result.errors);
+    if (!result.ok) {
+      toast.error(result.firstMessage || "Please fix the highlighted fields");
       return false;
     }
     return true;
+  };
+
+  const clearFieldError = (name) => {
+    setFieldErrors((prev) => {
+      if (!prev[name]) return prev;
+      const next = { ...prev };
+      delete next[name];
+      return next;
+    });
   };
 
   const handleOnlinePayment = async () => {
@@ -421,6 +427,8 @@ export default function CheckoutPage() {
               onChange={setForm}
               phoneReadOnly
               onAddNewAddress={handleAddNewAddress}
+              errors={fieldErrors}
+              onClearError={clearFieldError}
             />
           </section>
 
