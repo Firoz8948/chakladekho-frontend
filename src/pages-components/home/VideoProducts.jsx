@@ -15,7 +15,6 @@ import { useCart } from "@/hooks/useCart";
 import { calcDiscount, formatPrice } from "@/utils/formatPrice";
 import { mediaUrl } from "@/utils/mediaUrl";
 import { shareLink, videoShareUrl } from "@/utils/share";
-import { getProductSocialProof } from "@/utils/socialProof";
 import {
   fetchVideoProducts,
   toCartProduct,
@@ -178,7 +177,6 @@ function VideoProductCard({ item, isMobile, onOpen, onAdd, onBuyNow, onShare }) 
 
   const discount = calcDiscount(item.mrp, item.price);
   const soldOut = item.stock === 0;
-  const proof = getProductSocialProof(item.product_id || item.id);
 
   // Mobile: autoplay only while the card is mostly on screen
   useEffect(() => {
@@ -307,11 +305,6 @@ function VideoProductCard({ item, isMobile, onOpen, onAdd, onBuyNow, onShare }) 
       <div className={styles.body}>
         <span className={styles.category}>{item.category}</span>
         <h3 className={styles.name}>{item.name}</h3>
-        <div className={styles.cardRating} aria-label={`${proof.rating} stars`}>
-          <span>{"\u2605\u2605\u2605\u2605\u2605"}</span>
-          <span>{proof.ratingLabel}</span>
-          <span className={styles.reviews}>{proof.label}</span>
-        </div>
 
         <div className={styles.footer}>
           <div className={styles.priceBlock}>

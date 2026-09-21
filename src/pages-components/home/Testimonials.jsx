@@ -77,7 +77,7 @@ export default function Testimonials() {
     <section className={`section ${styles.wrap}`}>
       <div className="container">
         <h2 className="section-title">What Our Customers Say</h2>
-        <p className="section-subtitle">Real reviews from real customers</p>
+        <p className="section-subtitle">Feedback from home cooks across India</p>
       </div>
 
       <div className={styles.marqueeOuter}>

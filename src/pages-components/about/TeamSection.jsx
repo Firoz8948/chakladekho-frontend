@@ -19,7 +19,7 @@ const PILLARS = [
   {
     icon: FiHome,
     title: "Offline Store",
-    text: "Visit us in Virar West, Palghar — see the products in person and get guidance from our team.",
+    text: "Visit us in Nalasopara West, Vasai-Virar — see the products in person and get guidance from our team.",
   },
   {
     icon: FiGlobe,

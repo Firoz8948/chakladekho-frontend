@@ -18,9 +18,10 @@ export default function PrivacyPolicy() {
           <div className={styles.block}>
             <h2>1. Who we are</h2>
             <p>
-              {BRAND.name} (&quot;we&quot;, &quot;us&quot;, &quot;our&quot;) sells kitchen essentials
-              online across India. Our business is operated from {BRAND.address}.
-              For privacy questions, contact us at{" "}
+              {BRAND.name} (&quot;we&quot;, &quot;us&quot;, &quot;our&quot;) is a product of{" "}
+              {BRAND.legalEntity}. We sell kitchen essentials online across India.
+              Our business is operated from {BRAND.address}. For privacy questions,
+              contact us at{" "}
               <a href={`mailto:${BRAND.email}`}>{BRAND.email}</a> or{" "}
               <a href={`tel:${BRAND.phone.replace(/\s/g, "")}`}>{BRAND.phone}</a>.
             </p>

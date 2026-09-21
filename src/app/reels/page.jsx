@@ -12,7 +12,6 @@ import { useCart } from "@/hooks/useCart";
 import { calcDiscount, formatPrice } from "@/utils/formatPrice";
 import { mediaUrl } from "@/utils/mediaUrl";
 import { shareLink, videoShareUrl } from "@/utils/share";
-import { getProductSocialProof } from "@/utils/socialProof";
 import {
   fetchVideoProducts,
   toCartProduct,
@@ -218,7 +217,6 @@ function ReelSlide({
   onBuyNow,
 }) {
   const touchStartY = useRef(null);
-  const proof = getProductSocialProof(item.product_id || item.id);
   const discount = calcDiscount(item.mrp, item.price);
   const soldOut = item.stock === 0;
   const hasMrp = Number(item.mrp) > Number(item.price);
@@ -311,11 +309,6 @@ function ReelSlide({
             <div className={styles.panelTeaserText}>
               {item.category && <span className={styles.category}>{item.category}</span>}
               <h3 className={styles.panelName}>{item.name}</h3>
-              <div className={styles.rating} aria-label={`${proof.rating} stars`}>
-                <span className={styles.stars}>{"\u2605\u2605\u2605\u2605\u2605"}</span>
-                <span className={styles.ratingNum}>{proof.ratingLabel}</span>
-                <span className={styles.reviews}>{proof.label}</span>
-              </div>
             </div>
             <div className={styles.panelTeaserRight}>
               <div className={styles.panelTeaserPrice}>

@@ -10,7 +10,6 @@ import { calcDiscount, formatPrice } from "@/utils/formatPrice";
 import { mediaUrl } from "@/utils/mediaUrl";
 import { getProductListingInfo } from "@/utils/productVariants";
 import { productShareUrl, shareLink } from "@/utils/share";
-import { getProductSocialProof } from "@/utils/socialProof";
 import styles from "./ProductCard.module.css";
 
 export default function ProductCard({ product }) {
@@ -20,7 +19,6 @@ export default function ProductCard({ product }) {
   const listing = getProductListingInfo(product);
   const discount = calcDiscount(listing.mrp, listing.price);
   const outOfStock = listing.outOfStock;
-  const proof = getProductSocialProof(product.id);
   const categoryOnly = product.category || "";
 
   const handleAdd = (e) => {
@@ -91,11 +89,6 @@ export default function ProductCard({ product }) {
             <span className={styles.category}>{categoryOnly}</span>
           ) : null}
           <h3 className={styles.name}>{product.name}</h3>
-          <div className={styles.rating} aria-label={`${proof.rating} stars`}>
-            <span className={styles.stars}>{"\u2605\u2605\u2605\u2605\u2605"}</span>
-            <span className={styles.ratingNum}>{proof.ratingLabel}</span>
-            <span className={styles.reviews}>{proof.label}</span>
-          </div>
 
           <div className={styles.footer}>
             <div className={styles.price}>

@@ -27,10 +27,13 @@ export default function TermsOfService() {
           <div className={styles.block}>
             <h2>2. About the seller</h2>
             <p>
-              {BRAND.name} sells kitchen essentials such as chakla, tawa, belan,
-              serving spoons, spatulas, and mortar &amp; pestle. Business contact:
+              {BRAND.name} is a product of {BRAND.legalEntity}. We sell kitchen
+              essentials such as chakla, tawa, belan, serving spoons, spatulas, and
+              mortar &amp; pestle under the {BRAND.name} brand. Business contact:
             </p>
             <ul>
+              <li>Brand: {BRAND.name}</li>
+              <li>Business / seller: {BRAND.legalEntity}</li>
               <li>Address: {BRAND.address}</li>
               <li>Phone / WhatsApp: {BRAND.phone}</li>
               <li>Email: {BRAND.email}</li>

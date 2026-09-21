@@ -104,6 +104,8 @@ export default function Footer() {
               aria-hidden
             />
             <span>
+              {BRAND.brandOf}
+              <br />
               Packaged and Managed by {BRAND.packagedBy}
               <br />
               {BRAND.address}
@@ -144,6 +146,10 @@ export default function Footer() {
               TM
             </span>{" "}
             Powered by SUPER STEEL CENTRE. All rights reserved.
+            <br />
+            <span className={styles.legalNote}>
+              ChaklaDekho is a product of SUPER STEEL CENTRE.
+            </span>
           </p>
         </div>
       </div>

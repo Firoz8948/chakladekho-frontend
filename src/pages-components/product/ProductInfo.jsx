@@ -15,7 +15,6 @@ import {
   parseWeightGrams,
 } from "@/utils/productVariants";
 import { productShareUrl, shareLink } from "@/utils/share";
-import { getProductSocialProof } from "@/utils/socialProof";
 import styles from "./ProductInfo.module.css";
 
 function resolveOptionWeight(option) {
@@ -28,7 +27,6 @@ export default function ProductInfo({ product }) {
   const buyNow = useBuyNow();
   const [qty, setQty] = useState(1);
   const [adding, setAdding] = useState(false);
-  const proof = getProductSocialProof(product.id);
 
   const variantData = useMemo(() => getVariantOptions(product), [product]);
   const [selectedOptionId, setSelectedOptionId] = useState(null);
@@ -134,12 +132,6 @@ export default function ProductInfo({ product }) {
           <FiShare2 size={18} />
         </button>
       </div>
-      <div className={styles.rating}>
-        <span className={styles.stars}>{"\u2605\u2605\u2605\u2605\u2605"}</span>
-        <strong>{proof.ratingLabel}</strong>
-        <span>{proof.label}</span>
-      </div>
-
       <div className={styles.priceRow}>
         <span className={styles.price}>{formatPrice(displayPrice)}</span>
         {displayMrp && displayMrp > displayPrice ? (
