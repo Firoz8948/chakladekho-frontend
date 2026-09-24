@@ -15,9 +15,9 @@ export const BRAND = {
   email: "brjangu29@gmail.com",
   address:
     "Umadevi mandir, Umrale, Samel Pada, Nalasopara West, Vasai-Virar, Maharashtra 401203",
-  /** Legal / parent business behind the ChaklaDekho brand */
-  legalEntity: "SUPER STEEL CENTRE",
-  brandOf: "ChaklaDekho is a product of SUPER STEEL CENTRE.",
+  /** Parent brand behind ChaklaDekho */
+  legalEntity: "PrimeCraft",
+  brandOf: "A brand of PrimeCraft",
   packagedBy: "ChaklaDekho",
   hours: "Daily: 9:00 AM - 8:00 PM",
   mapsUrl: "https://maps.app.goo.gl/6vu33aYvzsYzrq4YA",

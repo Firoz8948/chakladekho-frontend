@@ -8,7 +8,7 @@ export default function ContactInfo() {
     {
       icon: FiBriefcase,
       label: "Seller",
-      value: `${BRAND.name} — a product of ${BRAND.legalEntity}`,
+      value: `${BRAND.name} — ${BRAND.brandOf}`,
     },
     { icon: FiMapPin, label: "Address", value: BRAND.address },
     { icon: FiPhone, label: "Phone", value: BRAND.phone },

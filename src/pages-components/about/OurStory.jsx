@@ -42,10 +42,10 @@ export default function OurStory() {
             Everyday kitchen tools, thoughtfully chosen
           </h2>
           <p className={styles.lead}>
-            {BRAND.name} is a product of {BRAND.legalEntity}. We bring the
-            essentials of Indian cooking to your kitchen — chakla, tawa, belan,
-            serving spoons, spatulas, and mortar & pestle — built for daily use
-            and lasting performance.
+            {BRAND.name} is {BRAND.brandOf}. We bring the essentials of Indian
+            cooking to your kitchen — chakla, tawa, belan, serving spoons,
+            spatulas, and mortar & pestle — built for daily use and lasting
+            performance.
           </p>
           <p>
             From rolling dough to tempering spices, every product in our range

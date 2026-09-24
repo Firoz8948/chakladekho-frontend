@@ -104,9 +104,9 @@ export default function Footer() {
               aria-hidden
             />
             <span>
-              {BRAND.brandOf}
-              <br />
               Packaged and Managed by {BRAND.packagedBy}
+              <br />
+              {BRAND.brandOf}
               <br />
               {BRAND.address}
             </span>
@@ -141,15 +141,9 @@ export default function Footer() {
       <div className={styles.bottom}>
         <div className={`container ${styles.bottomInner}`}>
           <p>
-            © {year} ChaklaDekho
-            <span className={styles.tm} title="Trademark" aria-label="Trademark">
-              TM
-            </span>{" "}
-            Powered by SUPER STEEL CENTRE. All rights reserved.
+            © {year} ChaklaDekho. All Rights Reserved.
             <br />
-            <span className={styles.legalNote}>
-              ChaklaDekho is a product of SUPER STEEL CENTRE.
-            </span>
+            <span className={styles.legalNote}>{BRAND.brandOf}</span>
           </p>
         </div>
       </div>
