@@ -33,7 +33,7 @@ export default function CustomOrderModal({ open, onClose, onCreated }) {
     if (!open) return;
     setForm(emptyForm);
     setLoadingProducts(true);
-    getAdminProducts({ page: 1, limit: 200 })
+    getAdminProducts({ page: 1, limit: 100 })
       .then((res) => {
         const list = (res.data?.products || []).filter((p) => p.is_active !== false);
         setProducts(list);
