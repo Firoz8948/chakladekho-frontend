@@ -177,10 +177,23 @@ export default function AdminOrdersPage() {
                 }
               >
                 <div className={styles.orderLeft}>
-                  <span className={styles.orderId}>{order.order_id}</span>
+                  <span className={styles.orderId}>
+                    {order.order_id}
+                    {order.is_custom ? (
+                      <span className={styles.customBadge}>Custom</span>
+                    ) : null}
+                  </span>
                   <span className={styles.orderCustomer}>
                     {order.customer?.name} · {order.customer?.phone}
                   </span>
+                  {order.is_custom && order.items?.[0]?.name ? (
+                    <span className={styles.customProduct}>
+                      {order.items[0].name}
+                      {order.items[0].quantity > 1
+                        ? ` × ${order.items[0].quantity}`
+                        : ""}
+                    </span>
+                  ) : null}
                 </div>
 
                 <div className={styles.orderMeta}>
