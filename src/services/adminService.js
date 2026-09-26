@@ -52,6 +52,9 @@ export const removeProductImage = (id, imageUrl) =>
 export const getAdminOrders = (params) =>
   adminApi.get("/admin/orders", { params });
 
+export const createCustomOrder = (data) =>
+  adminApi.post("/admin/orders/custom", data);
+
 export const updateOrderStatus = (orderId, status) =>
   adminApi.put(`/admin/orders/${orderId}/status`, { status });
 

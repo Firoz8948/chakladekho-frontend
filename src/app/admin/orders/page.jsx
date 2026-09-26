@@ -6,6 +6,7 @@ import {
   pushOrderToShiprocket,
   updateOrderStatus,
 } from "@/services/adminService";
+import CustomOrderModal from "@/pages-components/admin/orders/CustomOrderModal";
 import styles from "./orders.module.css";
 
 const STATUSES = ["all", "pending", "confirmed", "processing", "shipped", "delivered", "cancelled"];
@@ -29,6 +30,8 @@ export default function AdminOrdersPage() {
   const [shippingOrder, setShippingOrder] = useState(null);
   const [shippingProvider, setShippingProvider] = useState(null);
   const [expanded, setExpanded] = useState(null);
+  const [customOpen, setCustomOpen] = useState(false);
+  const [reloadKey, setReloadKey] = useState(0);
   const LIMIT = 15;
 
   useEffect(() => {
@@ -42,7 +45,7 @@ export default function AdminOrdersPage() {
       })
       .catch(console.error)
       .finally(() => setLoading(false));
-  }, [page, statusFilter]);
+  }, [page, statusFilter, reloadKey]);
 
   const handleStatusUpdate = async (orderId, newStatus) => {
     setUpdating(orderId);
@@ -130,6 +133,13 @@ export default function AdminOrdersPage() {
           <h2 className={styles.title}>Orders</h2>
           <p className={styles.subtitle}>{total} total orders</p>
         </div>
+        <button
+          type="button"
+          className={styles.customOrderBtn}
+          onClick={() => setCustomOpen(true)}
+        >
+          + Custom Order
+        </button>
       </div>
 
       <div className={styles.tabs}>
@@ -187,7 +197,11 @@ export default function AdminOrdersPage() {
                   <span className={styles.orderTotal}>
                     ₹{order.total?.toLocaleString("en-IN")}
                   </span>
-                  <span className={styles.payMethod}>{order.payment_method}</span>
+                  <span className={styles.payMethod}>
+                    {order.payment_method === "manual"
+                      ? "paid"
+                      : order.payment_method}
+                  </span>
                   {order.shipment?.shiprocket_order_id ? (
                     <span className={styles.shipBadge}>Shiprocket</span>
                   ) : null}
@@ -364,6 +378,16 @@ export default function AdminOrdersPage() {
           </button>
         </div>
       )}
+
+      <CustomOrderModal
+        open={customOpen}
+        onClose={() => setCustomOpen(false)}
+        onCreated={() => {
+          setPage(1);
+          setStatusFilter("all");
+          setReloadKey((k) => k + 1);
+        }}
+      />
     </div>
   );
 }
