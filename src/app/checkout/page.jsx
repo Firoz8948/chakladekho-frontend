@@ -35,10 +35,15 @@ const emptyForm = {
   country: "India",
 };
 
+function savedName(user) {
+  const name = String(user?.name || "").trim();
+  return /^customer(\s+\d+)?$/i.test(name) ? "" : name;
+}
+
 function formFromUser(user) {
   if (!user) return emptyForm;
   return {
-    full_name: user.name || "",
+    full_name: savedName(user),
     phone: user.phone || "",
     email: user.email || "",
     line1: user.address_line1 || "",
@@ -208,7 +213,7 @@ export default function CheckoutPage() {
   useEffect(() => {
     if (!user || prefilledRef.current) return;
     setForm(formFromUser(user));
-    if (hasSavedAddress(user) || user.phone || user.name) {
+    if (hasSavedAddress(user) || user.phone || savedName(user)) {
       prefilledRef.current = true;
     }
   }, [user]);
@@ -217,7 +222,7 @@ export default function CheckoutPage() {
     prefilledRef.current = true;
     setForm({
       ...emptyForm,
-      full_name: form.full_name || user?.name || "",
+      full_name: form.full_name || savedName(user),
       phone: user?.phone || form.phone || "",
       email: form.email || "",
     });

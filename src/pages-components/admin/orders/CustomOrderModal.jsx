@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 
 import { createCustomOrder, getAdminProducts } from "@/services/adminService";
 import { INDIAN_STATES, lookupPincode } from "@/utils/indiaAddress";
+import { validatePersonName } from "@/utils/validators";
 import styles from "./CustomOrderModal.module.css";
 
 const emptyForm = {
@@ -80,8 +81,9 @@ export default function CustomOrderModal({ open, onClose, onCreated }) {
       toast.error("Select a product");
       return;
     }
-    if (!form.name.trim() || form.name.trim().length < 2) {
-      toast.error("Enter customer name");
+    const nameError = validatePersonName(form.name);
+    if (nameError) {
+      toast.error(nameError);
       return;
     }
     const phoneDigits = String(form.phone).replace(/\D/g, "");

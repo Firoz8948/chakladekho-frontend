@@ -31,6 +31,18 @@ export function required(value) {
   return value !== undefined && value !== null && String(value).trim() !== "";
 }
 
+/** Returns an error message, or "" if the name is usable for shipping labels. */
+export function validatePersonName(value) {
+  const name = String(value || "").trim().replace(/\s+/g, " ");
+  if (!name) return "Enter your full name";
+  if (name.length < 2) return "Name must be at least 2 characters";
+  if (/^customer(\s+\d+)?$/i.test(name)) return "Enter your real full name";
+  if (!/^[A-Za-z]+( [A-Za-z]+)*$/.test(name)) {
+    return "Name can contain only letters and spaces";
+  }
+  return "";
+}
+
 /**
  * Checkout / shipping address validation.
  * Returns { ok, errors: { fieldName: message }, firstMessage }.
@@ -45,10 +57,9 @@ export function validateCheckoutAddress(form = {}) {
   const state = String(form.state || "").trim();
   const pincode = String(form.pincode || "").replace(/\D/g, "");
 
-  if (!name) {
-    errors.full_name = "Enter your full name";
-  } else if (name.length < 2) {
-    errors.full_name = "Name must be at least 2 characters";
+  const nameError = validatePersonName(name);
+  if (nameError) {
+    errors.full_name = nameError;
   }
 
   if (!phone) {
