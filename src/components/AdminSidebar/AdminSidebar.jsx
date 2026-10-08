@@ -7,7 +7,10 @@ import { FiUser } from "react-icons/fi";
 
 import { useAdminAuth } from "@/context/AdminAuthContext";
 import Logo from "@/components/Logo/Logo";
+import adminApi from "@/services/adminApi";
 import styles from "./AdminSidebar.module.css";
+
+const SWITCH_TARGET_LABEL = "ChairDekho";
 
 const NAV_ITEMS = [
   {
@@ -161,6 +164,21 @@ export default function AdminSidebar({ open, onClose }) {
   const { logout } = useAdminAuth();
   const bannersOpenDefault = pathname.startsWith("/admin/banners");
   const [bannersOpen, setBannersOpen] = useState(bannersOpenDefault);
+  const [switching, setSwitching] = useState(false);
+
+  const handleSwitch = async () => {
+    if (switching) return;
+    setSwitching(true);
+    try {
+      const res = await adminApi.post("/admin/switch/ticket");
+      window.location.assign(res.data.redirect_url);
+    } catch (err) {
+      setSwitching(false);
+      window.alert(
+        err.response?.data?.detail || `Could not switch to ${SWITCH_TARGET_LABEL}`
+      );
+    }
+  };
 
   const items = useMemo(
     () =>
@@ -186,6 +204,19 @@ export default function AdminSidebar({ open, onClose }) {
           </svg>
         </button>
       </div>
+
+      <button
+        type="button"
+        className={styles.switchBtn}
+        onClick={handleSwitch}
+        disabled={switching}
+        title={`Switch to ${SWITCH_TARGET_LABEL} admin`}
+      >
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+          <path d="M8 3 4 7l4 4M4 7h16M16 21l4-4-4-4M20 17H4" />
+        </svg>
+        {switching ? "Switching…" : `Switch to ${SWITCH_TARGET_LABEL}`}
+      </button>
 
       <div className={styles.adminInfo}>
         <div className={styles.avatar}>

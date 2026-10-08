@@ -9,6 +9,8 @@ import { AdminAuthProvider, useAdminAuth } from "@/context/AdminAuthContext";
 import AdminSidebar from "@/components/AdminSidebar/AdminSidebar";
 import styles from "./admin.module.css";
 
+const BARE_PAGES = ["/admin/login", "/admin/switch"];
+
 function AdminShell({ children }) {
   const { admin, loading } = useAdminAuth();
   const router = useRouter();
@@ -16,7 +18,7 @@ function AdminShell({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
-    if (!loading && !admin && pathname !== "/admin/login") {
+    if (!loading && !admin && !BARE_PAGES.includes(pathname)) {
       router.replace("/admin/login");
     }
   }, [admin, loading, pathname, router]);
@@ -39,7 +41,7 @@ function AdminShell({ children }) {
     };
   }, [sidebarOpen]);
 
-  if (pathname === "/admin/login") return <>{children}</>;
+  if (BARE_PAGES.includes(pathname)) return <>{children}</>;
   if (loading)
     return (
       <div className={styles.fullLoader}>
