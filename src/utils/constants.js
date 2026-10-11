@@ -21,7 +21,7 @@ export const BRAND = {
   packagedBy: "ChaklaDekho",
   hours: "Daily: 9:00 AM - 8:00 PM",
   mapsUrl: "https://maps.app.goo.gl/6vu33aYvzsYzrq4YA",
-  instagram: "https://www.instagram.com/",
+  instagram: "https://www.instagram.com/chakladekho1/",
 };
 
 export const ASSETS = {
