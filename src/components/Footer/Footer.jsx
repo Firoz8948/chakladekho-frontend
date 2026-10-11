@@ -2,14 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import {
-  FiFacebook,
-  FiInstagram,
-  FiMail,
-  FiMapPin,
-  FiPhone,
-  FiTwitter,
-} from "react-icons/fi";
+import { FiInstagram, FiMail, FiMapPin, FiPhone } from "react-icons/fi";
 import { FaWhatsapp } from "react-icons/fa";
 
 import Logo from "@/components/Logo/Logo";
@@ -37,17 +30,16 @@ export default function Footer() {
             <Logo height={104} className={styles.logo} />
           </div>
           <div className={styles.social}>
-            <a href="#" aria-label="Facebook">
-              <FiFacebook className={styles.outlineSocialIcon} />
-            </a>
-            <a
-              href={BRAND.instagram}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Instagram"
-            >
-              <FiInstagram className={styles.outlineSocialIcon} />
-            </a>
+            {BRAND.instagram && !BRAND.instagram.endsWith("instagram.com/") && (
+              <a
+                href={BRAND.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+              >
+                <FiInstagram className={styles.outlineSocialIcon} />
+              </a>
+            )}
             <a
               href={WHATSAPP_URL}
               target="_blank"
@@ -55,9 +47,6 @@ export default function Footer() {
               aria-label="WhatsApp"
             >
               <FaWhatsapp className={styles.filledSocialIcon} />
-            </a>
-            <a href="#" aria-label="Twitter">
-              <FiTwitter className={styles.outlineSocialIcon} />
             </a>
           </div>
         </div>
