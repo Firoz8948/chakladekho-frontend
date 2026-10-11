@@ -17,8 +17,8 @@ const emptyForm = {
   is_all_india: false,
   states: [],
   prepaid_rate: 0,
-  cod_rate: 100,
-  free_shipping_threshold: 999,
+  cod_rate: 0,
+  free_shipping_threshold: 0,
   is_active: true,
 };
 
@@ -77,13 +77,13 @@ export default function AdminSettingsPage() {
       is_all_india: !!zone.is_all_india,
       states: zone.states || [],
       prepaid_rate:
-        zone.prepaid_rate != null ? zone.prepaid_rate : zone.rate ?? 49,
+        zone.prepaid_rate != null ? zone.prepaid_rate : zone.rate ?? 0,
       cod_rate:
         zone.cod_rate != null
           ? zone.cod_rate
-          : zone.prepaid_rate ?? zone.rate ?? 49,
+          : zone.prepaid_rate ?? zone.rate ?? 0,
       free_shipping_threshold:
-        zone.free_shipping_threshold != null ? zone.free_shipping_threshold : 999,
+        zone.free_shipping_threshold != null ? zone.free_shipping_threshold : 0,
       is_active: zone.is_active,
     });
   };
@@ -153,8 +153,9 @@ export default function AdminSettingsPage() {
           <h2 className={styles.title}>Settings</h2>
           <p className={styles.subtitle}>
             Create shipping zones with states (or all India) and set separate
-            rates for prepaid and COD. Checkout picks the zone from pincode/state
-            and applies the rate for the selected payment method.
+            rates for prepaid and COD. Use 0 for free shipping. Checkout picks
+            the zone from pincode/state and applies the rate for the selected
+            payment method. Current live zone is Pan India at ₹0 prepaid and ₹0 COD.
           </p>
         </div>
       </div>
@@ -196,7 +197,7 @@ export default function AdminSettingsPage() {
                 onChange={(e) =>
                   setForm((p) => ({ ...p, cod_rate: e.target.value }))
                 }
-                placeholder="100"
+                placeholder="0"
                 required
               />
             </label>
@@ -213,7 +214,7 @@ export default function AdminSettingsPage() {
                     free_shipping_threshold: e.target.value,
                   }))
                 }
-                placeholder="999"
+                placeholder="0"
               />
             </label>
           </div>

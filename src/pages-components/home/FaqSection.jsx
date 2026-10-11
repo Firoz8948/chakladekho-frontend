@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { FiChevronDown } from "react-icons/fi";
 
-import { FREE_SHIPPING_THRESHOLD } from "@/utils/constants";
 import styles from "./FaqSection.module.css";
 
 const FAQS = [
@@ -19,7 +18,8 @@ const FAQS = [
   },
   {
     question: "Do you offer free shipping?",
-    answer: `Free shipping is available on orders above ₹${FREE_SHIPPING_THRESHOLD}. For smaller orders, a flat shipping charge applies at checkout.`,
+    answer:
+      "Yes. Shipping is free across India on every order, for both prepaid (Pay Online) and Cash on Delivery (COD). There is no minimum order value.",
   },
   {
     question: "How should I care for wooden kitchen tools?",

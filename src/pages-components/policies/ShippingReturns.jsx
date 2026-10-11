@@ -3,7 +3,7 @@ import { BRAND } from "@/utils/constants";
 import styles from "./ShippingReturns.module.css";
 
 export default function ShippingReturns() {
-  const updated = "6 August 2026";
+  const updated = "11 October 2026";
 
   return (
     <>
@@ -19,9 +19,10 @@ export default function ShippingReturns() {
           <div className={styles.block}>
             <h2>1. Shipping coverage</h2>
             <p>
-              We ship kitchen essentials across India. Delivery availability and charges
-              may vary by pincode and order value. Exact options are shown at checkout
-              after you enter your delivery pin code.
+              We ship kitchen essentials across India. Prepaid and Cash on Delivery
+              (COD) shipping is free on every order, with no minimum order value.
+              Courier serviceability can still vary by pincode; if a pin code cannot be
+              served, we will contact you before dispatch.
             </p>
           </div>
 
@@ -41,9 +42,9 @@ export default function ShippingReturns() {
           <div className={styles.block}>
             <h2>3. Shipping charges</h2>
             <p>
-              Shipping fees (prepaid or COD, where offered) are calculated at checkout.
-              Free shipping may apply on selected offers or order values when shown on
-              the site.
+              Shipping is <strong>free across India</strong> for both prepaid (Pay
+              Online) and COD orders. You are not charged a delivery fee at checkout.
+              The amount you pay is the product total only (after any discount).
             </p>
           </div>
 
@@ -97,8 +98,9 @@ export default function ShippingReturns() {
               </li>
             </ul>
             <p>
-              Shipping charges may be non-refundable unless the return is due to our
-              error or a defective/damaged product.
+              There is no shipping fee on orders, so refunds cover the product amount.
+              Return courier cost is borne by us when the return is due to our error
+              or a defective/damaged/wrong product.
             </p>
           </div>
 

@@ -58,7 +58,7 @@ const marqueeItems = [
     ),
   },
   {
-    text: "Fast Shipping",
+    text: "Free Shipping · COD & Prepaid",
     icon: (
       <svg {...iconProps}>
         <rect x="1" y="3" width="15" height="13" rx="1" />

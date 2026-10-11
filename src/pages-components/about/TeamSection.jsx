@@ -24,7 +24,7 @@ const PILLARS = [
   {
     icon: FiGlobe,
     title: "Online Ordering",
-    text: "Shop from home with secure checkout, fast shipping, COD, and easy returns across India.",
+    text: "Shop from home with secure checkout, free shipping on prepaid and COD, and easy returns across India.",
   },
 ];
 

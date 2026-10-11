@@ -3,7 +3,7 @@ import { BRAND } from "@/utils/constants";
 import styles from "./TermsOfService.module.css";
 
 export default function TermsOfService() {
-  const updated = "6 August 2026";
+  const updated = "11 October 2026";
 
   return (
     <>
@@ -55,7 +55,8 @@ export default function TermsOfService() {
             <h2>4. Orders and payment</h2>
             <p>
               An order is confirmed after successful prepaid payment or after COD
-              acceptance where available. We may cancel or refuse an order in cases of
+              acceptance where available. Shipping is free across India for both
+              prepaid and COD orders. We may cancel or refuse an order in cases of
               pricing errors, stock unavailability, suspected fraud, or delivery
               restrictions. Refunds for cancelled prepaid orders are processed as per
               our Shipping &amp; Returns policy.

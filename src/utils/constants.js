@@ -59,8 +59,8 @@ export const ORDER_STATUS = [
   "cancelled",
 ];
 
-export const FREE_SHIPPING_THRESHOLD = 999;
-export const FLAT_SHIPPING_CHARGE = 49;
+export const FREE_SHIPPING_THRESHOLD = 0;
+export const FLAT_SHIPPING_CHARGE = 0;
 
 export const TOKEN_COOKIE = "access_token";
 export const CART_STORAGE_KEY = "chakladkho_cart";
