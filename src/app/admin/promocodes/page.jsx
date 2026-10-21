@@ -11,6 +11,7 @@ import {
   updatePromoCode,
 } from "@/services/adminService";
 import { formatPrice } from "@/utils/formatPrice";
+import { SITE_NAME, SITE_URL } from "@/utils/seo";
 import styles from "./promocodes.module.css";
 
 const emptyForm = {
@@ -26,6 +27,28 @@ const emptyForm = {
 
 function todayISO() {
   return new Date().toISOString().slice(0, 10);
+}
+
+function promoShareText(promo) {
+  const offer =
+    promo.action_type === "free_shipping"
+      ? "free shipping"
+      : `${promo.percent_value}% off`;
+  const who = promo.audience === "new_users" ? " on your first order" : "";
+  const validTo = promo.valid_to
+    ? new Date(`${promo.valid_to}T00:00:00`).toLocaleDateString("en-IN", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      })
+    : "";
+  return [
+    `Get ${offer}${who} at ${SITE_NAME}!`,
+    `Use code ${promo.code} at checkout.`,
+    validTo ? `Valid till ${validTo}.` : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
 }
 
 export default function AdminPromoCodesPage() {
@@ -153,6 +176,27 @@ export default function AdminPromoCodesPage() {
       load();
     } catch (e) {
       toast.error(e.message || "Failed to delete");
+    }
+  };
+
+  const handleShare = async (promo) => {
+    const text = promoShareText(promo);
+    const url = `${SITE_URL}/shop`;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: `${SITE_NAME} — ${promo.code}`, text, url });
+        return;
+      } catch (err) {
+        if (err?.name === "AbortError") return;
+      }
+    }
+
+    try {
+      await navigator.clipboard.writeText(`${text}\n${url}`);
+      toast.success("Promo message copied — paste it anywhere to share");
+    } catch {
+      toast.error("Could not share");
     }
   };
 
@@ -359,6 +403,14 @@ export default function AdminPromoCodesPage() {
                     </span>
                   </td>
                   <td className={styles.rowActions}>
+                    <button
+                      type="button"
+                      onClick={() => handleShare(promo)}
+                      disabled={!promo.is_active}
+                      title={promo.is_active ? "Share this code" : "Activate the code to share it"}
+                    >
+                      Share
+                    </button>
                     <button type="button" onClick={() => handleViewUsage(promo)}>
                       Usage
                     </button>

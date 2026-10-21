@@ -161,6 +161,11 @@
   font-size: 0.8rem;
 }
 
+.rowActions button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
 .rowActions .danger {
   color: var(--danger);
   border-color: rgba(234, 67, 53, 0.3);
