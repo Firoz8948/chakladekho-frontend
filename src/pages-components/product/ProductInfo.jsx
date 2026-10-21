@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { FiMinus, FiPlus, FiShare2 } from "react-icons/fi";
 import toast from "react-hot-toast";
 
@@ -22,6 +22,11 @@ function resolveOptionWeight(option) {
   return parseWeightGrams(option.name);
 }
 
+// The public product API omits option ids, so fall back to the option name.
+function optionKey(option) {
+  return String(option.id ?? option.name);
+}
+
 export default function ProductInfo({ product }) {
   const { addToCart } = useCart();
   const buyNow = useBuyNow();
@@ -29,32 +34,41 @@ export default function ProductInfo({ product }) {
   const [adding, setAdding] = useState(false);
 
   const variantData = useMemo(() => getVariantOptions(product), [product]);
-  const [selectedOptionId, setSelectedOptionId] = useState(null);
+  const options = useMemo(() => variantData?.options || [], [variantData]);
+  const [selectedKey, setSelectedKey] = useState(() =>
+    options.length === 1 ? optionKey(options[0]) : null,
+  );
+  const [variantError, setVariantError] = useState(false);
+  const [shake, setShake] = useState(false);
+  const variantsRef = useRef(null);
 
-  const options = variantData?.options || [];
-  const selectedOption = useMemo(() => {
-    if (!options.length) return null;
-    const found = options.find((o) => o.id === selectedOptionId);
-    if (found) return found;
-    const inStock = options.find((o) => (o.stock ?? 0) > 0);
-    return inStock || options[0];
-  }, [options, selectedOptionId]);
-
-  useEffect(() => {
-    if (selectedOption?.id) {
-      setSelectedOptionId(selectedOption.id);
-    }
-  }, [selectedOption?.id]);
+  const selectedOption = useMemo(
+    () => options.find((o) => optionKey(o) === selectedKey) || null,
+    [options, selectedKey],
+  );
+  const needsChoice = options.length > 0 && !selectedOption;
 
   useEffect(() => {
     if (product?.id) trackViewContent(product);
   }, [product?.id]);
 
-  const displayPrice = selectedOption?.price ?? product.price;
-  const displayMrp = selectedOption?.mrp ?? product.mrp;
+  // Before a choice, show the cheapest option ("From ₹…") like the shop cards.
+  const cheapestOption = useMemo(() => {
+    const priced = options.filter((o) => o.price > 0);
+    if (!priced.length) return null;
+    return priced.reduce((min, o) => (o.price < min.price ? o : min));
+  }, [options]);
+  const priceSource = selectedOption || cheapestOption;
+  const showFrom =
+    needsChoice && new Set(options.map((o) => o.price)).size > 1;
+
+  const displayPrice = priceSource?.price ?? product.price;
+  const displayMrp = priceSource?.mrp ?? product.mrp;
   const displayStock = selectedOption
     ? selectedOption.stock ?? 0
-    : product.stock ?? 0;
+    : options.length
+      ? Math.max(...options.map((o) => o.stock ?? 0))
+      : product.stock ?? 0;
   const weightGrams = selectedOption
     ? resolveOptionWeight(selectedOption)
     : product.weight
@@ -65,13 +79,30 @@ export default function ProductInfo({ product }) {
   const outOfStock = displayStock <= 0;
   const categoryOnly = product.category || "";
 
+  const promptVariant = () => {
+    setVariantError(true);
+    setShake(false);
+    requestAnimationFrame(() => setShake(true));
+    variantsRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+  };
+
+  const selectOption = (opt) => {
+    setSelectedKey(optionKey(opt));
+    setVariantError(false);
+    setQty((q) => Math.min(q, Math.max(1, opt.stock ?? 1)));
+  };
+
   const handleAdd = async (e) => {
+    if (needsChoice) {
+      promptVariant();
+      return;
+    }
     setAdding(true);
     const variantInfo = selectedOption
       ? {
           variant_name: variantData.variantName,
           option_name: selectedOption.name,
-          option_id: selectedOption.id,
+          option_id: optionKey(selectedOption),
           weight_grams: weightGrams,
         }
       : null;
@@ -96,13 +127,17 @@ export default function ProductInfo({ product }) {
       ? {
           variant_name: variantData.variantName,
           option_name: selectedOption.name,
-          option_id: selectedOption.id,
+          option_id: optionKey(selectedOption),
           weight_grams: weightGrams,
         }
       : null,
   };
 
   const handleBuyNow = () => {
+    if (needsChoice) {
+      promptVariant();
+      return;
+    }
     buyNow.openBuyNow(product, qty, cartOptions);
   };
 
@@ -133,7 +168,10 @@ export default function ProductInfo({ product }) {
         </button>
       </div>
       <div className={styles.priceRow}>
-        <span className={styles.price}>{formatPrice(displayPrice)}</span>
+        <span className={styles.price}>
+          {showFrom ? <span className={styles.fromLabel}>From </span> : null}
+          {formatPrice(displayPrice)}
+        </span>
         {displayMrp && displayMrp > displayPrice ? (
           <>
             <span className={styles.mrp}>{formatPrice(displayMrp)}</span>
@@ -143,18 +181,31 @@ export default function ProductInfo({ product }) {
       </div>
 
       {variantData && (
-        <div className={styles.variants}>
-          <span className={styles.variantLabel}>{variantData.variantName}</span>
-          <div className={styles.variantOptions}>
+        <div
+          ref={variantsRef}
+          className={`${styles.variants} ${shake ? styles.shake : ""}`}
+          onAnimationEnd={() => setShake(false)}
+        >
+          <span className={styles.variantLabel}>
+            {variantData.variantName}
+            {selectedOption ? `: ${selectedOption.name}` : ""}
+          </span>
+          <div
+            className={styles.variantOptions}
+            role="radiogroup"
+            aria-label={variantData.variantName}
+          >
             {options.map((opt) => {
               const optStock = opt.stock ?? 0;
-              const isSelected = selectedOption?.id === opt.id;
+              const isSelected = selectedKey === optionKey(opt);
               return (
                 <button
-                  key={opt.id}
+                  key={optionKey(opt)}
                   type="button"
-                  className={`${styles.variantBtn} ${isSelected ? styles.variantBtnActive : ""} ${optStock <= 0 ? styles.variantBtnDisabled : ""}`}
-                  onClick={() => setSelectedOptionId(opt.id)}
+                  role="radio"
+                  aria-checked={isSelected}
+                  className={`${styles.variantBtn} ${isSelected ? styles.variantBtnActive : ""} ${optStock <= 0 ? styles.variantBtnDisabled : ""} ${variantError ? styles.variantBtnError : ""}`}
+                  onClick={() => selectOption(opt)}
                   disabled={optStock <= 0}
                 >
                   {opt.name}
@@ -162,6 +213,11 @@ export default function ProductInfo({ product }) {
               );
             })}
           </div>
+          {variantError ? (
+            <p className={styles.variantError} role="alert">
+              Please choose a {variantData.variantName.toLowerCase()}
+            </p>
+          ) : null}
         </div>
       )}
 

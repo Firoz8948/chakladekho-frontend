@@ -132,6 +132,48 @@
   text-decoration: line-through;
 }
 
+.variantBtnError:not(.variantBtnActive) {
+  border-color: var(--danger);
+}
+
+.variantError {
+  margin: 0;
+  color: var(--danger);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.fromLabel {
+  font-size: 0.6em;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.shake {
+  animation: variantShake 0.45s ease-in-out;
+}
+
+@keyframes variantShake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20%,
+  60% {
+    transform: translateX(-6px);
+  }
+  40%,
+  80% {
+    transform: translateX(6px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shake {
+    animation: none;
+  }
+}
+
 .stock .in {
   color: #15803d;
   font-weight: 700;
