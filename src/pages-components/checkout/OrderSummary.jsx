@@ -7,7 +7,11 @@ import { FiGift, FiPackage } from "react-icons/fi";
 import { useCart } from "@/hooks/useCart";
 import { useFreeGift } from "@/hooks/useFreeGift";
 import { quoteShipping, validatePromoCode } from "@/services/bannerService";
-import { FREE_SHIPPING_THRESHOLD, FLAT_SHIPPING_CHARGE } from "@/utils/constants";
+import {
+  ASSETS,
+  FREE_SHIPPING_THRESHOLD,
+  FLAT_SHIPPING_CHARGE,
+} from "@/utils/constants";
 import { formatPrice } from "@/utils/formatPrice";
 import { mediaUrl } from "@/utils/mediaUrl";
 import styles from "./OrderSummary.module.css";
@@ -73,7 +77,8 @@ function OrderBox({ items, gift }) {
           =
         </span>
         <div className={styles.boxResult} aria-hidden="true">
-          <FiPackage />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={ASSETS.packageBox} alt="" width={64} height={64} />
         </div>
       </div>
       <p className={styles.boxCaption}>
