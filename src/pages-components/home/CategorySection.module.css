@@ -25,48 +25,75 @@
   margin-bottom: var(--space-2);
 }
 
-.scrollBtns {
-  display: flex;
-  gap: var(--space-2);
-  flex-shrink: 0;
+/* —— Single-row category slider (arrows on desktop, swipe on mobile) —— */
+.rowWrap {
+  position: relative;
 }
 
-.scrollBtn {
-  width: 42px;
-  height: 42px;
-  border-radius: 0;
-  border: 2px solid color-mix(in srgb, var(--color-maroon) 20%, transparent);
-  background: var(--bg-primary);
-  color: var(--color-maroon);
-  font-size: var(--text-xl);
-  cursor: pointer;
+.row {
+  display: flex;
+  flex-wrap: nowrap;
+  width: 100%;
+  gap: var(--space-2);
+  /* Room for the card shadow, which overflow would otherwise clip */
+  padding-bottom: 18px;
+  margin-bottom: -18px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.row::-webkit-scrollbar {
+  display: none;
+}
+
+.navBtn {
+  position: absolute;
+  top: 50%;
+  z-index: 3;
+  width: 44px;
+  height: 44px;
+  transform: translateY(-50%);
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 0;
+  border: 2px solid color-mix(in srgb, var(--color-maroon) 20%, transparent);
+  background: var(--bg-primary, #fff);
+  color: var(--color-maroon);
+  box-shadow: 0 6px 18px rgba(var(--primary-rgb), 0.18);
+  cursor: pointer;
   transition: var(--transition-fast);
-  line-height: 1;
 }
 
-.scrollBtn:hover {
+.navPrev {
+  left: -14px;
+}
+
+.navNext {
+  right: -14px;
+}
+
+.navBtn:hover:not(:disabled) {
   background: var(--color-maroon);
   color: var(--text-light);
   border-color: var(--color-maroon);
 }
 
-/* —— Desktop image cards —— */
-.desktopRow {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  width: 100%;
-  gap: var(--space-2);
-  align-items: flex-start;
+.navBtn:disabled {
+  opacity: 0.35;
+  cursor: default;
+  box-shadow: none;
 }
 
 .catCard {
   display: block;
   flex: 0 0 calc((100% - 2 * var(--space-2)) / 3);
   width: auto;
+  scroll-snap-align: start;
   text-decoration: none;
   color: var(--heading);
   border-radius: 0;
@@ -178,55 +205,15 @@
   outline-offset: 4px;
 }
 
-/* —— Mobile category chips in a horizontal row (hidden on desktop) —— */
-.mobileList {
-  display: none;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  gap: 10px;
-  overflow-x: auto;
-  overflow-y: hidden;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  padding-bottom: 2px;
-}
-
-.mobileList::-webkit-scrollbar {
-  display: none;
-}
-
-.accItem {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 0 auto;
-  gap: 0;
-  padding: 12px 16px;
-  border: 1.5px solid color-mix(in srgb, var(--primary) 12%, transparent);
-  border-radius: 0;
-  background: #fff;
-  text-decoration: none;
-  white-space: nowrap;
-}
-
-.accName {
-  font-weight: 700;
-  font-size: 0.9rem;
-  color: var(--primary);
-  line-height: 1.3;
-}
-
 .skeletonRow {
   display: flex;
-  gap: var(--space-4);
-  justify-content: center;
+  gap: var(--space-2);
   overflow: hidden;
 }
 
 .skeleton {
-  flex: 0 0 240px;
-  width: 240px;
-  height: 280px;
+  flex: 0 0 calc((100% - 3 * var(--space-2)) / 4);
+  aspect-ratio: 1 / 1;
   border-radius: 0;
   background: linear-gradient(
     90deg,
@@ -251,10 +238,6 @@
   .catCard {
     flex-basis: calc((100% - 3 * var(--space-2)) / 4);
   }
-
-  .scrollBtns {
-    display: none;
-  }
 }
 
 @media (min-width: 769px) {
@@ -263,27 +246,57 @@
   }
 }
 
+/* Touch screens have no hover, so keep the name visible on every card. */
+@media (hover: none), (max-width: 768px) {
+  .catImgWrap::after {
+    opacity: 1;
+  }
+
+  .catLabel {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 @media (max-width: 768px) {
-  .scrollBtns {
+  .navBtn {
     display: none;
   }
 
-  .desktopRow {
-    display: none;
+  .row {
+    gap: 10px;
   }
 
-  .mobileList {
-    display: flex;
+  /* ~2.3 cards visible so the next one peeks in and invites a swipe */
+  .catCard {
+    flex-basis: 42%;
   }
 
-  .skeleton {
-    flex: 1;
-    height: 56px;
-    border-radius: 0;
+  .catLabel {
+    left: 10px;
+    right: 10px;
+    bottom: 8px;
+    font-size: 0.85rem;
+    padding: 4px 0;
+  }
+
+  .catLabel > span:first-child {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .catArrow {
+    font-size: 1.1rem;
   }
 
   .skeletonRow {
-    flex-direction: column;
+    gap: 10px;
+  }
+
+  .skeleton {
+    flex-basis: 42%;
   }
 }
 

@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
 import ReelsCategoryPreview from "@/components/ReelsCategoryPreview/ReelsCategoryPreview";
 import { getCategories } from "@/services/categoryService";
@@ -18,6 +19,7 @@ function mediaUrl(path) {
 export default function CategorySection() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [edges, setEdges] = useState({ start: true, end: true });
   const scrollRef = useRef(null);
 
   useEffect(() => {
@@ -27,9 +29,34 @@ export default function CategorySection() {
       .finally(() => setLoading(false));
   }, []);
 
+  const updateEdges = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setEdges({
+      start: el.scrollLeft <= 2,
+      end: el.scrollLeft + el.clientWidth >= el.scrollWidth - 2,
+    });
+  }, []);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return undefined;
+    updateEdges();
+    el.addEventListener("scroll", updateEdges, { passive: true });
+    window.addEventListener("resize", updateEdges);
+    return () => {
+      el.removeEventListener("scroll", updateEdges);
+      window.removeEventListener("resize", updateEdges);
+    };
+  }, [categories, loading, updateEdges]);
+
   const scroll = (dir) => {
-    scrollRef.current?.scrollBy({ left: dir * 280, behavior: "smooth" });
+    const el = scrollRef.current;
+    if (!el) return;
+    el.scrollBy({ left: dir * el.clientWidth * 0.9, behavior: "smooth" });
   };
+
+  const hasOverflow = !(edges.start && edges.end);
 
   if (loading) {
     return (
@@ -65,78 +92,71 @@ export default function CategorySection() {
               Find the right kitchen essential for every recipe
             </p>
           </div>
-          <div className={styles.scrollBtns}>
-            <button
-              type="button"
-              className={styles.scrollBtn}
-              onClick={() => scroll(-1)}
-              aria-label="Scroll left"
-            >
-              ‹
-            </button>
-            <button
-              type="button"
-              className={styles.scrollBtn}
-              onClick={() => scroll(1)}
-              aria-label="Scroll right"
-            >
-              ›
-            </button>
-          </div>
         </div>
 
-        <div className={styles.desktopRow} ref={scrollRef}>
-          {categories.map((cat) => {
-            const isReels = !!cat.is_reels || cat.slug === "reels";
-            return (
-              <Link
-                key={cat.id}
-                href={isReels ? "/reels" : `/shop?category=${cat.slug}`}
-                className={`${styles.catCard} ${isReels ? styles.reelsCard : ""}`}
+        <div className={styles.rowWrap}>
+          {hasOverflow ? (
+            <>
+              <button
+                type="button"
+                className={`${styles.navBtn} ${styles.navPrev}`}
+                onClick={() => scroll(-1)}
+                disabled={edges.start}
+                aria-label="Previous categories"
               >
-                <div className={styles.catImgWrap}>
-                  {isReels ? (
-                    <ReelsCategoryPreview />
-                  ) : cat.image_url ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={mediaUrl(cat.image_url)}
-                      alt={cat.name}
-                      className={styles.catImg}
-                      onError={(e) => {
-                        e.currentTarget.style.display = "none";
-                      }}
-                    />
-                  ) : (
-                    <div className={styles.catPlaceholder}>
-                      {(cat.name || "?").charAt(0)}
-                    </div>
-                  )}
-                  <span className={styles.catLabel}>
-                    <span>{cat.name}</span>
-                    <span className={styles.catArrow} aria-hidden="true">
-                      →
+                <FiChevronLeft size={22} />
+              </button>
+              <button
+                type="button"
+                className={`${styles.navBtn} ${styles.navNext}`}
+                onClick={() => scroll(1)}
+                disabled={edges.end}
+                aria-label="More categories"
+              >
+                <FiChevronRight size={22} />
+              </button>
+            </>
+          ) : null}
+
+          <div className={styles.row} ref={scrollRef}>
+            {categories.map((cat) => {
+              const isReels = !!cat.is_reels || cat.slug === "reels";
+              return (
+                <Link
+                  key={cat.id}
+                  href={isReels ? "/reels" : `/shop?category=${cat.slug}`}
+                  className={`${styles.catCard} ${isReels ? styles.reelsCard : ""}`}
+                >
+                  <div className={styles.catImgWrap}>
+                    {isReels ? (
+                      <ReelsCategoryPreview />
+                    ) : cat.image_url ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={mediaUrl(cat.image_url)}
+                        alt={cat.name}
+                        className={styles.catImg}
+                        loading="lazy"
+                        onError={(e) => {
+                          e.currentTarget.style.display = "none";
+                        }}
+                      />
+                    ) : (
+                      <div className={styles.catPlaceholder}>
+                        {(cat.name || "?").charAt(0)}
+                      </div>
+                    )}
+                    <span className={styles.catLabel}>
+                      <span>{cat.name}</span>
+                      <span className={styles.catArrow} aria-hidden="true">
+                        →
+                      </span>
                     </span>
-                  </span>
-                </div>
-              </Link>
-            );
-          })}
-        </div>
-
-        <div className={styles.mobileList}>
-          {categories.map((cat) => {
-            const isReels = !!cat.is_reels || cat.slug === "reels";
-            return (
-              <Link
-                key={cat.id}
-                href={isReels ? "/reels" : `/shop?category=${cat.slug}`}
-                className={styles.accItem}
-              >
-                <span className={styles.accName}>{cat.name}</span>
-              </Link>
-            );
-          })}
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>
