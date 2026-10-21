@@ -31,36 +31,69 @@
   margin-bottom: 24px;
 }
 
-.toggle {
+.toggleRow {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-weight: 600;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.toggleLabel {
   color: var(--heading);
-  cursor: pointer;
+  font-size: 0.95rem;
 }
 
-.toggle input {
-  width: 18px;
-  height: 18px;
+.statusOn,
+.statusOff {
+  margin: 4px 0 0;
+  font-size: 0.82rem;
+  font-weight: 600;
 }
 
-.on,
-.off {
-  margin-left: auto;
-  padding: 3px 10px;
-  font-size: 0.75rem;
-  font-weight: 700;
-}
-
-.on {
-  background: #dcfce7;
+.statusOn {
   color: #15803d;
 }
 
-.off {
-  background: var(--section-bg);
+.statusOff {
   color: var(--text-muted);
+}
+
+.switch {
+  position: relative;
+  flex-shrink: 0;
+  width: 52px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  border-radius: 999px;
+  background: #cbd5e1;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.switchOn {
+  background: #15803d;
+}
+
+.knob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  transition: transform 0.2s ease;
+}
+
+.switchOn .knob {
+  transform: translateX(24px);
+}
+
+.switch:disabled {
+  opacity: 0.6;
+  cursor: wait;
 }
 
 .field {

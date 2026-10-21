@@ -1,6 +1,6 @@
 import api from "./api";
 
-const CACHE_MS = 60000;
+const CACHE_MS = 10000;
 let cache = null;
 
 /** Active free gift ({ title, image_url }) or null when disabled. */

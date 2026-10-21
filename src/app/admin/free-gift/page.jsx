@@ -10,6 +10,7 @@ import {
   updateFreeGift,
   uploadFreeGiftImage,
 } from "@/services/adminService";
+import { fetchFreeGift } from "@/services/freeGiftService";
 import { mediaUrl } from "@/utils/mediaUrl";
 import styles from "./free-gift.module.css";
 
@@ -20,14 +21,17 @@ function errorMessage(err, fallback) {
 export default function AdminFreeGiftPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [toggling, setToggling] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [title, setTitle] = useState("");
+  const [savedTitle, setSavedTitle] = useState("");
   const [isActive, setIsActive] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
   const fileRef = useRef(null);
 
   const apply = (data) => {
     setTitle(data?.title || "");
+    setSavedTitle(data?.title || "");
     setIsActive(!!data?.is_active);
     setImageUrl(data?.image_url || "");
   };
@@ -39,17 +43,41 @@ export default function AdminFreeGiftPage() {
       .finally(() => setLoading(false));
   }, []);
 
+  const handleToggle = async () => {
+    const next = !isActive;
+    if (next && !savedTitle.trim()) {
+      toast.error("Save a title first, then turn the free gift on");
+      return;
+    }
+    setToggling(true);
+    try {
+      const res = await updateFreeGift({ is_active: next });
+      setIsActive(!!res.data?.is_active);
+      fetchFreeGift({ fresh: true });
+      toast.success(
+        res.data?.is_active
+          ? "Free gift is now showing to customers"
+          : "Free gift is now hidden from customers",
+      );
+    } catch (err) {
+      toast.error(errorMessage(err, "Failed to update"));
+    } finally {
+      setToggling(false);
+    }
+  };
+
   const handleSave = async (e) => {
     e.preventDefault();
     if (isActive && !title.trim()) {
-      toast.error("Add a title before enabling the free gift");
+      toast.error("Title can't be empty while the free gift is on");
       return;
     }
     setSaving(true);
     try {
-      const res = await updateFreeGift({ title: title.trim(), is_active: isActive });
-      apply(res.data);
-      toast.success(res.data.enabled ? "Free gift is live" : "Free gift saved (not shown)");
+      const res = await updateFreeGift({ title: title.trim() });
+      setTitle(res.data?.title || "");
+      setSavedTitle(res.data?.title || "");
+      toast.success("Title saved");
     } catch (err) {
       toast.error(errorMessage(err, "Failed to save"));
     } finally {
@@ -103,19 +131,34 @@ export default function AdminFreeGiftPage() {
         </p>
       </div>
 
-      <form className={styles.card} onSubmit={handleSave}>
-        <label className={styles.toggle}>
-          <input
-            type="checkbox"
-            checked={isActive}
-            onChange={(e) => setIsActive(e.target.checked)}
-          />
-          <span>Show free gift to customers</span>
-          <span className={isActive ? styles.on : styles.off}>
-            {isActive ? "Enabled" : "Disabled"}
-          </span>
-        </label>
+      <div className={styles.card}>
+        <div className={styles.toggleRow}>
+          <div>
+            <strong className={styles.toggleLabel}>Show free gift to customers</strong>
+            <p className={isActive ? styles.statusOn : styles.statusOff}>
+              {isActive
+                ? "On — customers see it in cart and checkout"
+                : "Off — hidden from customers"}
+            </p>
+          </div>
+          <button
+            type="button"
+            role="switch"
+            aria-checked={isActive}
+            aria-label="Show free gift to customers"
+            className={`${styles.switch} ${isActive ? styles.switchOn : ""}`}
+            onClick={handleToggle}
+            disabled={toggling}
+          >
+            <span className={styles.knob} />
+          </button>
+        </div>
+        <p className={styles.muted}>
+          The switch saves instantly. Title and image are saved separately below.
+        </p>
+      </div>
 
+      <form className={styles.card} onSubmit={handleSave}>
         <label className={styles.field}>
           Title
           <input
@@ -170,7 +213,7 @@ export default function AdminFreeGiftPage() {
 
         <div className={styles.actions}>
           <button type="submit" className={styles.saveBtn} disabled={saving}>
-            {saving ? "Saving…" : "Save"}
+            {saving ? "Saving…" : "Save title"}
           </button>
         </div>
       </form>

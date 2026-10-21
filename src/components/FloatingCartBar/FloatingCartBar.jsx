@@ -9,7 +9,7 @@ import styles from "./FloatingCartBar.module.css";
 import { formatPrice } from "@/utils/formatPrice";
 import { mediaUrl } from "@/utils/mediaUrl";
 
-const HIDDEN_ON = ["/cart", "/checkout"];
+const HIDDEN_ON = ["/cart", "/checkout", "/admin"];
 
 export default function FloatingCartBar() {
   const { cart, loading } = useCart();
