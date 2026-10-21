@@ -20,6 +20,21 @@ const STATUS_COLORS = {
   cancelled: { bg: "var(--error-bg)", color: "var(--error)", border: "var(--error)" },
 };
 
+function formatOrderTime(iso) {
+  if (!iso) return "";
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return "";
+  return date.toLocaleString("en-IN", {
+    timeZone: "Asia/Kolkata",
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
+}
+
 export default function AdminOrdersPage() {
   const [orders, setOrders] = useState([]);
   const [total, setTotal] = useState(0);
@@ -179,6 +194,11 @@ export default function AdminOrdersPage() {
                 <div className={styles.orderLeft}>
                   <span className={styles.orderId}>
                     {order.order_id}
+                    {order.created_at ? (
+                      <span className={styles.orderTime}>
+                        {formatOrderTime(order.created_at)}
+                      </span>
+                    ) : null}
                     {order.is_custom ? (
                       <span className={styles.customBadge}>Custom</span>
                     ) : null}

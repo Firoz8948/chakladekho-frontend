@@ -81,6 +81,7 @@
   flex-wrap: wrap;
 }
 .orderCustomer { font-size: 0.8rem; color: var(--text-muted); }
+.orderTime { font-size: 0.78rem; font-weight: 500; color: var(--text-muted); }
 
 .customBadge {
   display: inline-block;
