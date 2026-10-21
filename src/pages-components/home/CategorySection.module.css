@@ -106,23 +106,9 @@
   border-radius: 0;
   overflow: hidden;
   border: 2px solid color-mix(in srgb, var(--color-maroon) 14%, transparent);
-  box-shadow: 0 12px 28px rgba(var(--primary-rgb), 0.1);
+  box-shadow: 0 6px 16px rgba(var(--primary-rgb), 0.08);
   background: color-mix(in srgb, var(--primary) 5%, var(--cream));
-}
-
-.catImgWrap::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background: linear-gradient(
-    180deg,
-    transparent 28%,
-    rgba(var(--black-rgb), 0.72) 100%
-  );
-  opacity: 0;
-  transition: opacity 0.28s ease;
-  pointer-events: none;
+  transition: border-color 0.2s ease;
 }
 
 .catImg {
@@ -139,60 +125,34 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 3.5rem;
+  font-size: 2.2rem;
   font-weight: 700;
   color: var(--primary);
 }
 
-.catLabel {
-  position: absolute;
-  left: var(--space-4);
-  right: var(--space-4);
-  bottom: var(--space-4);
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-3);
+.catName {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-top: 10px;
   font-family: var(--font-ui);
   font-weight: 700;
-  font-size: 1.15rem;
-  padding: 8px 2px;
-  border: none;
-  background: transparent;
-  color: var(--text-light);
-  text-align: left;
-  line-height: 1.25;
-  text-shadow: 0 2px 10px rgba(var(--black-rgb), 0.72);
-  opacity: 0;
-  transform: translateY(18px);
-  transition:
-    opacity 0.24s ease,
-    transform 0.28s ease;
-  pointer-events: none;
+  font-size: 0.92rem;
+  line-height: 1.3;
+  text-align: center;
+  color: var(--primary);
+  transition: color 0.2s ease;
 }
 
-.catArrow {
-  flex-shrink: 0;
-  font-size: 1.45rem;
-  line-height: 1;
-  transition: transform 0.2s ease;
+.catCard:hover .catImgWrap,
+.catCard:focus-visible .catImgWrap {
+  border-color: color-mix(in srgb, var(--color-maroon) 45%, transparent);
 }
 
-.catCard:hover .catImgWrap::after,
-.catCard:focus-visible .catImgWrap::after {
-  opacity: 1;
-}
-
-.catCard:hover .catLabel,
-.catCard:focus-visible .catLabel {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.catCard:hover .catArrow,
-.catCard:focus-visible .catArrow {
-  transform: translateX(4px);
+.catCard:hover .catName,
+.catCard:focus-visible .catName {
+  color: var(--color-maroon);
 }
 
 .catCard:hover .catImg,
@@ -212,7 +172,7 @@
 }
 
 .skeleton {
-  flex: 0 0 calc((100% - 3 * var(--space-2)) / 4);
+  flex: 0 0 calc((100% - 5 * var(--space-4)) / 6);
   aspect-ratio: 1 / 1;
   border-radius: 0;
   background: linear-gradient(
@@ -236,7 +196,7 @@
 
 @media (min-width: 1100px) {
   .catCard {
-    flex-basis: calc((100% - 3 * var(--space-2)) / 4);
+    flex-basis: calc((100% - 5 * var(--space-4)) / 6);
   }
 }
 
@@ -244,17 +204,21 @@
   .categoryContainer {
     padding-inline: var(--space-4);
   }
-}
 
-/* Touch screens have no hover, so keep the name visible on every card. */
-@media (hover: none), (max-width: 768px) {
-  .catImgWrap::after {
-    opacity: 1;
+  .row,
+  .skeletonRow {
+    gap: var(--space-4);
   }
 
-  .catLabel {
-    opacity: 1;
-    transform: none;
+  /* Centre the arrows on the image, not on image + name */
+  .navBtn {
+    top: calc(50% - 22px);
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1099px) {
+  .catCard {
+    flex-basis: calc((100% - 4 * var(--space-4)) / 5);
   }
 }
 
@@ -267,28 +231,14 @@
     gap: 10px;
   }
 
-  /* ~2.3 cards visible so the next one peeks in and invites a swipe */
+  /* ~3.2 cards visible so the next one peeks in and invites a swipe */
   .catCard {
-    flex-basis: 42%;
+    flex-basis: 30%;
   }
 
-  .catLabel {
-    left: 10px;
-    right: 10px;
-    bottom: 8px;
-    font-size: 0.85rem;
-    padding: 4px 0;
-  }
-
-  .catLabel > span:first-child {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  .catArrow {
-    font-size: 1.1rem;
+  .catName {
+    margin-top: 7px;
+    font-size: 0.78rem;
   }
 
   .skeletonRow {
@@ -296,7 +246,7 @@
   }
 
   .skeleton {
-    flex-basis: 42%;
+    flex-basis: 30%;
   }
 }
 
@@ -343,10 +293,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .catImgWrap::after,
+  .catImgWrap,
   .catImg,
-  .catLabel,
-  .catArrow {
+  .catName {
     transition: none;
   }
 }

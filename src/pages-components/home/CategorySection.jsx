@@ -146,13 +146,8 @@ export default function CategorySection() {
                         {(cat.name || "?").charAt(0)}
                       </div>
                     )}
-                    <span className={styles.catLabel}>
-                      <span>{cat.name}</span>
-                      <span className={styles.catArrow} aria-hidden="true">
-                        →
-                      </span>
-                    </span>
                   </div>
+                  <span className={styles.catName}>{cat.name}</span>
                 </Link>
               );
             })}
