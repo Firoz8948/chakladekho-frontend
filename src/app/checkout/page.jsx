@@ -40,12 +40,17 @@ function savedName(user) {
   return /^customer(\s+\d+)?$/i.test(name) ? "" : name;
 }
 
+function savedEmail(user) {
+  const email = String(user?.email || "").trim();
+  return /\.local$/i.test(email) ? "" : email;
+}
+
 function formFromUser(user) {
   if (!user) return emptyForm;
   return {
     full_name: savedName(user),
     phone: user.phone || "",
-    email: user.email || "",
+    email: savedEmail(user),
     line1: user.address_line1 || "",
     line2: user.address_line2 || "",
     landmark: user.address_landmark || "",
