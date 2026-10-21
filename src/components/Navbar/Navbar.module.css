@@ -568,6 +568,15 @@
   stroke-width: 2.75;
 }
 
+.searchToggle {
+  display: none;
+}
+
+@media (max-width: 860px) {
+  .searchToggle {
+    display: flex;
+  }
+}
 .iconBtn:hover {
   color: var(--color-red);
 }
@@ -1185,5 +1194,15 @@
   .megaCategoryLinkActive > span:last-child,
   .megaPreviewCta:hover span {
     transform: none;
+  }
+}
+
+@media (max-width: 380px) {
+  .actions {
+    gap: 4px;
+  }
+
+  .loginBtn {
+    padding: 0.45rem 0.75rem;
   }
 }

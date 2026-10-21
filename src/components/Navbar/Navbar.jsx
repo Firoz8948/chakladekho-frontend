@@ -431,6 +431,14 @@ export default function Navbar() {
 
             <div className={styles.actions}>
             <Link
+              href="/search"
+              className={`${styles.iconBtn} ${styles.searchToggle}`}
+              aria-label="Search products"
+            >
+              <FiSearch size={22} strokeWidth={2.5} />
+            </Link>
+
+            <Link
               href="/cart"
               className={`${styles.iconBtn} ${styles.cartBtn}`}
               aria-label="Cart"

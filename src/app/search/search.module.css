@@ -1,0 +1,114 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--z-modal) + 10);
+  display: flex;
+  flex-direction: column;
+  background: var(--background, #fff);
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  padding-top: calc(10px + env(safe-area-inset-top, 0px));
+  border-bottom: 1px solid var(--border-light);
+  background: var(--background, #fff);
+  flex-shrink: 0;
+}
+
+.field {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 12px;
+  background: var(--bg-soft);
+  border: 1px solid var(--border-light);
+}
+
+.field:focus-within {
+  border-color: var(--primary);
+}
+
+.fieldIcon {
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.field input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 16px;
+  color: var(--text-primary);
+}
+
+.field input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.searchBtn {
+  height: 44px;
+  padding: 0 14px;
+  border: none;
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text, #fff);
+  font-family: var(--font-ui, var(--font-body));
+  font-weight: 600;
+  font-size: 0.88rem;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.closeBtn {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border-light);
+  background: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.body {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding: 14px 12px calc(24px + env(safe-area-inset-bottom, 0px));
+}
+
+.hint {
+  margin: 40px 0 0;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+}
+
+.count {
+  margin: 0 0 12px;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.viewAll {
+  display: block;
+  margin: 20px auto 0;
+  padding: 12px 16px;
+  max-width: 280px;
+  text-align: center;
+  border: 1px solid var(--primary);
+  color: var(--primary);
+  font-weight: 600;
+  font-size: 0.88rem;
+  text-decoration: none;
+}
