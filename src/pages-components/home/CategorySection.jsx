@@ -20,6 +20,7 @@ export default function CategorySection() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [edges, setEdges] = useState({ start: true, end: true });
+  const [pages, setPages] = useState({ count: 1, active: 0 });
   const scrollRef = useRef(null);
 
   useEffect(() => {
@@ -32,10 +33,20 @@ export default function CategorySection() {
   const updateEdges = useCallback(() => {
     const el = scrollRef.current;
     if (!el) return;
-    setEdges({
-      start: el.scrollLeft <= 2,
-      end: el.scrollLeft + el.clientWidth >= el.scrollWidth - 2,
-    });
+    const maxScroll = el.scrollWidth - el.clientWidth;
+    const atStart = el.scrollLeft <= 2;
+    const atEnd = el.scrollLeft >= maxScroll - 2;
+    setEdges({ start: atStart, end: atEnd });
+
+    // One page = one viewport-width of cards; the last page may be partial.
+    const count =
+      maxScroll <= 2 ? 1 : Math.ceil((maxScroll - 2) / el.clientWidth) + 1;
+    const active = atEnd
+      ? count - 1
+      : Math.min(count - 1, Math.round(el.scrollLeft / el.clientWidth));
+    setPages((prev) =>
+      prev.count === count && prev.active === active ? prev : { count, active },
+    );
   }, []);
 
   useEffect(() => {
@@ -53,7 +64,17 @@ export default function CategorySection() {
   const scroll = (dir) => {
     const el = scrollRef.current;
     if (!el) return;
-    el.scrollBy({ left: dir * el.clientWidth * 0.9, behavior: "smooth" });
+    el.scrollBy({ left: dir * el.clientWidth, behavior: "smooth" });
+  };
+
+  const goToPage = (index) => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const maxScroll = el.scrollWidth - el.clientWidth;
+    el.scrollTo({
+      left: Math.min(index * el.clientWidth, maxScroll),
+      behavior: "smooth",
+    });
   };
 
   const hasOverflow = !(edges.start && edges.end);
@@ -153,6 +174,22 @@ export default function CategorySection() {
             })}
           </div>
         </div>
+
+        {pages.count > 1 ? (
+          <div className={styles.dots} role="tablist" aria-label="Category pages">
+            {Array.from({ length: pages.count }).map((_, i) => (
+              <button
+                key={i}
+                type="button"
+                role="tab"
+                aria-selected={pages.active === i}
+                aria-label={`Show categories page ${i + 1} of ${pages.count}`}
+                className={`${styles.dot} ${pages.active === i ? styles.dotActive : ""}`}
+                onClick={() => goToPage(i)}
+              />
+            ))}
+          </div>
+        ) : null}
       </div>
     </section>
   );

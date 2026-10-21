@@ -165,6 +165,41 @@
   outline-offset: 4px;
 }
 
+.dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 22px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: none;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-maroon) 25%, transparent);
+  cursor: pointer;
+  transition:
+    width 0.25s ease,
+    background 0.25s ease;
+}
+
+.dot:hover {
+  background: color-mix(in srgb, var(--color-maroon) 50%, transparent);
+}
+
+.dotActive {
+  width: 26px;
+  background: var(--color-maroon);
+}
+
+.dot:focus-visible {
+  outline: 2px solid var(--color-maroon);
+  outline-offset: 3px;
+}
+
 .skeletonRow {
   display: flex;
   gap: var(--space-2);
@@ -241,6 +276,10 @@
     font-size: 0.78rem;
   }
 
+  .dots {
+    margin-top: 16px;
+  }
+
   .skeletonRow {
     gap: 10px;
   }
@@ -295,7 +334,8 @@
 @media (prefers-reduced-motion: reduce) {
   .catImgWrap,
   .catImg,
-  .catName {
+  .catName,
+  .dot {
     transition: none;
   }
 }
