@@ -132,6 +132,18 @@ export const uploadBannerImage = (id, formData) =>
     headers: { "Content-Type": "multipart/form-data" },
   });
 
+// Free gift
+export const getAdminFreeGift = () => adminApi.get("/free-gift/admin");
+
+export const updateFreeGift = (data) => adminApi.put("/free-gift/admin", data);
+
+export const uploadFreeGiftImage = (formData) =>
+  adminApi.post("/free-gift/admin/image", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+
+export const removeFreeGiftImage = () => adminApi.delete("/free-gift/admin/image");
+
 // Promo codes
 export const getAdminPromoCodes = () => adminApi.get("/promocodes/admin/all");
 

@@ -1,14 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { FiMinus, FiPlus, FiTrash2 } from "react-icons/fi";
+import { FiGift, FiMinus, FiPlus, FiTrash2 } from "react-icons/fi";
 
 import { useCart } from "@/hooks/useCart";
+import { useFreeGift } from "@/hooks/useFreeGift";
 import { formatPrice } from "@/utils/formatPrice";
+import { mediaUrl } from "@/utils/mediaUrl";
 import styles from "./CartItems.module.css";
 
 export default function CartItems() {
   const { cart, updateItem, removeItem } = useCart();
+  const gift = useFreeGift();
 
   return (
     <div className={styles.list}>
@@ -56,6 +59,34 @@ export default function CartItems() {
           </button>
         </div>
       ))}
+
+      {gift && cart.items.length > 0 ? (
+        <div className={`${styles.item} ${styles.giftItem}`}>
+          <div className={styles.image}>
+            {gift.image_url ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={mediaUrl(gift.image_url)} alt={gift.title} />
+            ) : (
+              <FiGift size={28} aria-hidden="true" />
+            )}
+          </div>
+
+          <div className={styles.details}>
+            <span className={styles.name}>{gift.title}</span>
+            <span className={styles.giftTag}>
+              <FiGift size={12} aria-hidden="true" /> Free gift with your order
+            </span>
+          </div>
+
+          <div className={`${styles.qty} ${styles.qtyStatic}`}>
+            <span>1</span>
+          </div>
+
+          <span className={`${styles.subtotal} ${styles.free}`}>FREE</span>
+
+          <span className={styles.remove} aria-hidden="true" />
+        </div>
+      ) : null}
     </div>
   );
 }

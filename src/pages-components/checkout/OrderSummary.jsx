@@ -1,13 +1,94 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { FiGift, FiPackage } from "react-icons/fi";
 
 import { useCart } from "@/hooks/useCart";
+import { useFreeGift } from "@/hooks/useFreeGift";
 import { quoteShipping, validatePromoCode } from "@/services/bannerService";
 import { FREE_SHIPPING_THRESHOLD, FLAT_SHIPPING_CHARGE } from "@/utils/constants";
 import { formatPrice } from "@/utils/formatPrice";
+import { mediaUrl } from "@/utils/mediaUrl";
 import styles from "./OrderSummary.module.css";
+
+const BOX_MAX_THUMBS = 4;
+
+function OrderBox({ items, gift }) {
+  const shown = items.slice(0, BOX_MAX_THUMBS);
+  const hidden = items.length - shown.length;
+  const totalQty = items.reduce((sum, item) => sum + (item.quantity || 0), 0);
+
+  const parts = shown.map((item) => (
+    <div key={item.item_id} className={styles.boxThumb}>
+      {item.image ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={mediaUrl(item.image)} alt={item.name} />
+      ) : (
+        <FiPackage aria-hidden="true" />
+      )}
+      {item.quantity > 1 ? (
+        <span className={styles.boxQty}>×{item.quantity}</span>
+      ) : null}
+    </div>
+  ));
+  if (hidden > 0) {
+    parts.push(
+      <div key="more" className={`${styles.boxThumb} ${styles.boxMore}`}>
+        +{hidden}
+      </div>,
+    );
+  }
+  if (gift) {
+    parts.push(
+      <div key="gift" className={`${styles.boxThumb} ${styles.boxGift}`}>
+        {gift.image_url ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={mediaUrl(gift.image_url)} alt={gift.title} />
+        ) : (
+          <FiGift aria-hidden="true" />
+        )}
+        <span className={styles.boxFreeTag}>FREE</span>
+      </div>,
+    );
+  }
+
+  return (
+    <div className={styles.box}>
+      <p className={styles.boxTitle}>
+        <FiPackage aria-hidden="true" /> Your box
+      </p>
+      <div className={styles.boxRow}>
+        {parts.map((part, i) => (
+          <Fragment key={part.key}>
+            {i > 0 ? (
+              <span className={styles.boxOp} aria-hidden="true">
+                +
+              </span>
+            ) : null}
+            {part}
+          </Fragment>
+        ))}
+        <span className={styles.boxOp} aria-hidden="true">
+          =
+        </span>
+        <div className={styles.boxResult} aria-hidden="true">
+          <FiPackage />
+        </div>
+      </div>
+      <p className={styles.boxCaption}>
+        {totalQty} item{totalQty === 1 ? "" : "s"}
+        {gift ? (
+          <>
+            {" "}
+            + <strong>{gift.title}</strong>
+          </>
+        ) : null}{" "}
+        packed together in one box
+      </p>
+    </div>
+  );
+}
 
 export default function OrderSummary({
   promo,
@@ -19,6 +100,7 @@ export default function OrderSummary({
   onShippingQuoteChange,
 }) {
   const { cart } = useCart();
+  const gift = useFreeGift();
   const subtotal = cart.total_amount;
 
   const [codeInput, setCodeInput] = useState(promo?.code || "");
@@ -155,7 +237,19 @@ export default function OrderSummary({
             <span>{formatPrice(item.subtotal)}</span>
           </div>
         ))}
+        {gift && cart.items.length > 0 ? (
+          <div className={styles.item}>
+            <span className={styles.name}>
+              {gift.title} <em>× 1</em>
+            </span>
+            <span className={styles.freeText}>FREE</span>
+          </div>
+        ) : null}
       </div>
+
+      {cart.items.length > 0 ? (
+        <OrderBox items={cart.items} gift={gift} />
+      ) : null}
 
       <div className={styles.promoBox}>
         <label htmlFor="promo-code">Promo code</label>
