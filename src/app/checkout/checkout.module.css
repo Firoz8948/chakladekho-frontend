@@ -38,7 +38,7 @@
   grid-column: 2;
   grid-row: 1 / span 2;
   position: sticky;
-  top: calc(var(--header-height) + 1rem);
+  top: calc(var(--header-height) + var(--announce-height) + 1rem);
 }
 
 @media (max-width: 860px) {

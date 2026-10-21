@@ -250,6 +250,13 @@ export default function Navbar() {
   return (
     <>
       <header className={headerClass}>
+        <div className={styles.announce} role="note" aria-label="Store offers">
+          <span className={styles.announceItem}>Free delivery pan India</span>
+          <span className={styles.announceSep} aria-hidden="true">
+            •
+          </span>
+          <span className={styles.announceItem}>Free gift on every order</span>
+        </div>
         <div className={`container ${styles.inner}`}>
           <button
             type="button"

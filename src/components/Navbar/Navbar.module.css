@@ -16,6 +16,83 @@
     backdrop-filter 0.3s ease;
 }
 
+.announce {
+  position: relative;
+  height: var(--announce-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 0 12px;
+  background: #000;
+  color: #fff;
+  font-family: var(--font-ui);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.announceSep {
+  opacity: 0.55;
+}
+
+/* Phones: one offer at a time, cross-fading */
+@media (max-width: 600px) {
+  .announce {
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+  }
+
+  .announceSep {
+    display: none;
+  }
+
+  .announceItem {
+    position: absolute;
+    left: 0;
+    right: 0;
+    text-align: center;
+    animation: announceSwap 8s infinite;
+  }
+
+  /* Negative delay starts the second offer mid-cycle (hidden), so the first
+     offer is visible on first paint instead of a blank bar. */
+  .announceItem:last-child {
+    animation-delay: -4s;
+  }
+}
+
+@keyframes announceSwap {
+  0%,
+  45% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  50%,
+  95% {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 600px) and (prefers-reduced-motion: reduce) {
+  .announceItem {
+    position: static;
+    animation: none;
+  }
+
+  .announceItem:last-child {
+    display: none;
+  }
+}
+
 .inner {
   height: var(--header-height);
   display: flex;
@@ -212,7 +289,7 @@
 
 .megaMenu {
   position: fixed;
-  top: 60px;
+  top: calc(60px + var(--announce-height));
   left: 0;
   right: 0;
   width: 100%;
@@ -1009,7 +1086,7 @@
     align-items: stretch;
     gap: 0;
     position: fixed;
-    top: var(--header-height);
+    top: calc(var(--header-height) + var(--announce-height));
     left: 0;
     bottom: calc(64px + env(safe-area-inset-bottom, 0px));
     width: 260px;
@@ -1090,7 +1167,7 @@
   .navOverlay {
     display: block;
     position: fixed;
-    top: var(--header-height);
+    top: calc(var(--header-height) + var(--announce-height));
     left: 0;
     right: 0;
     bottom: calc(64px + env(safe-area-inset-bottom, 0px));
