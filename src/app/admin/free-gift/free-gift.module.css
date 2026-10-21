@@ -31,69 +31,43 @@
   margin-bottom: 24px;
 }
 
-.toggleRow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-}
-
-.toggleLabel {
-  color: var(--heading);
-  font-size: 0.95rem;
-}
-
 .statusOn,
 .statusOff {
-  margin: 4px 0 0;
-  font-size: 0.82rem;
-  font-weight: 600;
+  margin: 0;
+  padding: 8px 12px;
+  font-size: 0.85rem;
+  font-weight: 700;
 }
 
 .statusOn {
+  background: #dcfce7;
   color: #15803d;
 }
 
 .statusOff {
+  background: var(--section-bg);
   color: var(--text-muted);
 }
 
-.switch {
-  position: relative;
-  flex-shrink: 0;
-  width: 52px;
-  height: 28px;
-  padding: 0;
-  border: none;
-  border-radius: 999px;
-  background: #cbd5e1;
+.check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  color: var(--heading);
   cursor: pointer;
-  transition: background 0.2s ease;
 }
 
-.switchOn {
-  background: #15803d;
+.check input {
+  width: 18px;
+  height: 18px;
 }
 
-.knob {
-  position: absolute;
-  top: 3px;
-  left: 3px;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: #fff;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
-  transition: transform 0.2s ease;
-}
-
-.switchOn .knob {
-  transform: translateX(24px);
-}
-
-.switch:disabled {
-  opacity: 0.6;
-  cursor: wait;
+.unsaved {
+  align-self: center;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #b45309;
 }
 
 .field {
@@ -181,10 +155,9 @@
   cursor: pointer;
 }
 
-.saveBtn:disabled,
-.secondaryBtn:disabled {
-  opacity: 0.6;
-  cursor: wait;
+.saveBtn:disabled {
+  opacity: 0.5;
+  cursor: default;
 }
 
 .previewHeading {
