@@ -2,15 +2,18 @@
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { FiUser } from "react-icons/fi";
 
 import { useAdminAuth } from "@/context/AdminAuthContext";
 import Logo from "@/components/Logo/Logo";
 import adminApi from "@/services/adminApi";
+import { getAdminOrders } from "@/services/adminService";
 import styles from "./AdminSidebar.module.css";
 
 const SWITCH_TARGET_LABEL = "ChairDekho";
+const ORDERS_SEEN_KEY = "admin_orders_seen_total";
+const ORDERS_POLL_MS = 60000;
 
 const NAV_ITEMS = [
   {
@@ -146,13 +149,13 @@ const NAV_ITEMS = [
 
 const NAV_ORDER = [
   "Dashboard",
+  "Orders",
   "Banner",
   "Category",
   "Products",
   "Metafields",
   "Video Products",
   "Promo Codes",
-  "Orders",
   "Payments",
   "Users",
   "Setting",
@@ -165,6 +168,33 @@ export default function AdminSidebar({ open, onClose }) {
   const bannersOpenDefault = pathname.startsWith("/admin/banners");
   const [bannersOpen, setBannersOpen] = useState(bannersOpenDefault);
   const [switching, setSwitching] = useState(false);
+  const [newOrders, setNewOrders] = useState(0);
+  const onOrdersPage = pathname.startsWith("/admin/orders");
+
+  useEffect(() => {
+    let cancelled = false;
+    const check = async () => {
+      try {
+        const res = await getAdminOrders({ page: 1, limit: 1 });
+        const total = Number(res.data?.total) || 0;
+        const seen = localStorage.getItem(ORDERS_SEEN_KEY);
+        if (seen === null || onOrdersPage) {
+          localStorage.setItem(ORDERS_SEEN_KEY, String(total));
+          if (!cancelled) setNewOrders(0);
+          return;
+        }
+        if (!cancelled) setNewOrders(Math.max(0, total - Number(seen)));
+      } catch {
+        // Badge is best-effort; ignore network errors
+      }
+    };
+    check();
+    const timer = setInterval(check, ORDERS_POLL_MS);
+    return () => {
+      cancelled = true;
+      clearInterval(timer);
+    };
+  }, [onOrdersPage]);
 
   const handleSwitch = async () => {
     if (switching) return;
@@ -290,6 +320,14 @@ export default function AdminSidebar({ open, onClose }) {
             >
               <span className={styles.navIcon}>{item.icon}</span>
               <span className={styles.navLabel}>{item.label}</span>
+              {item.label === "Orders" && newOrders > 0 && (
+                <span
+                  className={styles.navBadge}
+                  aria-label={`${newOrders} new order${newOrders === 1 ? "" : "s"}`}
+                >
+                  {newOrders > 99 ? "99+" : newOrders}
+                </span>
+              )}
               {active && <span className={styles.activeBar} />}
             </Link>
           );
