@@ -84,7 +84,8 @@ export default function Navbar() {
 
   useEffect(() => {
     if (searchParams.get("signin") === "1" && !isAuthenticated) {
-      setLoginOpen(true);
+      // Checkout renders its own login modal; opening ours too stacks two.
+      if (pathname !== "/checkout") setLoginOpen(true);
       const params = new URLSearchParams(searchParams.toString());
       params.delete("signin");
       const qs = params.toString();

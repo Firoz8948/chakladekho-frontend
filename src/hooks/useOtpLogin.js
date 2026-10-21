@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { useAuth } from "@/hooks/useAuth";
 import { requestOTP, verifyOTP } from "@/services/authService";
@@ -28,6 +28,16 @@ export function useOtpLogin({ onSuccess, modal = false } = {}) {
   const [countdown, setCountdown] = useState(0);
   const [debugOtp, setDebugOtp] = useState(null);
   const timerRef = useRef(null);
+  const successTimerRef = useRef(null);
+  const verifyingRef = useRef(false);
+
+  useEffect(
+    () => () => {
+      clearInterval(timerRef.current);
+      clearTimeout(successTimerRef.current);
+    },
+    [],
+  );
 
   const startCountdown = () => {
     setCountdown(RESEND_COOLDOWN);
@@ -84,11 +94,8 @@ export function useOtpLogin({ onSuccess, modal = false } = {}) {
       inputsRef.current[index + 1]?.focus();
     }
 
-    if (value && index === OTP_LENGTH - 1) {
-      const fullOtp = next.join("");
-      if (fullOtp.length === OTP_LENGTH) {
-        handleVerifyOtp(fullOtp);
-      }
+    if (value && next.every(Boolean)) {
+      handleVerifyOtp(next.join(""));
     }
   };
 
@@ -132,19 +139,23 @@ export function useOtpLogin({ onSuccess, modal = false } = {}) {
   };
 
   const handleVerifyOtp = async (otpOverride = null) => {
+    // A paste and the last keystroke can both trigger verify; the second call
+    // would reuse a consumed OTP and show "Invalid OTP" after a good login.
+    if (verifyingRef.current) return;
     const otp = otpOverride || otpValues.join("");
     if (otp.length < OTP_LENGTH) {
       setError(`Please enter all ${OTP_LENGTH} digits.`);
       return;
     }
 
+    verifyingRef.current = true;
     setError("");
     setLoading(true);
     try {
       const data = await verifyOTP(phone.trim(), otp, name.trim());
       loginSuccess(data.user, data.access_token);
       if (modal) {
-        setTimeout(() => onSuccess?.(data.user), 400);
+        successTimerRef.current = setTimeout(() => onSuccess?.(data.user), 400);
       } else {
         setStep("done");
         onSuccess?.(data.user);
@@ -153,6 +164,7 @@ export function useOtpLogin({ onSuccess, modal = false } = {}) {
       setError(err?.response?.data?.detail || err?.message || "Invalid OTP.");
       setOtpValues(Array(OTP_LENGTH).fill(""));
     } finally {
+      verifyingRef.current = false;
       setLoading(false);
     }
   };

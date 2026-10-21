@@ -5,13 +5,26 @@ import { createPortal } from "react-dom";
 import { FiArrowLeft, FiLock, FiX } from "react-icons/fi";
 
 import Logo from "@/components/Logo/Logo";
+import { useAuth } from "@/hooks/useAuth";
 import { useOtpLogin } from "@/hooks/useOtpLogin";
 import styles from "./LoginModal.module.css";
 
-export default function LoginModal({ onClose }) {
+/**
+ * onClose: user dismissed the modal without signing in.
+ * onSuccess: user is signed in (defaults to onClose).
+ */
+export default function LoginModal({ onClose, onSuccess }) {
   const inputsRef = useRef([]);
   const overlayRef = useRef(null);
+  const finishedRef = useRef(false);
   const [mounted, setMounted] = useState(false);
+  const { isAuthenticated } = useAuth();
+
+  const finish = () => {
+    if (finishedRef.current) return;
+    finishedRef.current = true;
+    (onSuccess || onClose)();
+  };
 
   const {
     step,
@@ -31,8 +44,14 @@ export default function LoginModal({ onClose }) {
     goBack,
   } = useOtpLogin({
     modal: true,
-    onSuccess: () => onClose(),
+    onSuccess: finish,
   });
+
+  // Also close when the login happened somewhere else (e.g. another modal).
+  useEffect(() => {
+    if (isAuthenticated) finish();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated]);
 
   useEffect(() => {
     setMounted(true);

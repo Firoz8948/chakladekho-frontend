@@ -21,10 +21,6 @@ export default function CartSummary() {
   const remaining = Math.max(0, FREE_SHIPPING_THRESHOLD - subtotal);
 
   const handleCheckout = () => {
-    if (!isAuthenticated) {
-      router.push("/login?redirect=/checkout");
-      return;
-    }
     router.push("/checkout");
   };
 

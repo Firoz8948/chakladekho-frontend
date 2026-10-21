@@ -407,6 +407,7 @@ export default function CheckoutPage() {
               setLoginOpen(false);
               router.push("/cart");
             }}
+            onSuccess={() => setLoginOpen(false)}
           />
         )}
       </>
