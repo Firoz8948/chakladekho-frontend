@@ -1,64 +1,59 @@
 .page {
   color: var(--text);
+  scroll-margin-top: calc(var(--header-height) + var(--announce-height) + 0.5rem);
 }
 
 .heading {
   font-size: 1.8rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
   color: var(--text);
 }
 
-.subtitle {
-  color: var(--text-muted);
-  margin-bottom: 1.5rem;
-}
-
-.layout {
-  width: 100%;
-}
-
+/* Desktop: steps on the left, order summary always visible on the right */
 .flow {
   display: grid;
-  grid-template-columns: 1fr 360px;
+  grid-template-columns: minmax(0, 1fr) 360px;
   gap: 1.5rem 2rem;
   align-items: start;
 }
 
-.step[data-step="shipping"] {
+.main {
   grid-column: 1;
   grid-row: 1;
 }
 
-.step[data-step="payment"] {
+.payment {
   grid-column: 1;
   grid-row: 2;
 }
 
-.summaryStep {
+.summary {
   grid-column: 2;
   grid-row: 1 / span 2;
   position: sticky;
   top: calc(var(--header-height) + var(--announce-height) + 1rem);
 }
 
+/* Mobile: address card → order summary → payment, summary only on payment step */
 @media (max-width: 860px) {
   .flow {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
   }
 
-  .step[data-step="shipping"] {
+  .main,
+  .summary,
+  .payment {
     grid-column: 1;
-    grid-row: 1;
-  }
-
-  .step[data-step="payment"] {
-    grid-column: 1;
-    grid-row: 2;
-  }
-
-  .summaryStep {
-    grid-column: 1;
-    grid-row: 3;
+    grid-row: auto;
     position: static;
+  }
+
+  .summary {
+    display: none;
+  }
+
+  .onPayment .summary {
+    display: block;
   }
 }

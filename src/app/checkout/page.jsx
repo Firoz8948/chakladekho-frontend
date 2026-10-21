@@ -6,7 +6,15 @@ import toast from "react-hot-toast";
 
 import Loader from "@/components/Loader/Loader";
 import LoginModal from "@/components/LoginModal/LoginModal";
-import { AddressForm, OrderSummary, PaymentSection } from "@/pages-components/checkout";
+import { OrderSummary, PaymentSection } from "@/pages-components/checkout";
+import {
+  AddressStep,
+  CHECKOUT_STEPS,
+  CheckoutProgress,
+  ContactStep,
+  DeliveryCard,
+  PincodeStep,
+} from "@/pages-components/checkout/CheckoutSteps";
 import { useAuth } from "@/hooks/useAuth";
 import { useCart } from "@/hooks/useCart";
 import { updateProfile } from "@/services/authService";
@@ -61,8 +69,20 @@ function formFromUser(user) {
   };
 }
 
-function hasSavedAddress(user) {
-  return !!(user?.address_line1 && user?.address_pincode);
+function stepErrors(errors, stepId) {
+  const fields = CHECKOUT_STEPS.find((s) => s.id === stepId)?.fields || [];
+  return Object.fromEntries(
+    Object.entries(errors).filter(([key]) => fields.includes(key)),
+  );
+}
+
+/** First step whose fields are incomplete; 4 (payment) when everything is valid. */
+function firstIncompleteStep(form) {
+  const { errors } = validateCheckoutAddress(form);
+  for (const s of CHECKOUT_STEPS) {
+    if (s.fields.some((field) => errors[field])) return s.id;
+  }
+  return 4;
 }
 
 async function saveAddressToProfile(form) {
@@ -176,8 +196,18 @@ export default function CheckoutPage() {
   const [promo, setPromo] = useState(null);
   const [shippingQuote, setShippingQuote] = useState(null);
   const [fieldErrors, setFieldErrors] = useState({});
+  const [step, setStep] = useState(1);
+  const [maxStep, setMaxStep] = useState(1);
   const prefilledRef = useRef(false);
+  const stepInitRef = useRef(false);
   const checkoutTrackedRef = useRef(false);
+  const topRef = useRef(null);
+
+  const goToStep = useCallback((next) => {
+    setStep(next);
+    setMaxStep((m) => Math.max(m, next));
+    topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, []);
 
   const handleShippingQuoteChange = useCallback((quote) => {
     setShippingQuote(quote);
@@ -217,20 +247,43 @@ export default function CheckoutPage() {
 
   useEffect(() => {
     if (!user || prefilledRef.current) return;
-    setForm(formFromUser(user));
-    if (hasSavedAddress(user) || user.phone || savedName(user)) {
+    const prefilled = formFromUser(user);
+    setForm(prefilled);
+    if (user.address_line1 || user.address_pincode || user.phone || savedName(user)) {
       prefilledRef.current = true;
+    }
+    // Returning customers with a complete saved address go straight to payment
+    if (!stepInitRef.current) {
+      stepInitRef.current = true;
+      const first = firstIncompleteStep(prefilled);
+      setStep(first);
+      setMaxStep(first);
     }
   }, [user]);
 
   const handleAddNewAddress = () => {
     prefilledRef.current = true;
-    setForm({
+    setFieldErrors({});
+    setForm((prev) => ({
       ...emptyForm,
-      full_name: form.full_name || savedName(user),
-      phone: user?.phone || form.phone || "",
-      email: form.email || "",
-    });
+      full_name: prev.full_name || savedName(user),
+      phone: user?.phone || prev.phone || "",
+      email: prev.email || "",
+    }));
+    setMaxStep(2);
+    goToStep(2);
+  };
+
+  const handleNext = (current) => {
+    const { errors } = validateCheckoutAddress(form);
+    const own = stepErrors(errors, current);
+    setFieldErrors(own);
+    const keys = Object.keys(own);
+    if (keys.length) {
+      toast.error(own[keys[0]]);
+      return;
+    }
+    goToStep(current + 1);
   };
 
   const validateForm = () => {
@@ -238,6 +291,7 @@ export default function CheckoutPage() {
     setFieldErrors(result.errors);
     if (!result.ok) {
       toast.error(result.firstMessage || "Please fix the highlighted fields");
+      goToStep(firstIncompleteStep(form));
       return false;
     }
     return true;
@@ -421,29 +475,55 @@ export default function CheckoutPage() {
     (form.state && form.state.trim()) ||
     String(form.pincode || "").replace(/\D/g, "").length === 6;
 
-  return (
-    <div className={`container section ${styles.page}`}>
-      <h1 className={styles.heading}>Checkout</h1>
-      <p className={styles.subtitle}>
-        Signed in as +91 {user?.phone}.
-        {hasSavedAddress(user)
-          ? " Your saved address is prefilled below."
-          : " Complete your delivery details below."}
-      </p>
-      <div className={styles.layout}>
-        <div className={styles.flow}>
-          <section className={styles.step} data-step="shipping">
-            <AddressForm
-              address={form}
-              onChange={setForm}
-              phoneReadOnly
-              onAddNewAddress={handleAddNewAddress}
-              errors={fieldErrors}
-              onClearError={clearFieldError}
-            />
-          </section>
+  const stepProps = {
+    form,
+    onChange: setForm,
+    errors: fieldErrors,
+    onClearError: clearFieldError,
+  };
 
-          <section className={styles.step} data-step="payment">
+  return (
+    <div className={`container section ${styles.page}`} ref={topRef}>
+      <h1 className={styles.heading}>Checkout</h1>
+      <CheckoutProgress step={step} maxStep={maxStep} onStepClick={goToStep} />
+
+      <div className={`${styles.flow} ${step === 4 ? styles.onPayment : ""}`}>
+        <section className={styles.main}>
+          {step === 1 ? (
+            <ContactStep {...stepProps} onNext={() => handleNext(1)} />
+          ) : null}
+          {step === 2 ? (
+            <PincodeStep {...stepProps} onNext={() => handleNext(2)} />
+          ) : null}
+          {step === 3 ? (
+            <AddressStep {...stepProps} onNext={() => handleNext(3)} />
+          ) : null}
+          {step === 4 ? (
+            <DeliveryCard
+              form={form}
+              onEditContact={() => goToStep(1)}
+              onEditAddress={() => goToStep(2)}
+              onNewAddress={handleAddNewAddress}
+            />
+          ) : null}
+        </section>
+
+        {/* Mounted on every step so promo and shipping quote state survive;
+            on mobile it is only shown on the payment step. */}
+        <section className={styles.summary}>
+          <OrderSummary
+            promo={promo}
+            onPromoChange={setPromo}
+            pincode={form.pincode}
+            state={form.state}
+            phone={form.phone || user?.phone || ""}
+            paymentMethod={method}
+            onShippingQuoteChange={handleShippingQuoteChange}
+          />
+        </section>
+
+        {step === 4 ? (
+          <section className={styles.payment}>
             <PaymentSection
               method={method}
               onChange={setMethod}
@@ -453,19 +533,7 @@ export default function CheckoutPage() {
               codShipping={hasLocation ? codShipping : null}
             />
           </section>
-
-          <section className={`${styles.step} ${styles.summaryStep}`} data-step="summary">
-            <OrderSummary
-              promo={promo}
-              onPromoChange={setPromo}
-              pincode={form.pincode}
-              state={form.state}
-              phone={form.phone || user?.phone || ""}
-              paymentMethod={method}
-              onShippingQuoteChange={handleShippingQuoteChange}
-            />
-          </section>
-        </div>
+        ) : null}
       </div>
     </div>
   );

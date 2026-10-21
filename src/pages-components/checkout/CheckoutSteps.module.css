@@ -1,0 +1,255 @@
+/* —— Progress bar —— */
+.progress {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin: 0 0 1.25rem;
+  padding: 0;
+  list-style: none;
+}
+
+.progressItem {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+}
+
+.progressLine {
+  position: absolute;
+  top: 15px;
+  right: 50%;
+  width: 100%;
+  height: 2px;
+  background: var(--color-border);
+  z-index: 0;
+}
+
+.done .progressLine,
+.current .progressLine {
+  background: var(--primary);
+}
+
+.progressDot {
+  position: relative;
+  z-index: 1;
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 2px solid var(--color-border);
+  background: #fff;
+  color: var(--text-muted);
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 0;
+}
+
+.progressDot:not(:disabled) {
+  cursor: pointer;
+}
+
+.done .progressDot {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: #fff;
+}
+
+.current .progressDot {
+  border-color: var(--primary);
+  color: var(--primary);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 15%, transparent);
+}
+
+.progressLabel {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.done .progressLabel,
+.current .progressLabel {
+  color: var(--primary);
+}
+
+/* —— Step cards —— */
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  padding: 1.5rem;
+  color: var(--text);
+}
+
+.cardTitle {
+  margin: 0;
+  color: var(--text);
+}
+
+.cardSub {
+  margin: -0.6rem 0 0;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.full {
+  grid-column: 1 / -1;
+}
+
+.grid label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+  color: var(--text);
+}
+
+.grid input,
+.grid select,
+.grid textarea {
+  width: 100%;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0;
+  font-size: 16px;
+  outline: none;
+  background: #fff;
+  color: var(--text);
+  font-family: inherit;
+}
+
+.grid textarea {
+  resize: vertical;
+  min-height: 84px;
+}
+
+.grid input:focus,
+.grid select:focus,
+.grid textarea:focus {
+  border-color: var(--primary);
+}
+
+.grid input:disabled {
+  background: var(--bg-soft);
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+
+.pinInput {
+  max-width: 220px;
+  letter-spacing: 0.12em;
+  font-weight: 600;
+}
+
+.hint {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.found {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 0.45rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #15803d;
+}
+
+.error {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: #b42318;
+}
+
+.invalid {
+  border-color: #b42318 !important;
+}
+
+/* —— Delivery card (step 4) —— */
+.deliverHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.editBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.4rem 0.85rem;
+  border: 1.5px solid var(--primary);
+  background: transparent;
+  color: var(--primary);
+  font-weight: 600;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+.editBtn:hover {
+  background: var(--primary);
+  color: #fff;
+}
+
+.deliverBody p {
+  margin: 0 0 0.2rem;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.deliverName {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+  font-weight: 700;
+}
+
+.deliverMuted {
+  color: var(--text-muted);
+}
+
+.linkBtn {
+  align-self: flex-start;
+  border: none;
+  background: none;
+  padding: 0;
+  color: var(--primary);
+  font-weight: 600;
+  font-size: 0.82rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+@media (max-width: 560px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    padding: 1.1rem;
+  }
+
+  .pinInput {
+    max-width: none;
+  }
+
+  .progressLabel {
+    font-size: 0.7rem;
+  }
+}
