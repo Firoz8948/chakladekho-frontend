@@ -48,7 +48,9 @@ export default function CartSummary() {
       )}
 
       <div className={`${styles.row} ${styles.total}`}>
-        <span>Total</span>
+        <span>
+          Total <span className={styles.taxNote}>(GST incl.)</span>
+        </span>
         <span>{formatPrice(total)}</span>
       </div>
 

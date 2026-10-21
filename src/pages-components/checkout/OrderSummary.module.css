@@ -45,6 +45,11 @@
   font-size: 1.15rem;
   color: var(--primary);
 }
+.taxNote {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
 
 .promoBox {
   margin: 0.5rem 0 1rem;
