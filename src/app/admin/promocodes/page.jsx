@@ -183,7 +183,10 @@ export default function AdminPromoCodesPage() {
     const text = promoShareText(promo);
     const url = `${SITE_URL}/shop`;
 
-    if (navigator.share) {
+    // Desktop share sheets (e.g. Windows "Copy") keep only the URL, so copy the
+    // full message there and use the native sheet on touch devices only.
+    const isTouch = window.matchMedia?.("(pointer: coarse)").matches;
+    if (isTouch && navigator.share) {
       try {
         await navigator.share({ title: `${SITE_NAME} — ${promo.code}`, text, url });
         return;
